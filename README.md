@@ -23,3 +23,5 @@ The initial implementation will be LAMP based, converting this to node.js would 
   * to spare
   * need
   * desperate need
+
+# Data model and workflow and any other technical information will be laid out in Wiki 
