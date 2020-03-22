@@ -25,3 +25,8 @@ The initial implementation will be LAMP based, converting this to node.js would 
   * desperate need
 
 # Data model and workflow and any other technical information will be laid out in Wiki 
+
+## what we need right now
+ * communications management
+ * hosting
+ * project management/resource coordination
