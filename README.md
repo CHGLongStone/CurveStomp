@@ -8,8 +8,8 @@ It may be more effective for people to manage local instances but we need centra
 The initial implementation will be LAMP based, converting this to node.js would be helpful
 
 * personal information will not be required, following will be useful
- * postal code
- * email
+  * postal code
+  * email
  
 * users will be provided with a GUID for access 
 * reporting should be done every day or 2 until the outbrake has subsided
@@ -17,12 +17,12 @@ The initial implementation will be LAMP based, converting this to node.js would 
 ## we need to track:
 
  * symtoms
-  * severity
+   * severity
   
  * resources 
-  * to spare
-  * need
-  * desperate need
+   * to spare
+   * need
+   * desperate need
 
 # Data model and workflow and any other technical information will be laid out in Wiki 
 
