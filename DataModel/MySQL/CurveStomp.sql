@@ -147,7 +147,7 @@ DROP TABLE IF EXISTS `resource`;
 CREATE TABLE `resource` (
   `resource_pk` int(11) NOT NULL AUTO_INCREMENT,
   `resource_type_fk` int(11) DEFAULT NULL,
-  `resourcecol` varchar(45) DEFAULT NULL,
+  `resource_name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`resource_pk`),
   KEY `resource_type_fk_idx_idx` (`resource_type_fk`),
   CONSTRAINT `resource_type_fk_idx` FOREIGN KEY (`resource_type_fk`) REFERENCES `resource_type` (`resource_type_pk`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -162,6 +162,35 @@ CREATE TABLE `resource` (
 LOCK TABLES `resource` WRITE;
 /*!40000 ALTER TABLE `resource` DISABLE KEYS */;
 /*!40000 ALTER TABLE `resource` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `resource_log`
+--
+
+DROP TABLE IF EXISTS `resource_log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `resource_log` (
+  `symptom_log_pk` int(11) NOT NULL AUTO_INCREMENT,
+  `resource_log_pk` int(2) DEFAULT NULL,
+  `resource_fk` int(11) DEFAULT NULL,
+  `severity` int(1) NOT NULL DEFAULT 0,
+  `resource_log_timestamp` timestamp NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`symptom_log_pk`),
+  KEY `resource_fk_idx_idx` (`resource_fk`),
+  CONSTRAINT `resource_fk_idx` FOREIGN KEY (`resource_fk`) REFERENCES `resource` (`resource_pk`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `resource_log`
+--
+-- ORDER BY:  `symptom_log_pk`
+
+LOCK TABLES `resource_log` WRITE;
+/*!40000 ALTER TABLE `resource_log` DISABLE KEYS */;
+/*!40000 ALTER TABLE `resource_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -226,9 +255,12 @@ DROP TABLE IF EXISTS `symptom_log`;
 CREATE TABLE `symptom_log` (
   `symptom_log_pk` int(11) NOT NULL AUTO_INCREMENT,
   `symptom_fk` int(2) DEFAULT NULL,
+  `individual_fk` int(11) DEFAULT NULL,
   `severity` int(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`symptom_log_pk`),
   KEY `symptom_pk_idx_idx` (`symptom_fk`),
+  KEY `individual_to_symptom_idx_idx` (`individual_fk`),
+  CONSTRAINT `individual_to_symptom_idx` FOREIGN KEY (`individual_fk`) REFERENCES `individual` (`individual_pk`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `symptom_fk_idx` FOREIGN KEY (`symptom_fk`) REFERENCES `symptom` (`symptom_pk`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -252,4 +284,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-22 15:27:07
+-- Dump completed on 2020-03-22 16:58:27
