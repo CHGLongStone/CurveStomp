@@ -90,4 +90,4 @@ The initial implementation will be LAMP based, converting this to node.js would 
 16. There might be justification for additional questions, related - for instance - to supply
     chains. What do people have a lot of, what are people lacking, etc.
 17. TIME IS OF THE ESSENCE. The usefulness of such a tool is primarily _before_ a region gets hit
-    by an exponential explosion of cases, in mitigation. The window for this is rapidly closing. 
+    by an exponential explosion of cases, in mitigation. The window for this is rapidly closing. !!
