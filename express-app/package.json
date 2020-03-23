@@ -1,0 +1,14 @@
+{
+  "name": "curvestomp",
+  "version": "1.0.0",
+  "description": "express server for curvestomp",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "PatientZero",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
