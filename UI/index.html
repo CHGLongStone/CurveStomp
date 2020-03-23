@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width">
+	<meta charset="utf-8">
+	<meta name="google" value="notranslate">
+	<meta name="referrer" content="strict-origin">
+
+	<link  rel="stylesheet"  type="text/css" href="assets/css/bootstrap.min.css"  />
+	<link  rel="stylesheet"  type="text/css" href="assets/css/bootstrap-responsive.min.css"  />
+	<link rel="stylesheet" href="assets/css/curvestomp.css"></link>
+	<title>CurveStomp: COVID-19 self reporting</title>
+</head>
+<body>
+  CurveStomp: 
+  
+	<div id="content_main" class="col-sm-12" >
+		
+		<div id="action_buttons" class="col-sm-12 register_form" >
+			<div class="row " >
+				<div id="" class="col-sm-4 " >
+					<button type="button" name="register_form" class="btn " onclick="pageSingle('register_form')">Register</button>
+				</div>
+				<div id="" class="col-sm-4 " >
+					<button type="button" name="report_symptom_status" class="btn "  onclick="pageSingle('symptom_status_form')">Report Symptom Status</button>
+				</div>
+				<div id="" class="col-sm-4 " >
+					<button type="button" name="report_resource" class="btn "  onclick="pageSingle('resource_status_form')">Report Resource</button>
+				</div>
+				
+			</div>
+		</div>
+		<div id="register_form" class="col-sm-12 register_form" style="display:none;" >
+			Self Reporting Registration form
+			<div class="row " >
+				<div id="" class="col-sm-2 " >
+					Country
+				</div>
+				<div id="country_container" class="col-sm-2 " >
+					<input type="text" class="" id="country" name="country" value="">
+					<input type="hidden" class="" id="country_iso" name="country_iso" value="">
+				</div>
+				<div id="" class="col-sm-2 " >
+					Region
+				</div>
+				<div id="" class="col-sm-2 " >
+					<input type="text" class="" id="region" name="region" value="">
+				</div>
+				<div id="" class="col-sm-2 " >
+					City
+				</div>
+				<div id="" class="col-sm-2 " >
+					<input type="text" class="" id="city" name="city" value="">
+				</div>
+				
+			</div>
+			<div class="row " >
+				<div id="" class="col-sm-2 " >
+					Street
+				</div>
+				<div id="" class="col-sm-2 " >
+					<input type="text" class="" id="street" name="street" value="">
+				</div>
+				<div id="" class="col-sm-2 " >
+					postal code
+				</div>
+				<div id="" class="col-sm-2 " >
+					<input type="text" class="" id="postal_code" name="postal_code" value="">
+				</div>
+				<div id="" class="col-sm-2 " >
+					household GUID
+				</div>
+				<div id="" class="col-sm-2 " >
+					<input type="text" class="" id="household_guid" name="household_guid" value="">
+				</div>
+			</div>
+			<div class="row " >
+				<div id="" class="col-sm-2 " >
+					email
+				</div>
+				<div id="" class="col-sm-2 " >
+					<input type="text" class="" id="email" name="email" value="">
+				</div>
+				<div id="" class="col-sm-2 " >
+					Age
+				</div>
+				<div id="" class="col-sm-2 " >
+					<input type="text" class="" id="age" name="age" value="">
+				</div>
+				<div id="" class="col-sm-2 " >
+					gender
+				</div>
+				<div id="" class="col-sm-2 " >
+					<input type="text" class="" id="gender" name="gender" value="">
+				</div>
+			</div>
+			<div class="row " >
+				<div id="" class="col-sm-12 " >
+					<button type="submit" name="Submit" class="btn ">Submit</button>
+				</div>
+			</div>
+		</div>
+		<div id="symptom_status_form" class="col-sm-12 register_form" style="display:none;" >
+			symptom_status_form
+		
+		</div>
+		<div id="resource_status_form" class="col-sm-12 register_form" style="display:none;" >
+			resource_status_form
+		
+		</div>
+		
+	</div>
+	
+	
+<div style="display: none;">
+	<div template="country_select" country_select >
+		<select name="country_select" id="country_select" class="select-css"  title="country" onchange="setCountry();">
+			<option value="" selected >-- Select Country --</option>
+		</select>
+	</div>
+
+
+	
+</div>
+	
+<script  type="text/javascript"    src="assets/js/jquery.min.js" ></script>
+<script  type="text/javascript"    src="assets/js/curvestomp.js" ></script>
+<script  type="text/javascript"    src="assets/js/countries.js" ></script>
+
+
+<script  type="text/javascript" >
+
+	if($( '#country' )){
+		$( '#country' ).on( 'focus', function() {
+			if('' == $( '#country' ).val()){
+				console.log('make dropdown');
+				$( '#country' ).val(' ');
+				$( '#country' ).hide();
+				var country = '';
+				var htmlTemplate = $('[template="country_select"]').clone(true);
+				var renderedHTML = CurveStomp.templater.renderHTML('country', {}, htmlTemplate);
+				
+				$('#country_container').append(renderedHTML);
+				htmlTemplate.removeAttr('template');
+				
+				var country_select = $('#country_container').find('#country_select');
+				
+				$.each(countries, function( key, value ) {
+					//console.log('key: '+key+' value: '+JSON.stringify(value, null, 2));
+					$(country_select).append($("<option></option>").attr("value",value.id).text(value.text)); 
+				});
+				
+			}
+		});
+	
+	}
+
+
+</script>
+	
+	
+	
+	
+	
+	
+	
+</body>
+</html>
+
+
