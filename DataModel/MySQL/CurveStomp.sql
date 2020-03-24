@@ -26,11 +26,11 @@ DROP TABLE IF EXISTS `household`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `household` (
   `household_pk` int(11) NOT NULL AUTO_INCREMENT,
-  `household_guid` varchar(36) COLLATE utf8_unicode_ci DEFAULT NULL,
   `household_postal_fk` int(11) NOT NULL,
+  `household_guid` varchar(36) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`household_pk`),
   KEY `household_postal_fk_idx` (`household_postal_fk`),
-  CONSTRAINT `household_postal_fk` FOREIGN KEY (`household_postal_fk`) REFERENCES `regional_postal_code` (`regional_postal_code_pk`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `household_postal_fk` FOREIGN KEY (`household_postal_fk`) REFERENCES `location_profile` (`regional_postal_code_pk`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -53,10 +53,12 @@ DROP TABLE IF EXISTS `individual`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `individual` (
   `individual_pk` int(11) NOT NULL AUTO_INCREMENT,
-  `household_fk` int(11) DEFAULT NULL,
-  `individual_guid` varchar(36) DEFAULT NULL,
+  `household_fk` int(11) NOT NULL,
+  `individual_guid` varchar(36) NOT NULL,
   `age` int(3) DEFAULT NULL,
   `email` varchar(60) DEFAULT NULL,
+  `gender` int(1) DEFAULT NULL,
+  `passcode` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`individual_pk`),
   KEY `household_fk_idx_idx` (`household_fk`),
   CONSTRAINT `household_fk_idx` FOREIGN KEY (`household_fk`) REFERENCES `household` (`household_pk`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -85,9 +87,6 @@ CREATE TABLE `iso_countries` (
   `CommonName` varchar(255) DEFAULT NULL,
   `FormalName` varchar(255) DEFAULT NULL,
   `Capital` varchar(255) DEFAULT NULL,
-  `ISO_4217_Currency_Code` varchar(3) DEFAULT NULL,
-  `ISO_4217_Currency_Name` varchar(255) DEFAULT NULL,
-  `ITU-T_Telephone_Code` varchar(5) DEFAULT NULL,
   `ISO_3166-1_2_Letter_Code` varchar(2) DEFAULT NULL,
   `ISO_3166-1_3 Letter_Code` varchar(3) DEFAULT NULL,
   `ISO_3166-1_Number` varchar(4) DEFAULT NULL,
@@ -110,16 +109,20 @@ LOCK TABLES `iso_countries` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `regional_postal_code`
+-- Table structure for table `location_profile`
 --
 
-DROP TABLE IF EXISTS `regional_postal_code`;
+DROP TABLE IF EXISTS `location_profile`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
-CREATE TABLE `regional_postal_code` (
+CREATE TABLE `location_profile` (
   `regional_postal_code_pk` int(11) NOT NULL AUTO_INCREMENT,
   `country_fk` int(11) NOT NULL,
-  `postal_code` varchar(20) DEFAULT NULL,
+  `region` varchar(100) DEFAULT NULL,
+  `city` varchar(100) DEFAULT NULL,
+  `street` varchar(100) DEFAULT NULL,
+  `postal_code` varchar(20) NOT NULL,
+  `coordinates` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`regional_postal_code_pk`),
   KEY `pc_country_idx_idx` (`country_fk`),
   KEY `postal_code_idx` (`postal_code`,`country_fk`),
@@ -128,13 +131,13 @@ CREATE TABLE `regional_postal_code` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `regional_postal_code`
+-- Dumping data for table `location_profile`
 --
 -- ORDER BY:  `regional_postal_code_pk`
 
-LOCK TABLES `regional_postal_code` WRITE;
-/*!40000 ALTER TABLE `regional_postal_code` DISABLE KEYS */;
-/*!40000 ALTER TABLE `regional_postal_code` ENABLE KEYS */;
+LOCK TABLES `location_profile` WRITE;
+/*!40000 ALTER TABLE `location_profile` DISABLE KEYS */;
+/*!40000 ALTER TABLE `location_profile` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -172,21 +175,23 @@ DROP TABLE IF EXISTS `resource_log`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `resource_log` (
-  `symptom_log_pk` int(11) NOT NULL AUTO_INCREMENT,
-  `resource_log_pk` int(2) DEFAULT NULL,
-  `resource_fk` int(11) DEFAULT NULL,
-  `severity` int(1) NOT NULL DEFAULT 0,
+  `resource_log_pk` int(11) NOT NULL AUTO_INCREMENT,
+  `resource_fk` int(11) NOT NULL,
+  `household_fk` int(11) NOT NULL,
+  `availability` int(1) NOT NULL DEFAULT 5,
   `resource_log_timestamp` timestamp NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`symptom_log_pk`),
+  PRIMARY KEY (`resource_log_pk`),
   KEY `resource_fk_idx_idx` (`resource_fk`),
-  CONSTRAINT `resource_fk_idx` FOREIGN KEY (`resource_fk`) REFERENCES `resource` (`resource_pk`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `resource_to_household_idx_idx` (`household_fk`),
+  CONSTRAINT `resource_fk_idx` FOREIGN KEY (`resource_fk`) REFERENCES `resource` (`resource_pk`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `resource_to_household_idx` FOREIGN KEY (`household_fk`) REFERENCES `household` (`household_pk`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `resource_log`
 --
--- ORDER BY:  `symptom_log_pk`
+-- ORDER BY:  `resource_log_pk`
 
 LOCK TABLES `resource_log` WRITE;
 /*!40000 ALTER TABLE `resource_log` DISABLE KEYS */;
@@ -220,32 +225,6 @@ INSERT INTO `resource_type` (`resource_type_pk`, `resource_name`, `resource_desc
 UNLOCK TABLES;
 
 --
--- Table structure for table `symptom`
---
-
-DROP TABLE IF EXISTS `symptom`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
-CREATE TABLE `symptom` (
-  `symptom_pk` int(11) NOT NULL AUTO_INCREMENT,
-  `symptom_name` varchar(45) DEFAULT NULL,
-  `symptom_description` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`symptom_pk`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `symptom`
---
--- ORDER BY:  `symptom_pk`
-
-LOCK TABLES `symptom` WRITE;
-/*!40000 ALTER TABLE `symptom` DISABLE KEYS */;
-INSERT INTO `symptom` (`symptom_pk`, `symptom_name`, `symptom_description`) VALUES (1,'cough',NULL),(2,'fever',NULL),(3,'tiredness',NULL),(4,'difficulty breathing',NULL);
-/*!40000 ALTER TABLE `symptom` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `symptom_log`
 --
 
@@ -254,14 +233,28 @@ DROP TABLE IF EXISTS `symptom_log`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `symptom_log` (
   `symptom_log_pk` int(11) NOT NULL AUTO_INCREMENT,
-  `symptom_fk` int(2) DEFAULT NULL,
-  `individual_fk` int(11) DEFAULT NULL,
-  `severity` int(1) NOT NULL DEFAULT 0,
+  `individual_fk` int(11) NOT NULL,
+  `symptom_log_timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `dry_cough` int(1) NOT NULL DEFAULT 0,
+  `pneumonia` int(1) NOT NULL DEFAULT 0,
+  `difficulty_breathing` int(1) NOT NULL DEFAULT 0,
+  `difficulty_walking` int(1) NOT NULL DEFAULT 0,
+  `appetite` int(1) NOT NULL DEFAULT 5,
+  `diarrhea` int(1) NOT NULL DEFAULT 0,
+  `muscle_ache` int(1) NOT NULL DEFAULT 0,
+  `fatigue` int(1) NOT NULL DEFAULT 0,
+  `runny_nose` int(1) NOT NULL DEFAULT 0,
+  `congestion` int(1) NOT NULL DEFAULT 0,
+  `sore_throat` int(1) NOT NULL DEFAULT 0,
+  `fever` int(1) NOT NULL DEFAULT 5,
+  `headache` int(1) NOT NULL DEFAULT 0,
+  `confusion__dizzyness` int(1) NOT NULL DEFAULT 0,
+  `nausea` int(1) NOT NULL DEFAULT 0,
+  `chills` int(1) NOT NULL DEFAULT 0,
+  `other_pain` int(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`symptom_log_pk`),
-  KEY `symptom_pk_idx_idx` (`symptom_fk`),
   KEY `individual_to_symptom_idx_idx` (`individual_fk`),
-  CONSTRAINT `individual_to_symptom_idx` FOREIGN KEY (`individual_fk`) REFERENCES `individual` (`individual_pk`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `symptom_fk_idx` FOREIGN KEY (`symptom_fk`) REFERENCES `symptom` (`symptom_pk`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `individual_to_symptom_idx` FOREIGN KEY (`individual_fk`) REFERENCES `individual` (`individual_pk`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -284,4 +277,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-22 16:58:27
+-- Dump completed on 2020-03-24 14:34:00
