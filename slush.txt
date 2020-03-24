@@ -1,0 +1,9 @@
+prompt for first time. 
+yes - location info, 
+generated id, 
+prompt for pass, 
+store as hash; 
+no - prompt for id and pass. 
+recovery - only if email is provided
+
+country > region > city > street + postal code
