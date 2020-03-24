@@ -327,8 +327,74 @@ CurveStomp.var_export = {
 
 console.log(CurveStomp);
 
-
-
+/**
+* a service call wrapper 
+*/
+CurveStomp.registration = {
+	setMembers: function(num_members) {
+		console.log("CurveStomp.registration.setMembers: "+ num_members);
+			
+		var current_members = $('#household_members').find(".member_row").length;
+		console.log("CurveStomp.registration.setMembers: current_members- "+ current_members);
+		
+		if(num_members == current_members){
+			return;
+		}
+		
+		if(0 == current_members){
+			//current_members = 1;
+		}
+		
+		
+		if( current_members > num_members){
+			console.log("CurveStomp.registration.setMembers: TRIM "+ (current_members-num_members));
+			i = current_members-1;
+			var rows = $(".member_row");
+			while(i >= num_members){
+				console.log("remove i "+ i);
+				//item = $(".member_row")[i];
+				//$('#household_members').find(".member_row").eq( i ).remove();
+				$(".member_row").eq( i ).remove();
+				//$(".member_row").eq( -1 ).remove();
+				//rows.remove([i]);
+				i--;
+			}
+			
+			return;
+		}
+		
+		i = current_members;
+		while(i <= num_members){
+			i++;
+			if(i>num_members){
+				break;
+			}
+			console.log("i "+i);
+			console.log("num_members "+num_members);
+			
+			var htmlTemplate = $('[template="household_member"]').clone(true);
+			member = {
+				member_id : i,
+				guid: 'asdwefjlsakdjfskjf'
+			};
+			var renderedHTML = CurveStomp.templater.renderHTML('household', member, htmlTemplate);
+			$('#household_members').append(renderedHTML);
+			htmlTemplate.removeAttr('template');
+			
+			
+			
+		}
+		
+		
+		/*
+		var country_select = $('#country_container').find('#country_select');
+		$.each(countries, function( key, value ) {
+			//console.log('key: '+key+' value: '+JSON.stringify(value, null, 2));
+			$(country_select).append($("<option></option>").attr("value",value.id).text(value.text)); 
+		});
+		*/
+	},
+};
 
 /**
 createMatchStageElm: function(elementName, containerName) {
