@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>COVID-19 Self-Reporting Questionnaire</title>
+</head>
+<body>
+
+<h1>COVID-19 Self-Reporting Questionnaire</h1>
+
+<div class="section" id="identity">
+    <h2>Identity Profile</h2>
+    <div class="question" id="first_time">
+        Is this your first time reporting?
+    </div>
+    <!-- GOTO 'location' -->
+    <p>The following questions will be used to create your anonymous profile, so that a) you
+        won't have to fill out some information multiple times and b) to track your responses as
+        the pandemic progresses.</p>
+    <!-- GENERATE UNIQUE ID -->
+    <div class="question" id="id_input">Identity: </div>
+    <!-- PROMPT FOR SECRET -->
+    <div class="question" id="pwd_input">Passcode: </div>
+    <div class="question" id="pwd_input_confirm">Confirm: </div>
+
+    <div class="section" id="household">
+        <h3>Household Profile</h3>
+        <p>Please assign each member of your household a unique number, incrementing from 1, and
+            make note of each member's number. These numbers will be used in subsequent reports to
+            track the symptom progression of each household member.</p>
+        <div class="question" id="household_size">Household Members: </div>
+        <p>Please provide basic stats for each household member, to assist researchers
+            in statistical analysis.</p>
+        <!-- Repeat for each household member -->
+        <div class="question household_member_stats" id="age">Age: </div>
+        <div class="question household_member_stats" id="gender">Gender: </div>
+    </div>
+
+    <div class="button" id="identity_submit">
+        <!-- submit hash(id + passcode) -->
+    </div>
+</div>
+
+<div class="section" id="location">
+    <h2>Location Profile</h2>
+    <p>The following questions will collect <i>anonymous</i>, regional information about your
+        profile. This information will be used to associate reports to geographical areas for
+        analysis, and <i>should not</i> be personally identifiable.</p>
+    <div class="question" id="country">Country: </div>
+    <div class="question" id="region_admin1">Region: </div>
+    <div class="question" id="city">City: </div>
+    <div class="question" id="street">Street: </div>
+    <div class="question" id="postal_code">Postal Code: </div>
+    <div class="question" id="lat_long">Coordinates: </div>
+    <div class="button" id="location_submit">
+        <!-- GENERATE UNIQUE ID and return to 'identity' -->
+        <!-- PROMPT FOR SECRET -->
+    </div>
+</div>
+
+<div class="section" id="symptoms">
+    <h2>Symptom Report</h2>
+    <p>Please provide information on your symptoms below. If you are not experiencing symptoms,
+        please leave the scales at their default positions.</p>
+    <div class="question" id="household_member_id">Household member ID: </div>
+    <div class="question sliding_scale" id="dry_cough">Dry Cough: </div>
+    <div class="question radial" id="pneumonia">Pneumonia: </div>
+    <div class="question sliding_scale" id="short_breath">Difficulty Breathing: </div>
+    <div class="question sliding_scale" id="mobility">Difficulty Walking: </div>
+    <div class="question sliding_scale" id="appetite">Appetite: </div>
+    <div class="question sliding_scale" id="diarrhea">Diarrhea: </div>
+    <div class="question sliding_scale" id="muscle_ache">Muscle Ache: </div>
+    <div class="question sliding_scale" id="fatigue">Fatigue: </div>
+    <div class="question sliding_scale" id="runny_nose">Runny Nose or Congestion: </div>
+    <div class="question sliding_scale" id="sore_throat">Sore Throat: </div>
+    <div class="question sliding_scale" id="fever">Fever: </div>
+    <div class="question sliding_scale" id="headache">Headache: </div>
+    <div class="question sliding_scale" id="confusion_dizziness">Confusion / Dizziness: </div>
+    <div class="question sliding_scale" id="nausea">Nausea: </div>
+    <div class="question sliding_scale" id="chills">Chills: </div>
+    <div class="question sliding_scale" id="general_pain">Other Pain: </div>
+</div>
+
+<div class="section" id="clinical_findings">
+    <h2>If you've been undergone laboratory testing or other medical diagnosis relating to
+        COVID-19, please provide details:</h2>
+    <div class="question radial" id="lab_tested_pos">Tested Positive: </div>
+    <div class="question radial" id="lab_tested_neg">Tested Negative: </div>
+    <div class="question radial" id="recovered">Recovered: </div>
+    <div class="question radial" id="hospitalized">Hospitalized: </div>
+    <div class="question radial" id="ventilation">Mechanical Ventilation: </div>
+    <div class="question radial" id="oxygen">Oxygen Support: </div>
+</div>
+
+<div class="section" id="transmission">
+    <h2>Transmission Profile</h2>
+    <p>The following questions will assist in regional containment and mitigation, and in
+        determining the level of self-isolation practiced within a region. Please answer these
+        questions carefully and honestly.</p>
+    <div class="question sliding_scale" id="isolation">Isolation: </div>
+    <div class="question sliding_scale" id="travel_radius">Travel: </div>
+    <div class="question sliding_scale" id="surface_exposure">Surface touching: </div>
+    <div class="question sliding_scale" id="contact">Number of human contacts: </div>
+</div>
+
+</body>
+</html>
