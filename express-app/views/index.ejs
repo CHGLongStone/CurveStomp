@@ -8,12 +8,13 @@
 	<meta name="referrer" content="strict-origin">
 
 	<link  rel="stylesheet"  type="text/css" href="assets/css/bootstrap.min.css"  />
+	<link  rel="stylesheet"  type="text/css" href="assets/css/jquery-ui.min.css"  />
 	<link  rel="stylesheet"  type="text/css" href="assets/css/bootstrap-responsive.min.css"  />
 	<link rel="stylesheet" href="assets/css/curvestomp.css"></link>
-	<title>CurveStomp: COVID-19 self reporting</title>
+	<title>COVID-19 Self-Reporting Questionnaire</title>
 </head>
 <body>
-  CurveStomp: 
+	<h1>COVID-19 Self-Reporting Questionnaire</h1>
   
 	<div id="content_main" class="col-sm-12" >
 		
@@ -31,6 +32,90 @@
 				
 			</div>
 		</div>
+		<div class="section row" id="identity">
+			<div class="row " >
+				<h2>Identity Profile</h2>
+				<div class="question" id="first_time">
+					Is this your first time reporting? <input type="checkbox" class="question" id="first_time" name="first_time" value="">
+				</div>
+				<br>
+				<!-- GOTO 'location' -->
+				<p>The following questions will be used to create your anonymous profile, so that <br>
+					a) you won't have to fill out some information multiple times and <br>
+					b) to track your responses as the pandemic progresses.
+				</p>
+			</div>
+			<div class="row " >
+				<div id="" class="col-sm-2 question" >
+					Email *(optional)
+				</div>
+				<div id="" class="col-sm-4 " >
+					<input type="text" class="question" id="email" name="email" value="">
+				</div>
+			</div>
+			<div class="row " >
+				<div id="" class="col-sm-2 question" >
+					Identity
+				</div>
+				<div id="" class="col-sm-4 " >
+					<input type="text" class="question" id="hash_to_user_guid" name="hash_to_user_guid" value="">
+				</div>
+			</div>
+			<div class="row " >
+				<div id="" class="col-sm-2 question" >
+					Passcode
+				</div>
+				<div id="" class="col-sm-4 " >
+					<input type="password" class="question" id="pwd_input" name="pwd_input" value="">
+				</div>
+			</div>
+			<div class="row " >
+				<div id="" class="col-sm-2 question" >
+					Confirm
+				</div>
+				<div id="" class="col-sm-4 " >
+					<input type="password" class="question" id="pwd_input_confirm" name="pwd_input_confirm" value="">
+				</div>
+			</div>
+			
+			<div class="row " >
+				<div class="section" id="household">
+					<div class="row " >
+						<h3>Household Profile</h3>
+						<p>Please assign each member of your household a unique number, incrementing from 1, and
+							make note of each member's number. These numbers will be used in subsequent reports to
+							track the symptom progression of each household member.
+						</p>
+					</div>
+					<div class="row " >
+						<div id="" class="col-sm-2 question" >
+							Household Members:
+						</div>
+						<div id="" class="col-sm-1 " >
+							<input type="text" class="question int_field" width="1"  name="household_size" value="0">
+						</div>
+						<div id="" class="col-sm-4 " >
+							<div class="question " id="household_size"></div>
+						</div>
+							 
+					</div>
+					<div class="row " >
+						<p>Please provide basic stats for each household member, to assist researchers
+							in statistical analysis.
+						</p>
+					
+					</div>
+					<div class="row " id="household_members" >
+
+					</div>
+				</div>
+			</div>
+
+			<div class="button" id="identity_submit">
+				<!-- submit hash(id + passcode) -->
+			</div>
+		</div>
+
 		<div id="register_form" class="col-sm-12 register_form" style="display:none;" >
 			Self Reporting Registration form
 			<div class="row " >
@@ -120,17 +205,69 @@
 		</select>
 	</div>
 
-
+	<div template="household_member" household_member >
+				<div class="row member_row" >
+					<div id="" class="col-sm-1 question household_member_stats" household-member_id>
+						Member  household-member_id
+					</div>
+					<div id="" class="col-sm-1 question household_member_stats" >
+						Age
+					</div>
+					<div id="" class="col-sm-1 " >
+						
+						<input type="text" class="question household_member_stats int_field" id="age" name="member_age[]" value="">
+					</div>
+					<div id="" class="col-sm-1 question household_member_stats" >
+						Gender
+					</div>
+					<div id="" class="col-sm-1 " >
+						<input type="text" class="question household_member_stats" id="household-guid" name="member_gender[]" value="">
+					</div>
+				</div>
+	</div>
 	
 </div>
 	
 <script  type="text/javascript"    src="assets/js/jquery.min.js" ></script>
+<script  type="text/javascript"    src="assets/js/jquery-ui.min.js" ></script>
 <script  type="text/javascript"    src="assets/js/curvestomp.js" ></script>
 <script  type="text/javascript"    src="assets/js/countries.js" ></script>
 
 
 <script  type="text/javascript" >
-
+	if($( '#household_size' )){
+		household_members = 1;
+		
+		$( "#household_size" ).slider({
+			value: 1,
+			min: 1,
+			max: 9,
+			slide: function( event, ui ) {
+				console.log("ui.value"+JSON.stringify(ui.value, null, 2));
+				
+				$( "[name=household_size]" ).val(ui.value);
+				household_members = ui.value;
+				CurveStomp.registration.setMembers(household_members);
+			},
+			start: function( event, ui ) {
+				var current = $('#household_members').find(".member_row").length;
+				console.log("START: current "+JSON.stringify(current, null, 2));
+				if(current >0){
+					console.log("START: NADA");
+					
+					return;
+				}
+				console.log("START: FIRST");
+				$( "[name=household_size]" ).val(1);
+				CurveStomp.registration.setMembers(1);
+			},
+			change: function( event, ui ) {
+				//console.log("CHANGE"+JSON.stringify(ui, null, 2));
+			}
+			
+		});
+	}
+	
 	if($( '#country' )){
 		$( '#country' ).on( 'focus', function() {
 			if('' == $( '#country' ).val()){
