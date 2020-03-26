@@ -248,7 +248,7 @@
 						type="button" 
 						name="report_resource" 
 						class="btn "  
-						onclick="pageSingle('testing_status_form')"
+						onclick="CurveStomp.reports.renderTestingReport();"
 					>Report Testing Status</button>
 				</div>
 				<div id="" class="col-sm-2 " >
@@ -296,7 +296,7 @@
 		</div>
 		
 		
-		<div id="testing_status_form" class="col-sm-12 register_form" style="display:none;" >
+		<div id="testing_form" class="col-sm-12 register_form" style="display:none;" >
 			<div class="row " >
 				<h2>Testing Report</h2>
 			</div>
@@ -305,115 +305,6 @@
 				relating to COVID-19, please provide details:
 				</p>
 			
-			</div>
-			<div class="row " >
-				<div id="" class="col-sm-2 question" >
-					Tested:
-				</div>
-				<div id="" class="col-sm-1 " >
-					Negative
-				</div>
-				<div id="" class="col-sm-1 " >
-					<input type="radio" class="question int_field" width="1"  name="tested" value="negative">
-				</div>
-				<div id="" class="col-sm-2 " >
-					&nbsp;
-				</div>
-				<div id="" class="col-sm-1 " >
-					Positive
-				</div>
-				<div id="" class="col-sm-4 " >
-					<input type="radio" class="question int_field" width="1"  name="tested" value="positive">
-				</div>
-			</div>
-			<div class="row " >
-				<div id="" class="col-sm-2 question" >
-					Recovered:
-				</div>
-				<div id="" class="col-sm-1 " >
-					No
-				</div>
-				<div id="" class="col-sm-1 " >
-					<input type="radio" class="question int_field" width="1"  name="recovered" value="negative">
-				</div>
-				<div id="" class="col-sm-2 " >
-					&nbsp;
-				</div>
-				<div id="" class="col-sm-1 " >
-					Yes
-				</div>
-				<div id="" class="col-sm-4 " >
-					<input type="radio" class="question int_field" width="1"  name="recovered" value="positive">
-				</div>
-			</div>
-			<div class="row " >
-				<div id="" class="col-sm-2 question" >
-					Hospitalized:
-				</div>
-				<div id="" class="col-sm-1 " >
-					No
-				</div>
-				<div id="" class="col-sm-1 " >
-					<input type="radio" class="question int_field" width="1"  name="hospitalized" value="negative">
-				</div>
-				<div id="" class="col-sm-2 " >
-					&nbsp;
-				</div>
-				<div id="" class="col-sm-1 " >
-					Yes
-				</div>
-				<div id="" class="col-sm-4 " >
-					<input type="radio" class="question int_field" width="1"  name="hospitalized" value="positive">
-				</div>
-			</div>
-			<div class="row " >
-				<div id="" class="col-sm-2 question" >
-					Mechanical Ventilation:
-				</div>
-				<div id="" class="col-sm-1 " >
-					No
-				</div>
-				<div id="" class="col-sm-1 " >
-					<input type="radio" class="question int_field" width="1"  name="ventilation" value="negative">
-				</div>
-				<div id="" class="col-sm-2 " >
-					&nbsp;
-				</div>
-				<div id="" class="col-sm-1 " >
-					Yes
-				</div>
-				<div id="" class="col-sm-4 " >
-					<input type="radio" class="question int_field" width="1"  name="ventilation" value="positive">
-				</div>
-			</div>
-			<div class="row " >
-				<div id="" class="col-sm-2 question" >
-					Oxygen Support:
-				</div>
-				<div id="" class="col-sm-1 " >
-					Negative
-				</div>
-				<div id="" class="col-sm-1 " >
-					<input type="radio" class="question int_field" width="1"  name="oxygen" value="negative">
-				</div>
-				<div id="" class="col-sm-2 " >
-					&nbsp;
-				</div>
-				<div id="" class="col-sm-1 " >
-					Positive
-				</div>
-				<div id="" class="col-sm-4 " >
-					<input type="radio" class="question int_field" width="1"  name="oxygen" value="positive">
-				</div>
-			</div>
-			<div class="row " >
-				<p>If you had other symptoms not on the list above, please provide details to aid in the effort:
-				</p>
-			</div>
-			<div class="row " >
-				<div id="" class="col-sm-8 question" >
-					<textarea name="description" id="description" class="form-control" rows="6"></textarea>
-				</div>
 			</div>
 		</div>
 		
@@ -433,6 +324,7 @@
 			resource_status_form
 		
 		</div>
+		
 		
 	</div>
 	
@@ -497,23 +389,137 @@
 					<div class="row " >
 						<div style="display: none;" report_item-name></div>
 						
-						<div id="" class="col-sm-2 question" report_item-display_name >
+						<div id="" class="col-sm-3 question" report_item-display_name >
 							report_item-display_name
 						</div>
-						<div id="" class="col-sm-1 " report_item-min_label></div>
+						<div id="" class="col-sm-2 " report_item-min_label></div>
 						<div id="" class="col-sm-4 " >
 							<div class="question slider" name="symptom_level" report_item-symptom_level></div>
 						</div>
-						<div id="" class="col-sm-1 " report_item-max_label></div>
+						<div id="" class="col-sm-2 " report_item-max_label></div>
 						<div id="" class="col-sm-1 " >
 							<input type="text" class="question int_field" width="1"  name="report_item-name" value="" report_item-value>
 						</div>
-							 
 					</div>
-					
-		
-		
 	</div>
+	<div template="testing_report" testing_report >
+			<div class="row " >
+				<div style="display: none;" report_item-name >tested</div>
+				<div id="" class="col-sm-2 question" >
+					Tested:
+				</div>
+				<div id="" class="col-sm-1 " >
+					Negative
+				</div>
+				<div id="" class="col-sm-1 " >
+					<input type="radio" class="question int_field" width="1"  name="tested" value="0">
+				</div>
+				<div id="" class="col-sm-2 " >
+					&nbsp;
+				</div>
+				<div id="" class="col-sm-1 " >
+					Positive
+				</div>
+				<div id="" class="col-sm-4 " >
+					<input type="radio" class="question int_field" width="1"  name="tested" value="1">
+				</div>
+			</div>
+			<div class="row " >
+				<div style="display: none;" report_item-name >recovered</div>
+				<div id="" class="col-sm-2 question" >
+					Recovered:
+				</div>
+				<div id="" class="col-sm-1 " >
+					No
+				</div>
+				<div id="" class="col-sm-1 " >
+					<input type="radio" class="question int_field" width="1"  name="recovered" value="0">
+				</div>
+				<div id="" class="col-sm-2 " >
+					&nbsp;
+				</div>
+				<div id="" class="col-sm-1 " >
+					Yes
+				</div>
+				<div id="" class="col-sm-4 " >
+					<input type="radio" class="question int_field" width="1"  name="recovered" value="1">
+				</div>
+			</div>
+			<div class="row " >
+				<div style="display: none;" report_item-name >hospitalized</div>
+				<div id="" class="col-sm-2 question" >
+					Hospitalized:
+				</div>
+				<div id="" class="col-sm-1 " >
+					No
+				</div>
+				<div id="" class="col-sm-1 " >
+					<input type="radio" class="question int_field" width="1"  name="hospitalized" value="0">
+				</div>
+				<div id="" class="col-sm-2 " >
+					&nbsp;
+				</div>
+				<div id="" class="col-sm-1 " >
+					Yes
+				</div>
+				<div id="" class="col-sm-4 " >
+					<input type="radio" class="question int_field" width="1"  name="hospitalized" value="1">
+				</div>
+			</div>
+			<div class="row " >
+				<div style="display: none;" report_item-name >ventilation</div>
+				<div id="" class="col-sm-2 question" >
+					Mechanical Ventilation:
+				</div>
+				<div id="" class="col-sm-1 " >
+					No
+				</div>
+				<div id="" class="col-sm-1 " >
+					<input type="radio" class="question int_field" width="1"  name="ventilation" value="0">
+				</div>
+				<div id="" class="col-sm-2 " >
+					&nbsp;
+				</div>
+				<div id="" class="col-sm-1 " >
+					Yes
+				</div>
+				<div id="" class="col-sm-4 " >
+					<input type="radio" class="question int_field" width="1"  name="ventilation" value="1">
+				</div>
+			</div>
+			<div class="row " >
+				<div style="display: none;" report_item-name >oxygen</div>
+				<div id="" class="col-sm-2 question" >
+					Oxygen Support:
+				</div>
+				<div id="" class="col-sm-1 " >
+					Negative
+				</div>
+				<div id="" class="col-sm-1 " >
+					<input type="radio" class="question int_field" width="1"  name="oxygen" value="0">
+				</div>
+				<div id="" class="col-sm-2 " >
+					&nbsp;
+				</div>
+				<div id="" class="col-sm-1 " >
+					Positive
+				</div>
+				<div id="" class="col-sm-4 " >
+					<input type="radio" class="question int_field" width="1"  name="oxygen" value="1">
+				</div>
+			</div>
+			<div class="row " >
+				<p>If you had other symptoms not on the list above, please provide details to aid in the effort:
+				</p>
+			</div>
+			<div class="row " >
+				<div style="display: none;" report_item-name >oxygen</div>
+				<div id="" class="col-sm-8 question" >
+					<textarea name="other_symptoms" id="other_symptoms" class="form-control" rows="6"></textarea>
+				</div>
+			</div>
+	</div>
+	
 </div>
 	
 <script  type="text/javascript"    src="assets/js/jquery.min.js" ></script>
@@ -589,12 +595,23 @@
 	}
 
 	if($( '#symptom_form' )){
-		$('#symptom_form').on('click', '.slider', function(){
-			//symptom_form
+		$('#symptom_form').on('click', '.slider', function(event, ui){
+			console.log('SLIDER CALLED');
+			console.log("event"+JSON.stringify(event, null, 2));
+			console.log("ui"+JSON.stringify(ui, null, 2));
+			$(this).next(':input').val(ui.value);
 		});
 	}
 	
-	
+	if($( '#user_guid' )){
+		$( '#user_guid' ).on( 'focus', function() {
+			var user_guid = getCookie('user_guid');
+			if('' != user_guid){
+				console.log('user_guid: '+user_guid);
+				$( '#user_guid' ).val(user_guid);
+			}
+		});
+	}
 </script>
 	
 	
