@@ -59,10 +59,10 @@ user_guid = '';
 passcode = '';
 SESSIONID ='';
 
-members_in_household = 1;
+members_in_household = [];
 
 CurveStomp = {
-	API_PATH: '/api/',
+	API_PATH: '/formdata',
 	request: function(callback) {
 		console.log('Do Request');
 	},
@@ -73,26 +73,29 @@ CurveStomp = {
 		console.log('test_user_guid:'+test_user_guid);
 		console.log('test_passcode:'+test_passcode);
 		//JSON.stringify(callresult, null, 2)
-		SERVICE_CALL = 'authenticate.user';
+		SERVICE_CALL = 'user.authenticate';
 		params = {
 			"user_guid" : test_user_guid,
 			"passcode" : test_passcode,
-			
 		};
 		var callresult = CurveStomp.service.call(params);
 		console.log('callresult:'+JSON.stringify(callresult, null, 2));
 		
 		if(true === callresult.result.data.authenticated){
-			members_in_household = callresult.result.data.members_in_household;
+			console.log('members_in_household:'+JSON.stringify(callresult.result.data.members_in_household, null, 2));
+			number_members_in_household = Object.keys(callresult.result.data.members_in_household).length;
+			console.log('members_in_household:'+JSON.stringify(callresult.result.data.members_in_household, null, 2));
+			console.log('number_members_in_household:'+number_members_in_household);
+			
 			user_guid = test_user_guid;
 			passcode = test_passcode;
 			setCookie('user_guid',user_guid,14);
-			setCookie('members_in_household',members_in_household,14);
+			setCookie('number_members_in_household',number_members_in_household,14);
 			
 			$( '#returning' ).hide();
 			$( '#report_list' ).show();
 			console.log('getCookie-user_guid:'+getCookie('user_guid'));
-			console.log('getCookie-members_in_household:'+getCookie('members_in_household'));
+			console.log('getCookie-number_members_in_household:'+getCookie('number_members_in_household'));
 			
 		}else{
 			alert('Login Failed');
@@ -216,7 +219,18 @@ CurveStomp.service = {
 					"status": "OK",
 					"data": {
 						'authenticated' : true,
-						'members_in_household' : 2,
+						'members_in_household' : [
+							{ 
+								'inc' : 1, 
+								'age' : 50,
+								'gender' : 1,
+							},
+							{ 
+								'inc' : 2, 
+								'age' : 54,
+								'gender' : 0,
+							},
+						],
 					}
 				},
 				"error": null,
@@ -227,8 +241,8 @@ CurveStomp.service = {
 		
 		
 		var request = {
-			method: SERVICE_CALL,
-			params: requestParams,
+			method: requestParams.SERVICE_CALL,
+			params: requestParams.params,
 			id: SESSIONID+'::'+SERVICE_CALL+'::'+Date.now(),
 		};
 		request = JSON.stringify(request);
@@ -244,7 +258,7 @@ CurveStomp.service = {
 			},
 			*/
 			dataType: "json",
-			url: CurveStomp.API_PATH,
+			url: requestParams.method,
 			data: request,
 			cache: false
 		})
@@ -490,7 +504,8 @@ CurveStomp.reports = {
 	*/
 	transmission : {
 		isolation : {value: 1, min: 1, max: 9, min_label: 'very isolated', max_label: 'not isolated', step: 1},
-		travel : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'frequent', step: 1},
+		travel_amount : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'frequent', step: 1},
+		travel_distance : {value: 1, min: 1, max: 99, min_label: '0 km', max_label: '99 km+', step: 5},
 		surface_touch : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'frequent', step: 1},
 		number_of_regular_contacts : {value: 1, min: 1, max: 9, min_label: 'less than 5', max_label: 'more than 20', step: 1},
 	},
@@ -514,7 +529,6 @@ CurveStomp.reports = {
 		newElem = $(elem_name);
 		newElem.show();
 		var htmlTemplate = '';
-		members_in_household;
 		
 		
 		htmlTemplate = $('[template="symptom_report_item"]').clone(true);
@@ -522,7 +536,7 @@ CurveStomp.reports = {
 		
 		outer_parent_container = newElem.closest(elem_name);
 		i = 1;
-		while(i <= members_in_household){
+		while(i <= number_members_in_household){
 			var container_name = 'member_'+i+'_symptom_form';
 			outer_parent_container.append('<div id="'+container_name+'"><h2>Household Member: '+i+'</h2></div>');
 			var container_select = '#'+container_name;
@@ -607,7 +621,7 @@ CurveStomp.reports = {
 		outer_parent_container = newElem.closest(elem_name);
 		
 		i = 1;
-		while(i <= members_in_household){
+		while(i <= number_members_in_household){
 			console.log('renderTestingReport-i: '+i);
 			iHtml = htmlTemplate.clone(true);
 			var container_name = 'member_'+i+'_testing_form';
