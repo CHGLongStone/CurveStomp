@@ -16,7 +16,7 @@ app.get('/',function(req,res){
     res.render('index');
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 80;
 
 // port to listen
 http.listen(PORT, function(){
