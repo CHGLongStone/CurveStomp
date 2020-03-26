@@ -32,15 +32,39 @@ function pageSingle(id){
 */
 var CurveStomp = CurveStomp || {};
 
-
-
+SERVICE_CALL = '';
+user_guid = '';
+passcode = '';
+SESSIONID ='';
 
 CurveStomp = {
 	API_PATH: '/api/',
 	request: function(callback) {
 		console.log('Do Request');
 	},
-
+	login: function() {
+		var container = $('#returning');
+		user_guid = container.find('#user_guid').val();
+		passcode = container.find('#passcode').val();
+		console.log('user_guid:'+user_guid);
+		console.log('passcode:'+passcode);
+		//JSON.stringify(callresult, null, 2)
+		SERVICE_CALL = 'authenticate.user';
+		params = {
+			"user_guid" : user_guid,
+			"passcode" : passcode,
+			
+		};
+		var callresult = CurveStomp.service.call(params);
+		console.log('callresult:'+JSON.stringify(callresult, null, 2));
+		
+		if(true === callresult.result.data.authenticated){
+			$( '#returning' ).hide();
+			$( '#report_list' ).show();
+		}else{
+			alert('Login Failed');
+		}
+	},
 };
 
 
@@ -154,6 +178,20 @@ CurveStomp.service = {
 	*/
 	call: function(requestParams) {
 		console.log('Start CurveStomp.service.call');
+		var fakeCallResult =  {
+				"result": {
+					"status": "OK",
+					"data": {
+						'authenticated' : true,
+					}
+				},
+				"error": null,
+				"id": null,
+			};
+		return fakeCallResult;
+		
+		
+		
 		var request = {
 			method: SERVICE_CALL,
 			params: requestParams,
@@ -163,13 +201,14 @@ CurveStomp.service = {
 		console.log(request);
 		CurveStomp.service.callObj = $.ajax({
 			type: 'post',
+			/**
 			headers: {
 				'SESSIONID':SESSIONID,
-				'user_id' : user_id,
-				'user_email' : user_email,
-				'canvas_fingerprint' : canvas_fingerprint,
+				'passcode' : passcode,
+				'user_guid' : user_guid,
 				'digital_fingerprint' : digital_fingerprint,
 			},
+			*/
 			dataType: "json",
 			url: CurveStomp.API_PATH,
 			data: request,
@@ -327,51 +366,32 @@ CurveStomp.var_export = {
 
 console.log(CurveStomp);
 
+
 /**
 * a service call wrapper 
 */
 CurveStomp.registration = {
 	setMembers: function(num_members) {
-		console.log("CurveStomp.registration.setMembers: "+ num_members);
-			
 		var current_members = $('#household_members').find(".member_row").length;
-		console.log("CurveStomp.registration.setMembers: current_members- "+ current_members);
-		
 		if(num_members == current_members){
 			return;
 		}
-		
-		if(0 == current_members){
-			//current_members = 1;
-		}
-		
-		
 		if( current_members > num_members){
-			console.log("CurveStomp.registration.setMembers: TRIM "+ (current_members-num_members));
 			i = current_members-1;
 			var rows = $(".member_row");
 			while(i >= num_members){
-				console.log("remove i "+ i);
-				//item = $(".member_row")[i];
-				//$('#household_members').find(".member_row").eq( i ).remove();
 				$(".member_row").eq( i ).remove();
-				//$(".member_row").eq( -1 ).remove();
-				//rows.remove([i]);
 				i--;
 			}
-			
 			return;
 		}
 		
 		i = current_members;
 		while(i <= num_members){
 			i++;
-			if(i>num_members){
+			if(i > num_members){
 				break;
 			}
-			console.log("i "+i);
-			console.log("num_members "+num_members);
-			
 			var htmlTemplate = $('[template="household_member"]').clone(true);
 			member = {
 				member_id : i,
@@ -380,8 +400,6 @@ CurveStomp.registration = {
 			var renderedHTML = CurveStomp.templater.renderHTML('household', member, htmlTemplate);
 			$('#household_members').append(renderedHTML);
 			htmlTemplate.removeAttr('template');
-			
-			
 			
 		}
 		
@@ -395,6 +413,120 @@ CurveStomp.registration = {
 		*/
 	},
 };
+
+/**
+* a service call wrapper 
+*/
+CurveStomp.reports = {
+	symptom : {
+		//symptom_log_pk
+		//individual_fk
+		//symptom_log_timestamp
+		dry_cough : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		pneumonia : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		difficulty_breathing : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		difficulty_walking : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		appetite : {value: 5, min: 1, max: 9, min_label: 'lower', max_label: 'higher', step: 1},
+		diarrhea : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		muscle_ache : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		fatigue : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		runny_nose : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		congestion : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		sore_throat : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		fever_f : {value: 5, min: 1, max: 9, min_label: 'low', max_label: 'high', step: 0.1},
+		fever_c : {value: 5, min: 1, max: 9, min_label: 'low', max_label: 'high', step: 0.1},
+		headache : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		confusion__dizzyness : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		nausea : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		chills : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		other_pain : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1}
+		
+	}, 
+	
+	
+	transmission : {
+		isolation : {value: 1, min: 1, max: 9, min_label: 'very isolated', max_label: 'not isolated', step: 1},
+		travel : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'frequent', step: 1},
+		surface_touch : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'frequent', step: 1},
+		number_of_regular_contacts : {value: 1, min: 1, max: 9, min_label: 'less than 5', max_label: 'more than 20', step: 1},
+	},
+	
+	renderReport : function(report_name) {
+		console.log('report_name'+report_name);
+		var report_data = CurveStomp.reports[report_name];
+		var elem_name = '#'+report_name+'_form';
+		console.log('elem_name'+elem_name);
+		newElem = $(elem_name);
+		var htmlTemplate = '';
+
+		htmlTemplate = $('[template="symptom_report_item"]').clone(true);
+		htmlTemplate.removeAttr('template');
+		
+		parent_container = newElem.closest('#symptom_form');
+		$.each(report_data, function(k,v) {
+			
+			iHtml = htmlTemplate.clone(true);
+			if(k.includes('__')){
+				display_name = k.replace(/__/g, " / ");
+			}else{
+				display_name = k.replace(/_/g, " ");
+			}
+			
+			console.log('display_name: '+display_name);
+			console.log('display_name: '+display_name);
+			v['name'] = k;
+			v['display_name'] = display_name;
+			v['slider_name'] = k+"_symptom_level";
+			console.log('k:-'+k+'--------------v:::'+JSON.stringify(v, null, 2));
+			//website_container = parent_container.find('#advertiser-website_container');
+			//var el = website_container.find('*[website-flag_description]').filter(":last");
+			finishedHtml = CurveStomp.templater.renderHTML('report_item', v, iHtml);
+			parent_container.append(finishedHtml);
+			
+			var new_slider = $(parent_container).find('*[report_item-symptom_level]').filter(":last");
+			//var new_slider = parent_container.last('.slider');
+			$(new_slider).slider({
+				value: v.value,
+				min: v.min,
+				max: v.max,
+				step: v.step,
+				slide: function( event, ui ) {
+					$( "[name="+k+"_symptom_level]" ).val(ui.value);
+					household_members = ui.value;
+					CurveStomp.registration.setMembers(household_members);
+				},
+			});
+			//console.log('---------------$(el).html()'+$(el).html());
+			//var flag_name = CurveStomp.display.getFlagClass(v.flag_name);
+			//console.log('---------------flag_name:::'+flag_name);
+			//$(el).addClass(flag_name);
+			if(v.score){
+				//renderScore(v.score);
+			}else{
+				//console.log('k'+k+' v'+JSON.stringify(v, null, 2));
+			}
+				
+		});		
+		
+	},
+	
+}
+
+
+
+
+function next(action){
+	switch(action){
+		case"location_profile":
+			$( '#identity' ).hide();
+			$( '#location' ).show();
+			
+			break;
+		case"":
+			break;
+		
+	}
+}
 
 /**
 createMatchStageElm: function(elementName, containerName) {

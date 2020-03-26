@@ -19,33 +19,60 @@
 	<div id="content_main" class="col-sm-12" >
 		
 		<div id="action_buttons" class="col-sm-12 register_form" >
+
 			<div class="row " >
-				<div id="" class="col-sm-4 " >
-					<button type="button" name="register_form" class="btn " onclick="pageSingle('register_form')">Register</button>
-				</div>
-				<div id="" class="col-sm-4 " >
-					<button type="button" name="report_symptom_status" class="btn "  onclick="pageSingle('symptom_status_form')">Report Symptom Status</button>
-				</div>
-				<div id="" class="col-sm-4 " >
-					<button type="button" name="report_resource" class="btn "  onclick="pageSingle('resource_status_form')">Report Resource</button>
-				</div>
-				
-			</div>
-		</div>
-		<div class="section row" id="identity">
-			<div class="row " >
-				<h2>Identity Profile</h2>
-				<div class="question" id="first_time">
-					Is this your first time reporting? <input type="checkbox" class="question" id="first_time" name="first_time" value="">
+				<div class="question" id="">
+					Is this your first time reporting? <input type="checkbox" class="question" id="first_time" name="first_time">
 				</div>
 				<br>
+			</div>
+			
+		</div>
+		<div class="section row" id="returning" style="display: block;">
+			<div class="row " >
+				<h2>Submit Another Report</h2>
+				<div class="row " >
+					<div id="" class="col-sm-2 question" >
+						Identity
+					</div>
+					<div id="" class="col-sm-4 " >
+						<input type="text" class="question" id="user_guid" name="user_guid" value="">
+					</div>
+				</div>
+				<div class="row " >
+					<div id="" class="col-sm-2 question" >
+						Passcode
+					</div>
+					<div id="" class="col-sm-4 " >
+						<input type="password" class="question" id="passcode" name="passcode" value="">
+					</div>
+				</div>
+				<div class="row " >
+					<div id="" class="col-sm-2 question" >
+					</div>
+					<div id="" class="col-sm-4 " >
+						<button 
+							type="button" 
+							name="report_resource" 
+							class="btn "  
+							onclick="CurveStomp.login();"
+						>Login</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="section row" id="identity" style="display: none;">
+			<div class="row " >
+				<h2>Identity Profile</h2>
 				<!-- GOTO 'location' -->
 				<p>The following questions will be used to create your anonymous profile, so that <br>
-					a) you won't have to fill out some information multiple times and <br>
+					a) you won't have to fill out some information multiple times<br> and <br>
 					b) to track your responses as the pandemic progresses.
 				</p>
+			
 			</div>
 			<div class="row " >
+			
 				<div id="" class="col-sm-2 question" >
 					Email *(optional)
 				</div>
@@ -97,13 +124,11 @@
 						<div id="" class="col-sm-4 " >
 							<div class="question " id="household_size"></div>
 						</div>
-							 
 					</div>
 					<div class="row " >
 						<p>Please provide basic stats for each household member, to assist researchers
 							in statistical analysis.
 						</p>
-					
 					</div>
 					<div class="row " id="household_members" >
 
@@ -112,12 +137,25 @@
 			</div>
 
 			<div class="button" id="identity_submit">
+				<button type="button" name="net" class="btn " onclick="next('location_profile')">Next</button>
+				<button type="button" name="register" class="btn " onclick="register('register_form')">Register</button>
+				
 				<!-- submit hash(id + passcode) -->
 			</div>
+			
+			
+			
 		</div>
-
-		<div id="register_form" class="col-sm-12 register_form" style="display:none;" >
-			Self Reporting Registration form
+		<div class="section row" id="location" style="display: none;">
+			<div class="row " >
+				<h2>Location Profile</h2>
+			</div>
+			<div class="row " >
+				<p>The following questions will collect anonymous, regional information 
+				about your profile. This information will be used to associate reports 
+				to geographical areas for analysis, and should not be personally identifiable.
+				</p>
+			</div>
 			<div class="row " >
 				<div id="" class="col-sm-2 " >
 					Country
@@ -126,33 +164,44 @@
 					<input type="text" class="" id="country" name="country" value="">
 					<input type="hidden" class="" id="country_iso" name="country_iso" value="">
 				</div>
+			</div>
+			<div class="row " >
 				<div id="" class="col-sm-2 " >
 					Region
 				</div>
 				<div id="" class="col-sm-2 " >
 					<input type="text" class="" id="region" name="region" value="">
 				</div>
+			</div>
+			<div class="row " >
+
 				<div id="" class="col-sm-2 " >
 					City
 				</div>
 				<div id="" class="col-sm-2 " >
 					<input type="text" class="" id="city" name="city" value="">
 				</div>
-				
 			</div>
 			<div class="row " >
+
 				<div id="" class="col-sm-2 " >
 					Street
 				</div>
 				<div id="" class="col-sm-2 " >
 					<input type="text" class="" id="street" name="street" value="">
 				</div>
+			</div>
+			<div class="row " >
+
 				<div id="" class="col-sm-2 " >
 					postal code
 				</div>
 				<div id="" class="col-sm-2 " >
 					<input type="text" class="" id="postal_code" name="postal_code" value="">
 				</div>
+			</div>
+			<div class="row " >
+
 				<div id="" class="col-sm-2 " >
 					household GUID
 				</div>
@@ -160,36 +209,226 @@
 					<input type="text" class="" id="household_guid" name="household_guid" value="">
 				</div>
 			</div>
-			<div class="row " >
-				<div id="" class="col-sm-2 " >
-					email
-				</div>
-				<div id="" class="col-sm-2 " >
-					<input type="text" class="" id="email" name="email" value="">
-				</div>
-				<div id="" class="col-sm-2 " >
-					Age
-				</div>
-				<div id="" class="col-sm-2 " >
-					<input type="text" class="" id="age" name="age" value="">
-				</div>
-				<div id="" class="col-sm-2 " >
-					gender
-				</div>
-				<div id="" class="col-sm-2 " >
-					<input type="text" class="" id="gender" name="gender" value="">
-				</div>
-			</div>
+
 			<div class="row " >
 				<div id="" class="col-sm-12 " >
-					<button type="submit" name="Submit" class="btn ">Submit</button>
+					<button type="submit" name="Submit" class="btn ">Submit Registration</button>
 				</div>
 			</div>
 		</div>
-		<div id="symptom_status_form" class="col-sm-12 register_form" style="display:none;" >
-			symptom_status_form
+		
+		
+		
+		<div id="report_list" class="col-sm-12 register_form" style="display:none;" >
+			<div class="row " >
+				<h2>Report List</h2>
+			</div>
+			<div class="row " >
+				<!-- 
+				<div id="" class="col-sm-2 " >
+					<button 
+						type="button" 
+						name="register_form" 
+						class="btn " 
+						onclick="pageSingle('register_form')"
+					>Registration Form</button>
+				</div>
+				-->
+				<div id="" class="col-sm-2 " >
+					<button 
+						type="button" 
+						name="report_symptom_status" 
+						class="btn "  
+						onclick="pageSingle('symptom_form'), 
+						CurveStomp.reports.renderReport('symptom');"
+					>Report Symptom Status</button>
+				</div>
+				<div id="" class="col-sm-2 " >
+					<button 
+						type="button" 
+						name="report_resource" 
+						class="btn "  
+						onclick="pageSingle('testing_status_form')"
+					>Report Testing Status</button>
+				</div>
+				<div id="" class="col-sm-2 " >
+					<button 
+						type="button" 
+						name="report_resource" 
+						class="btn "  
+						onclick="CurveStomp.reports.renderReport('transmission');"
+					>Report Transmission Profile</button>
+				</div>
+				
+				<!-- 
+				<div id="" class="col-sm-2 " >
+					<button 
+						type="button" 
+						name="report_resource" 
+						class="btn "  
+						onclick="pageSingle('resource_status_form')"
+					>Report Resource</button>
+				</div>
+				<div id="" class="col-sm-2 " >
+					<button 
+						type="button" 
+						name="report_resource" 
+						class="btn "  
+						onclick="pageSingle('resource_status_form')"
+					>Report Resource</button>
+				</div>
+				-->
+				
+			</div>
+		</div>
+		
+		
+		
+		<div id="symptom_form" class="col-sm-12 register_form" style="display:none;" >
+			<div class="row " >
+				<h2>Symptom Report</h2>
+			</div>
+			<div class="row " >
+				<p>Please provide information on your symptoms below. If you are not experiencing symptoms, 
+				please leave the scales at their default positions.
+				</p>
+			</div>
+		</div>
+		
+		
+		<div id="testing_status_form" class="col-sm-12 register_form" style="display:none;" >
+			<div class="row " >
+				<h2>Testing Report</h2>
+			</div>
+			<div class="row " >
+				<p>If you've been undergone laboratory testing or other medical diagnosis 
+				relating to COVID-19, please provide details:
+				</p>
+			
+			</div>
+			<div class="row " >
+				<div id="" class="col-sm-2 question" >
+					Tested:
+				</div>
+				<div id="" class="col-sm-1 " >
+					Negative
+				</div>
+				<div id="" class="col-sm-1 " >
+					<input type="radio" class="question int_field" width="1"  name="tested" value="negative">
+				</div>
+				<div id="" class="col-sm-2 " >
+					&nbsp;
+				</div>
+				<div id="" class="col-sm-1 " >
+					Positive
+				</div>
+				<div id="" class="col-sm-4 " >
+					<input type="radio" class="question int_field" width="1"  name="tested" value="positive">
+				</div>
+			</div>
+			<div class="row " >
+				<div id="" class="col-sm-2 question" >
+					Recovered:
+				</div>
+				<div id="" class="col-sm-1 " >
+					No
+				</div>
+				<div id="" class="col-sm-1 " >
+					<input type="radio" class="question int_field" width="1"  name="recovered" value="negative">
+				</div>
+				<div id="" class="col-sm-2 " >
+					&nbsp;
+				</div>
+				<div id="" class="col-sm-1 " >
+					Yes
+				</div>
+				<div id="" class="col-sm-4 " >
+					<input type="radio" class="question int_field" width="1"  name="recovered" value="positive">
+				</div>
+			</div>
+			<div class="row " >
+				<div id="" class="col-sm-2 question" >
+					Hospitalized:
+				</div>
+				<div id="" class="col-sm-1 " >
+					No
+				</div>
+				<div id="" class="col-sm-1 " >
+					<input type="radio" class="question int_field" width="1"  name="hospitalized" value="negative">
+				</div>
+				<div id="" class="col-sm-2 " >
+					&nbsp;
+				</div>
+				<div id="" class="col-sm-1 " >
+					Yes
+				</div>
+				<div id="" class="col-sm-4 " >
+					<input type="radio" class="question int_field" width="1"  name="hospitalized" value="positive">
+				</div>
+			</div>
+			<div class="row " >
+				<div id="" class="col-sm-2 question" >
+					Mechanical Ventilation:
+				</div>
+				<div id="" class="col-sm-1 " >
+					No
+				</div>
+				<div id="" class="col-sm-1 " >
+					<input type="radio" class="question int_field" width="1"  name="ventilation" value="negative">
+				</div>
+				<div id="" class="col-sm-2 " >
+					&nbsp;
+				</div>
+				<div id="" class="col-sm-1 " >
+					Yes
+				</div>
+				<div id="" class="col-sm-4 " >
+					<input type="radio" class="question int_field" width="1"  name="ventilation" value="positive">
+				</div>
+			</div>
+			<div class="row " >
+				<div id="" class="col-sm-2 question" >
+					Oxygen Support:
+				</div>
+				<div id="" class="col-sm-1 " >
+					Negative
+				</div>
+				<div id="" class="col-sm-1 " >
+					<input type="radio" class="question int_field" width="1"  name="oxygen" value="negative">
+				</div>
+				<div id="" class="col-sm-2 " >
+					&nbsp;
+				</div>
+				<div id="" class="col-sm-1 " >
+					Positive
+				</div>
+				<div id="" class="col-sm-4 " >
+					<input type="radio" class="question int_field" width="1"  name="oxygen" value="positive">
+				</div>
+			</div>
+			<div class="row " >
+				<p>If you had other symptoms not on the list above, please provide details to aid in the effort:
+				</p>
+			</div>
+			<div class="row " >
+				<div id="" class="col-sm-8 question" >
+					<textarea name="description" id="description" class="form-control" rows="6"></textarea>
+				</div>
+			</div>
+		</div>
+		
+		<div id="transmission_form" class="col-sm-12 register_form" style="display:none;" >
+			<div class="row " >
+				<h2>Transmission  Profile</h2>
+			</div>
+			<div class="row " >
+				<p>The following questions will assist in regional containment and mitigation, and in determining the level of 
+				self-isolation practiced within a region. Please answer these questions carefully and honestly.
+				</p>
+			</div>
 		
 		</div>
+		
 		<div id="resource_status_form" class="col-sm-12 register_form" style="display:none;" >
 			resource_status_form
 		
@@ -205,12 +444,15 @@
 		</select>
 	</div>
 
+	
+
 	<div template="household_member" household_member >
 				<div class="row member_row" >
 					<div id="" class="col-sm-1 question household_member_stats" household-member_id>
-						Member  household-member_id
+						
 					</div>
 					<div id="" class="col-sm-1 question household_member_stats" >
+						<input type="hidden" class="" id="" name="member_id[]" value="" household-member_id>
 						Age
 					</div>
 					<div id="" class="col-sm-1 " >
@@ -220,12 +462,58 @@
 					<div id="" class="col-sm-1 question household_member_stats" >
 						Gender
 					</div>
-					<div id="" class="col-sm-1 " >
-						<input type="text" class="question household_member_stats" id="household-guid" name="member_gender[]" value="">
+					<div id="" class="col-sm-3 " >
+						<select name="country_select" id="country_select" class="select-css"  title="country" onchange="setCountry();">
+							<option value="2" selected >-- Unspecified --</option>
+							<option value="0"  >Female</option>
+							<option value="1"  >Male</option>
+						</select>
 					</div>
 				</div>
 	</div>
+	<!-- 
+		dry_cough : {value: 1, min: 1, max: 9,},
+		pneumonia : {value: 1, min: 1, max: 9,},
+		difficulty_breathing : {value: 1, min: 1, max: 9,},
+		difficulty_walking : {value: 1, min: 1, max: 9,},
+		appetite : {value: 5, min: 1, max: 9,},
+		diarrhea : {value: 1, min: 1, max: 9,},
+		muscle_ache : {value: 1, min: 1, max: 9,},
+		fatigue : {value: 1, min: 1, max: 9,},
+		runny_nose : {value: 1, min: 1, max: 9,},
+		congestion : {value: 1, min: 1, max: 9,},
+		sore_throat : {value: 1, min: 1, max: 9,},
+		fever_f : {value: 98.6, min: 93.8, max: 104.8,},
+		fever_c : {value: 37, min: 34.3, max: 40.4,},
+		headache : {value: 1, min: 1, max: 9,},
+		confusion__dizzyness : {value: 1, min: 1, max: 9,},
+		nausea : {value: 1, min: 1, max: 9,},
+		chills : {value: 1, min: 1, max: 9,},
+		other_pain : {value: 1, min: 1, max: 9,}
+						<input type="text" class="" id="" name="individual_fk[]" value="" report_item-individual_fk>
+	-->
 	
+	<div template="symptom_report_item" symptom_report_item >
+					<div class="row " >
+						<div style="display: none;" report_item-name></div>
+						
+						<div id="" class="col-sm-2 question" report_item-display_name >
+							report_item-display_name
+						</div>
+						<div id="" class="col-sm-1 " report_item-min_label></div>
+						<div id="" class="col-sm-4 " >
+							<div class="question slider" name="symptom_level" report_item-symptom_level></div>
+						</div>
+						<div id="" class="col-sm-1 " report_item-max_label></div>
+						<div id="" class="col-sm-1 " >
+							<input type="text" class="question int_field" width="1"  name="report_item-name" value="" report_item-value>
+						</div>
+							 
+					</div>
+					
+		
+		
+	</div>
 </div>
 	
 <script  type="text/javascript"    src="assets/js/jquery.min.js" ></script>
@@ -243,21 +531,15 @@
 			min: 1,
 			max: 9,
 			slide: function( event, ui ) {
-				console.log("ui.value"+JSON.stringify(ui.value, null, 2));
-				
 				$( "[name=household_size]" ).val(ui.value);
 				household_members = ui.value;
 				CurveStomp.registration.setMembers(household_members);
 			},
 			start: function( event, ui ) {
 				var current = $('#household_members').find(".member_row").length;
-				console.log("START: current "+JSON.stringify(current, null, 2));
 				if(current >0){
-					console.log("START: NADA");
-					
 					return;
 				}
-				console.log("START: FIRST");
 				$( "[name=household_size]" ).val(1);
 				CurveStomp.registration.setMembers(1);
 			},
@@ -273,6 +555,7 @@
 			if('' == $( '#country' ).val()){
 				console.log('make dropdown');
 				$( '#country' ).val(' ');
+				$( '#country_iso' ).val(' ');
 				$( '#country' ).hide();
 				var country = '';
 				var htmlTemplate = $('[template="country_select"]').clone(true);
@@ -293,7 +576,25 @@
 	
 	}
 
+	if($( '#first_time' )){
+		$( '#first_time' ).on( 'change', function() {
+			if (true == $(this).prop('checked')) {
+				$( '#identity' ).show();
+				$( '#returning' ).hide();
+			}else{
+				$( '#returning' ).show();
+				$( '#identity' ).hide();
+			}
+		});
+	}
 
+	if($( '#symptom_form' )){
+		$('#symptom_form').on('click', '.slider', function(){
+			//symptom_form
+		});
+	}
+	
+	
 </script>
 	
 	
