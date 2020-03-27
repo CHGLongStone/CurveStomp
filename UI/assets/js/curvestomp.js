@@ -26,21 +26,81 @@ function pageSingle(id){
 	}
 }
 
+function setCookie(name,value,days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+function eraseCookie(name) {   
+    document.cookie = name+'=; Max-Age=-99999999;';  
+}
 
 /**
 * the core javascript service object
 */
 var CurveStomp = CurveStomp || {};
 
+SERVICE_CALL = '';
+user_guid = '';
+passcode = '';
+SESSIONID ='';
 
-
+members_in_household = [];
 
 CurveStomp = {
-	API_PATH: '/api/',
+	API_PATH: '/formdata',
 	request: function(callback) {
 		console.log('Do Request');
 	},
-
+	login: function() {
+		var container = $('#returning');
+		var test_user_guid = container.find('#user_guid').val();
+		var test_passcode = container.find('#passcode').val();
+		console.log('test_user_guid:'+test_user_guid);
+		console.log('test_passcode:'+test_passcode);
+		//JSON.stringify(callresult, null, 2)
+		SERVICE_CALL = 'user.authenticate';
+		params = {
+			"user_guid" : test_user_guid,
+			"passcode" : test_passcode,
+		};
+		var callresult = CurveStomp.service.call(params);
+		console.log('callresult:'+JSON.stringify(callresult, null, 2));
+		
+		if(true === callresult.result.data.authenticated){
+			console.log('members_in_household:'+JSON.stringify(callresult.result.data.members_in_household, null, 2));
+			number_members_in_household = Object.keys(callresult.result.data.members_in_household).length;
+			console.log('members_in_household:'+JSON.stringify(callresult.result.data.members_in_household, null, 2));
+			console.log('number_members_in_household:'+number_members_in_household);
+			
+			user_guid = test_user_guid;
+			passcode = test_passcode;
+			setCookie('user_guid',user_guid,14);
+			setCookie('number_members_in_household',number_members_in_household,14);
+			
+			$( '#returning' ).hide();
+			$( '#report_list' ).show();
+			console.log('getCookie-user_guid:'+getCookie('user_guid'));
+			console.log('getCookie-number_members_in_household:'+getCookie('number_members_in_household'));
+			
+		}else{
+			alert('Login Failed');
+		}
+	},
 };
 
 
@@ -154,24 +214,51 @@ CurveStomp.service = {
 	*/
 	call: function(requestParams) {
 		console.log('Start CurveStomp.service.call');
+		var fakeCallResult =  {
+				"result": {
+					"status": "OK",
+					"data": {
+						'authenticated' : true,
+						'members_in_household' : [
+							{ 
+								'inc' : 1, 
+								'age' : 50,
+								'gender' : 1,
+							},
+							{ 
+								'inc' : 2, 
+								'age' : 54,
+								'gender' : 0,
+							},
+						],
+					}
+				},
+				"error": null,
+				"id": null,
+			};
+		return fakeCallResult;
+		
+		
+		
 		var request = {
-			method: SERVICE_CALL,
-			params: requestParams,
+			method: requestParams.SERVICE_CALL,
+			params: requestParams.params,
 			id: SESSIONID+'::'+SERVICE_CALL+'::'+Date.now(),
 		};
 		request = JSON.stringify(request);
 		console.log(request);
 		CurveStomp.service.callObj = $.ajax({
 			type: 'post',
+			/**
 			headers: {
 				'SESSIONID':SESSIONID,
-				'user_id' : user_id,
-				'user_email' : user_email,
-				'canvas_fingerprint' : canvas_fingerprint,
+				'passcode' : passcode,
+				'user_guid' : user_guid,
 				'digital_fingerprint' : digital_fingerprint,
 			},
+			*/
 			dataType: "json",
-			url: CurveStomp.API_PATH,
+			url: requestParams.method,
 			data: request,
 			cache: false
 		})
@@ -327,51 +414,32 @@ CurveStomp.var_export = {
 
 console.log(CurveStomp);
 
+
 /**
 * a service call wrapper 
 */
 CurveStomp.registration = {
 	setMembers: function(num_members) {
-		console.log("CurveStomp.registration.setMembers: "+ num_members);
-			
 		var current_members = $('#household_members').find(".member_row").length;
-		console.log("CurveStomp.registration.setMembers: current_members- "+ current_members);
-		
 		if(num_members == current_members){
 			return;
 		}
-		
-		if(0 == current_members){
-			//current_members = 1;
-		}
-		
-		
 		if( current_members > num_members){
-			console.log("CurveStomp.registration.setMembers: TRIM "+ (current_members-num_members));
 			i = current_members-1;
 			var rows = $(".member_row");
 			while(i >= num_members){
-				console.log("remove i "+ i);
-				//item = $(".member_row")[i];
-				//$('#household_members').find(".member_row").eq( i ).remove();
 				$(".member_row").eq( i ).remove();
-				//$(".member_row").eq( -1 ).remove();
-				//rows.remove([i]);
 				i--;
 			}
-			
 			return;
 		}
 		
 		i = current_members;
 		while(i <= num_members){
 			i++;
-			if(i>num_members){
+			if(i > num_members){
 				break;
 			}
-			console.log("i "+i);
-			console.log("num_members "+num_members);
-			
 			var htmlTemplate = $('[template="household_member"]').clone(true);
 			member = {
 				member_id : i,
@@ -380,8 +448,6 @@ CurveStomp.registration = {
 			var renderedHTML = CurveStomp.templater.renderHTML('household', member, htmlTemplate);
 			$('#household_members').append(renderedHTML);
 			htmlTemplate.removeAttr('template');
-			
-			
 			
 		}
 		
@@ -397,20 +463,225 @@ CurveStomp.registration = {
 };
 
 /**
-createMatchStageElm: function(elementName, containerName) {
-		console.log('Start createStageCourseElm elementName['+elementName+']');
-		var htmlTemplate = $('[template="'+elementName+'"]').clone(true);
-		console.log('html:::'+htmlTemplate);
-		var renderedHTML = JCORE.templater.renderHTML('user', user, htmlTemplate);
-
-		
-		$('#'+containerName+'').append(renderedHTML);
-		
-		//console.log('Start createStageCourseElm renderedHTML '+JSON.stringify(renderedHTML));
-		
-		htmlTemplate.removeAttr('template');
-		$('#matchstage_ID').val('');
-		$('#MatchStageSearch').val('');
-
-}
+* a service call wrapper 
 */
+CurveStomp.reports = {
+	
+	/**
+	* Report data structure for slider questions
+	* min max & default values
+	* min max labeled
+	*/
+	symptom : {
+		//symptom_log_pk
+		//individual_fk
+		//symptom_log_timestamp
+		dry_cough : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		pneumonia : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		difficulty_breathing : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		difficulty_walking : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		appetite : {value: 5, min: 1, max: 9, min_label: 'lower', max_label: 'higher', step: 1},
+		diarrhea : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		muscle_ache : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		fatigue : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		runny_nose : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		congestion : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		sore_throat : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		fever_f : {value: 5, min: 1, max: 9, min_label: 'low', max_label: 'high', step: 0.1},
+		fever_c : {value: 5, min: 1, max: 9, min_label: 'low', max_label: 'high', step: 0.1},
+		headache : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		confusion__dizzyness : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		nausea : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		chills : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		other_pain : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1}
+		
+	}, 
+	
+	/**
+	* Report data structure for slider questions
+	* min max & default values
+	* min max labeled
+	*/
+	transmission : {
+		isolation : {value: 1, min: 1, max: 9, min_label: 'very isolated', max_label: 'not isolated', step: 1},
+		travel_amount : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'frequent', step: 1},
+		travel_distance : {value: 1, min: 1, max: 99, min_label: '0 km', max_label: '99 km+', step: 5},
+		surface_touch : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'frequent', step: 1},
+		number_of_regular_contacts : {value: 1, min: 1, max: 9, min_label: 'less than 5', max_label: 'more than 20', step: 1},
+	},
+	
+	/**
+	* set the assotiated input value for a dynamically generated slider
+	*/
+	setItemValue : function(event, ui) {
+		var row_item = $(event.target).closest('.row');
+		$(row_item).find(':input').val(ui.value);
+	},
+	
+	/**
+	* create a report from a Report data structure
+	*/
+	renderReport : function(report_name) {
+		console.log('report_name'+report_name);
+		var report_data = CurveStomp.reports[report_name];
+		var elem_name = '#'+report_name+'_form';
+		console.log('elem_name'+elem_name);
+		newElem = $(elem_name);
+		newElem.show();
+		var htmlTemplate = '';
+		
+		
+		htmlTemplate = $('[template="symptom_report_item"]').clone(true);
+		htmlTemplate.removeAttr('template');
+		
+		outer_parent_container = newElem.closest(elem_name);
+		i = 1;
+		while(i <= number_members_in_household){
+			var container_name = 'member_'+i+'_symptom_form';
+			outer_parent_container.append('<div id="'+container_name+'"><h2>Household Member: '+i+'</h2></div>');
+			var container_select = '#'+container_name;
+			var container = $(container_select);
+			
+			$.each(report_data, function(k,v) {
+				iHtml = htmlTemplate.clone(true);
+				if(k.includes('__')){
+					display_name = k.replace(/__/g, " / ");
+				}else{
+					display_name = k.replace(/_/g, " ");
+				}
+				v['name'] = k;
+				v['display_name'] = display_name;
+				v['slider_name'] = k+"_symptom_level";
+				finishedHtml = CurveStomp.templater.renderHTML('report_item', v, iHtml);
+				container.append(finishedHtml);
+				var new_slider = $(container).find('*[report_item-symptom_level]').filter(":last");
+				$(new_slider).slider({
+					value: v.value,
+					min: v.min,
+					max: v.max,
+					step: v.step,
+					slide: function( event, ui ) {
+						//$( "[name="+k+"_symptom_level]" ).val(ui.value);
+						//$(this).next(':input').val(ui.value);
+						CurveStomp.reports.setItemValue(event, ui);
+					},
+				});
+			});	
+			submit_button = '<button type="button" name="report_resource" class="btn "  onclick="CurveStomp.reports.submit(\'symptom\', '+i+');">Submit Report for Household Member '+i+'</button>';
+			container.append(submit_button);			
+			i++;
+		}
+		
+		
+		
+	},
+	
+	
+	/**
+	* submit a report that used a Report data structure
+	*/
+	submit : function(report_name, member_num) {
+		var report_container_name = 'member_'+member_num+'_'+report_name+'_form';
+		var container_select = '#'+report_container_name;
+		console.log('container_select: '+container_select);
+		var container = $(container_select);
+		
+		
+		var new_data_points = {
+			'member_num': member_num
+		};
+		var report_data = $(container).find('.row');
+		$.each(report_data, function(k,v) {
+			var item_name = $(v).find('*[report_item-name]').html();
+			var item_value = $(v).find(':input').val();
+			if(item_value != CurveStomp.reports[report_name][item_name].value){
+				new_data_points[item_name] = item_value;
+			}else{
+				console.log('FAILED item_value:'+item_value);
+				console.log('FAILED item_default:'+CurveStomp.reports[report_name][item_name].value);				
+			}
+		});	
+		
+		console.log('--------------new_data_points:::'+JSON.stringify(new_data_points, null, 2));
+		
+		//DO API CALL
+	},
+	
+	/**
+	* create a static form for a specific user
+	*/
+	renderTestingReport : function() {
+		var elem_name = '#testing_form';
+		console.log('elem_name'+elem_name);
+		newElem = $(elem_name);
+		newElem.show();
+		var htmlTemplate = '';
+		htmlTemplate = $('[template="testing_report"]').clone(true);
+		htmlTemplate.removeAttr('template');
+		outer_parent_container = newElem.closest(elem_name);
+		
+		i = 1;
+		while(i <= number_members_in_household){
+			console.log('renderTestingReport-i: '+i);
+			iHtml = htmlTemplate.clone(true);
+			var container_name = 'member_'+i+'_testing_form';
+			outer_parent_container.append('<div id="'+container_name+'"><h2>Household Member: '+i+'</h2></div>');
+			var container_select = '#'+container_name;
+			var container = $(container_select);
+				
+			finishedHtml = CurveStomp.templater.renderHTML('report_item', {}, iHtml);
+			container.append(finishedHtml);
+				
+			submit_button = '<button type="button" name="report_resource" class="btn "  onclick="CurveStomp.reports.submitTesting( '+i+');">Submit Report for Household Member '+i+'</button>';
+			container.append(submit_button);			
+			i++;
+		}
+		
+		
+	},
+	/**
+	* submit a static form report for a specific user
+	*/
+	submitTesting : function(member_num) {
+		//testing_form
+		console.log('submitTesting: member_num-'+member_num);
+		var report_container_name = 'member_'+member_num+'_testing_form';
+		var container_select = '#'+report_container_name;
+		console.log('container_select: '+container_select);
+		var container = $(container_select);
+		
+		
+		var new_data_points = {
+			'member_num': member_num
+		};
+		var report_data = $(container).find('.row');
+		$.each(report_data, function(k,v) {
+			var item_name = $(v).find('*[report_item-name]').html();
+			var item_value = $(v).find('input:checked').val();
+			
+				console.log('FAILED item_value:'+item_value);
+			new_data_points[item_name] = item_value;
+							
+			
+		});	
+		
+		console.log('--------------new_data_points:::'+JSON.stringify(new_data_points, null, 2));
+	}
+}
+
+
+
+
+function next(action){
+	switch(action){
+		case"location_profile":
+			$( '#identity' ).hide();
+			$( '#location' ).show();
+			
+			break;
+		case"":
+			break;
+		
+	}
+}
+
