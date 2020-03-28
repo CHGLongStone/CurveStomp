@@ -11,6 +11,9 @@
 	<link  rel="stylesheet"  type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"  />
 	<link  rel="stylesheet"  type="text/css" href="assets/css/bootstrap-responsive.min.css"  />
 	<link rel="stylesheet" href="assets/css/curvestomp.css"></link>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+	   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+	   crossorigin=""/>
 	<title>DRAFT: COVID-19 Self-Reporting Questionnaire</title>
 </head>
 <body>
@@ -151,9 +154,14 @@
 				<h2>Location Profile</h2>
 			</div>
 			<div class="row " >
-				<p>The following questions will collect anonymous, regional information 
-				about your profile. This information will be used to associate reports 
-				to geographical areas for analysis, and should not be personally identifiable.
+				<p>The following questions will collect anonymous, regional information <br>
+				about your profile. This information will be used to associate reports <br>
+				to geographical areas for analysis, and should not be personally identifiable.<br>
+				</p>
+				<p>Location ID is a Globally Unique Identifier (within your region), you may:<br>
+				* enter a name of your choosing<br>
+				* generate a hash <br>
+				* enter a lattitude and longitude with a chosen degree of accuracy<br>
 				</p>
 			</div>
 			<div class="row " >
@@ -174,7 +182,6 @@
 				</div>
 			</div>
 			<div class="row " >
-
 				<div id="" class="col-sm-2 " >
 					City
 				</div>
@@ -183,7 +190,6 @@
 				</div>
 			</div>
 			<div class="row " >
-
 				<div id="" class="col-sm-2 " >
 					Street
 				</div>
@@ -192,7 +198,6 @@
 				</div>
 			</div>
 			<div class="row " >
-
 				<div id="" class="col-sm-2 " >
 					postal code
 				</div>
@@ -201,14 +206,47 @@
 				</div>
 			</div>
 			<div class="row " >
-
 				<div id="" class="col-sm-2 " >
-					household GUID
+					Location ID
 				</div>
 				<div id="" class="col-sm-2 " >
 					<input type="text" class="" id="household_guid" name="household_guid" value="">
 				</div>
+				<div id="" class="col-sm-2 " >
+					<button type="create_hash" name="create_hash" class="btn ">Create Hash</button>
+				</div>
+				<div id="" class="col-sm-2 " >
+					<button type="get_map" name="get_map" class="btn "></button>
+						<button 
+							type="button" 
+							name="get_map" 
+							class="btn "  
+							onclick="CurveStomp.getMap();"
+						>Choose Lat/Long</button>
+				</div>
+				
 			</div>
+			<div class="row " >
+				<div id="" class="col-sm-12 " >
+					Coordinates
+				</div>
+				<div id="" class="col-sm-2 " >
+					Lattitude
+				</div>
+				<div id="" class="col-sm-2 " >
+					<input type="text" class="" id="lattitude" name="lattitude" value="">
+				</div>
+				<div id="" class="col-sm-2 " >
+					Longitude 
+				</div>
+				<div id="" class="col-sm-2 " >
+					<input type="text" class="" id="longitude" name="longitude" value="">
+				</div>
+			</div>
+			
+			<div id="mapid" ></div>
+			<div id="map_bucket" style="displa: none;" ></div>
+
 
 			<div class="row " >
 				<div id="" class="col-sm-12 " >
@@ -519,14 +557,50 @@
 				</div>
 			</div>
 	</div>
-	
+	<div template="map_controls" map_controls >
+			<div id="map_controls" style="display: block;">
+				<div class="row " >
+					<div id="" class="" >
+
+						<button 
+							type="button" 
+							name="report_symptom_status" 
+							class="btn "  
+							onclick="pageSingle('symptom_form'), 
+							CurveStomp.setMapAccuracy('more');"
+						>More Accurate</button>
+						<button 
+							type="button" 
+							name="report_symptom_status" 
+							class="btn "  
+							onclick="pageSingle('symptom_form'), 
+							CurveStomp.setMapAccuracy('less');"
+						>Less Accurate</button>
+						
+					</div>
+					<div id="" style="text-align: center;" >
+						<button 
+							type="button" 
+							name="report_symptom_status" 
+							class="btn "  
+							onclick="pageSingle('symptom_form'), 
+							CurveStomp.acceptSettings();"
+						>Accept Settings</button>
+					
+					</div>
+				</div>
+			</div>
+	</div>
 </div>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
 <script  type="text/javascript"    src="assets/js/curvestomp.js" ></script>
 <script  type="text/javascript"    src="assets/js/countries.js" ></script>
 
-
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+   integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+   crossorigin=""></script>
+   
 <script  type="text/javascript" >
 	if($( '#household_size' )){
 		household_members = 1;
@@ -611,6 +685,21 @@
 			}
 		});
 	}
+
+	if($( '#create_hash' )){
+		$( '#create_hash' ).on( 'focus', function() {
+			console.log('create_hash CALLED');
+			//var map = L.map('map').setView([51.505, -0.09], 13);
+		});
+	}
+	
+
+$( '#location' ).show();
+/*
+$( '#identity' ).show();
+$( '#returning' ).show();
+household_guid
+*/ 
 </script>
 	
 	
