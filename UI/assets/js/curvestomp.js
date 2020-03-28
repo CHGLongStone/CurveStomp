@@ -107,24 +107,56 @@ CurveStomp = {
 		lattitude : 0,
 		longitude : 0,
 		display : {},
-	},	
-	getMap: function() {
+	},
+	
+	validateGeoRequest: function() {
+		if ("geolocation" in navigator) {
+			/* geolocation is available */
+			navigator.geolocation.getCurrentPosition(function(position) {
+				lati = position.coords.latitude.toFixed(5);
+				longi =  position.coords.longitude.toFixed(5);
+				lati = Number(lati);
+				longi = Number(longi);
+				console.log('lati: '+lati);
+				console.log('longi: '+longi);
+				CurveStomp.getMap(lati,longi);
+			});
+		} else {
+			/* geolocation IS NOT available */
+			alert('geolocation IS NOT available');
+			return;
+		}
+		
+	},
+	
+	getMap: function(lati=0,longi=0 ) {
 		console.log('Do getMap');
+		$('#mapid').show();
 		/**
 		43.65700
+		43.6575692
 		43.6579783
 		-80.0125013
 		-80.03200
+				  var lati = 43.65700;
+				  var longi =  -80.03200;
 		*/
-		var lati = 43.65700;
+		console.log('typeof lati' +typeof 'lati');
+		console.log('typeof longi' +typeof 'longi');
+		
+		
 		CurveStomp.map.lattitude = lati;
-		var longi =  -80.03200;
 		CurveStomp.map.longitude = longi;
+		
+		
+		
 		L_bound = (longi - 2.05);
 		U_bound = (lati + 0.05);
 		
+		/*
 		L_bound = L_bound.toFixed(5);
 		U_bound = U_bound.toFixed(5);
+		*/
 		
 		console.log('L_bound: '+L_bound);
 		console.log('U_bound: '+U_bound);

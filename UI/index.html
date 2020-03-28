@@ -212,16 +212,18 @@
 				<div id="" class="col-sm-2 " >
 					<input type="text" class="" id="household_guid" name="household_guid" value="">
 				</div>
+				<div id="" class="col-sm-1 " >
+					&nbsp;
+				</div>
 				<div id="" class="col-sm-2 " >
 					<button type="create_hash" name="create_hash" class="btn ">Create Hash</button>
 				</div>
 				<div id="" class="col-sm-2 " >
-					<button type="get_map" name="get_map" class="btn "></button>
 						<button 
 							type="button" 
 							name="get_map" 
 							class="btn "  
-							onclick="CurveStomp.getMap();"
+							onclick="CurveStomp.validateGeoRequest();"
 						>Choose Lat/Long</button>
 				</div>
 				
@@ -236,6 +238,9 @@
 				<div id="" class="col-sm-2 " >
 					<input type="text" class="" id="lattitude" name="lattitude" value="">
 				</div>
+				<div id="" class="col-sm-1 " >
+					&nbsp;
+				</div>
 				<div id="" class="col-sm-2 " >
 					Longitude 
 				</div>
@@ -244,8 +249,8 @@
 				</div>
 			</div>
 			
-			<div id="mapid" ></div>
-			<div id="map_bucket" style="displa: none;" ></div>
+			<div id="mapid" style="display: none;" ></div>
+			<div id="map_bucket" style="display: none;" ></div>
 
 
 			<div class="row " >
