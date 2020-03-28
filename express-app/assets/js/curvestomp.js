@@ -101,6 +101,119 @@ CurveStomp = {
 			alert('Login Failed');
 		}
 	},
+	
+	map :{
+		current_increment_idx : 0,
+		lattitude : 0,
+		longitude : 0,
+		display : {},
+	},	
+	getMap: function() {
+		console.log('Do getMap');
+		/**
+		43.65700
+		43.6579783
+		-80.0125013
+		-80.03200
+		*/
+		var lati = 43.65700;
+		CurveStomp.map.lattitude = lati;
+		var longi =  -80.03200;
+		CurveStomp.map.longitude = longi;
+		L_bound = (longi - 2.05);
+		U_bound = (lati + 0.05);
+		
+		L_bound = L_bound.toFixed(5);
+		U_bound = U_bound.toFixed(5);
+		
+		console.log('L_bound: '+L_bound);
+		console.log('U_bound: '+U_bound);
+		
+		CurveStomp.map.display = L.map('mapid').setView([L_bound, U_bound], 15);
+		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(CurveStomp.map.display);
+
+		
+		var popupbody = $('[template="map_controls"]').clone(true);
+		var renderedHTML = CurveStomp.templater.renderHTML('map', {}, popupbody);
+
+		$('#map_bucket').append(renderedHTML);
+		console.log('renderedHTML  '  + renderedHTML.toString);
+		//popupbody.removeAttr('template');
+		renderedHTML = $('#map_bucket').html();
+		console.log('renderedHTML  '  + renderedHTML.toString);
+		
+		
+		
+		CurveStomp.map.display.popup = L.marker([lati, longi]).addTo(CurveStomp.map.display)
+			.bindPopup(renderedHTML)
+		.openPopup();
+		
+	},
+	
+
+	setMapAccuracy: function(modifier) {
+		increment = [
+			0.00000,
+			0.0001,
+			0.001,
+			0.01,
+			0.1,
+		];
+		
+		var inc_list_length = increment.length;
+		
+		
+		if('less' == modifier){
+			if(CurveStomp.map.current_increment_idx + 1 < increment.length){
+				CurveStomp.map.current_increment_idx++;
+			}else{
+				alert('limit reached');
+				return;
+			}
+		}else{
+			if(CurveStomp.map.current_increment_idx - 1 >= 0){
+				CurveStomp.map.current_increment_idx--;
+			}else{
+				alert('limit reached');
+				return;
+			}
+		}
+		
+		var current_increment = increment[CurveStomp.map.current_increment_idx];
+		LA_TOP = (CurveStomp.map.lattitude + current_increment);
+		LA_BOT = (CurveStomp.map.lattitude - current_increment);
+		LO_LEFT = (CurveStomp.map.longitude - current_increment);
+		LO_RIGHT = (CurveStomp.map.longitude + current_increment);
+		
+		
+		LA_TOP = LA_TOP.toFixed(5);
+		LA_BOT = LA_BOT.toFixed(5);
+		LO_LEFT = LO_LEFT.toFixed(5);
+		LO_RIGHT = LO_RIGHT.toFixed(5);
+		$('#lattitude').val(LA_TOP);
+		$('#longitude').val(LO_LEFT);
+		if(CurveStomp.map.display.polygon){
+			CurveStomp.map.display.polygon.remove();			
+		}
+		CurveStomp.map.display.polygon = L.polygon([
+			[LA_TOP, LO_LEFT],
+			[LA_TOP, LO_RIGHT],
+			[LA_BOT, LO_RIGHT],
+			[LA_BOT, LO_LEFT]
+		]).addTo(CurveStomp.map.display);
+	},
+	
+	acceptSettings: function(modifier) {
+		CurveStomp.map.display.popup.remove();
+		setTimeout(() => {  
+			CurveStomp.map.display.remove(); 
+			$('#mapid').hide();
+		
+		}, 500);
+		
+	},
 };
 
 
