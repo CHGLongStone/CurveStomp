@@ -101,6 +101,9 @@ CurveStomp = {
 			alert('Login Failed');
 		}
 	},
+	scrollPage: function() {
+		$('html, body').animate({scrollTop:$(document).height()}, 'slow');
+	},
 	
 	map :{
 		current_increment_idx : 0,
@@ -126,45 +129,17 @@ CurveStomp = {
 			alert('geolocation IS NOT available');
 			return;
 		}
-		
 	},
 	
 	getMap: function(lati=0,longi=0 ) {
 		console.log('Do getMap');
-
 		$('#mapid').show();
-		/**
-		43.65700
-		43.6575692
-		43.6579783
-		-80.0125013
-		-80.03200
-				  var lati = 43.65700;
-				  var longi =  -80.03200;
-		*/
-		console.log('typeof lati' +typeof 'lati');
-		console.log('typeof longi' +typeof 'longi');
-		
-		
 		CurveStomp.map.lattitude = lati;
 		CurveStomp.map.longitude = longi;
 		
-		
-		
 		L_bound = (longi - 2.05);
 		U_bound = (lati + 0.05);
-		
-		/*
-		L_bound = L_bound.toFixed(5);
-		U_bound = U_bound.toFixed(5);
-		CurveStomp.map.display.removeLayer(CurveStomp.map.display.popup);
-		*/
-		
-		console.log('L_bound: '+L_bound);
-		console.log('U_bound: '+U_bound);
-		
-		//CurveStomp.map.display = L.map('mapid').setView([L_bound, U_bound], 15);
-		//CurveStomp.map.display = L.map('mapid').setView([longi, lati], 15);
+
 		CurveStomp.map.display = L.map('mapid');
 		CurveStomp.map.display.setView([longi, lati], 15);
 		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -174,13 +149,9 @@ CurveStomp = {
 		if(!CurveStomp.map.display.popup){
 			var popupbody = $('[template="map_controls"]').clone(true);
 			var renderedHTML = CurveStomp.templater.renderHTML('map', {}, popupbody);
-
 			$('#map_bucket').append(renderedHTML);
-			console.log('renderedHTML  '  + renderedHTML.toString);
 			popupbody.removeAttr('template');
 			renderedHTML = $('#map_bucket').html();
-			console.log('renderedHTML  '  + renderedHTML.toString);
-			
 			CurveStomp.map.display.popup = L.marker([lati, longi]);
 			CurveStomp.map.display.popup.addTo(CurveStomp.map.display);
 			CurveStomp.map.display.popup.bindPopup(renderedHTML).openPopup();
@@ -219,7 +190,6 @@ CurveStomp = {
 			if(CurveStomp.map.current_increment_idx - 1 >= 0){
 				CurveStomp.map.current_increment_idx--;
 			}else{
-				//alert('limit reached');
 				$('#coordinates').before('<div id="notice" class="col-sm-12 h3">limit reached</div>');
 				$('#notice').delay(CurveStomp.notice_delay).fadeOut(function() {$(this).remove();});
 				return;
@@ -246,8 +216,6 @@ CurveStomp = {
 		]);
 		CurveStomp.map.display.polygon.addTo(CurveStomp.map.display);
 		
-		//var latLngs = [LA_TOP, LO_LEFT];
-		//var markerBounds = CurveStomp.map.display.polygon.latLngBounds(latLngs);
 		CurveStomp.map.display.fitBounds([
 			[LA_TOP, LO_LEFT],
 			[LA_BOT, LO_RIGHT]
@@ -255,15 +223,9 @@ CurveStomp = {
 	},
 	
 	acceptSettings: function(modifier) {
-		
-		//CurveStomp.map.display.popup.remove(); 
 		setTimeout(() => {  
-			//CurveStomp.map.display.remove(); 
 			$('#mapid').hide();
-		
 		}, 1500);
-		
-		
 	},
 	
 	createHash: function(hash_type=null,stringToHash) {
@@ -592,6 +554,15 @@ console.log(CurveStomp);
 * a service call wrapper 
 */
 CurveStomp.registration = {
+	user: function() {
+		console.log('CurveStomp.registration.user');
+		
+		
+		$( '#report_list' ).show();
+		CurveStomp.scrollPage();
+		return;
+	},
+	
 	setMembers: function(num_members) {
 		var current_members = $('#household_members').find(".member_row").length;
 		if(num_members == current_members){

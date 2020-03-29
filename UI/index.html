@@ -68,11 +68,18 @@
 			<div class="row " >
 				<h2>Identity Profile</h2>
 				<!-- GOTO 'location' -->
-				<p>The following questions will be used to create your anonymous profile, so that <br>
-					a) you won't have to fill out some information multiple times<br> and <br>
-					b) to track your responses as the pandemic progresses.
+				<p>The following questions will be used to create your profile, so that <br>
+					you may login in for subsequent reports track your situation as the <br>
+					<br>
+					To ensure anonimity you may create a hashed User Identity <br>
+					instead of using an email address.<br>
+					the hashed "User Identity" will be stored as a cookie,<br>
+					you will not be required to login again as long as <br>
+					* your cookie exists <br>
+					* and has not expired.<br>
+					<br>
+					Please Record your "User Identity" and your passcode<br>
 				</p>
-			
 			</div>
 			<div class="row " >
 			
@@ -85,7 +92,7 @@
 			</div>
 			<div class="row " >
 				<div id="" class="col-sm-2 question" >
-					Identity
+					User Identity
 				</div>
 				<div id="" class="col-sm-4 " >
 					<input type="text" class="question" id="hash_to_user_guid" name="hash_to_user_guid" value="">
@@ -140,10 +147,13 @@
 			</div>
 
 			<div class="button" id="identity_submit">
+				<button type="button" name="net" class="btn " onclick="pageSingle('location');CurveStomp.scrollPage();">Next (Location Profile)</button>
+				<!-- 
+				Submit Registration
 				<button type="button" name="net" class="btn " onclick="next('location_profile')">Next</button>
-				<button type="button" name="register" class="btn " onclick="register('register_form')">Register</button>
 				
-				<!-- submit hash(id + passcode) -->
+				
+				-->
 			</div>
 			
 			
@@ -240,7 +250,10 @@
 
 			<div class="row " >
 				<div id="" class="col-sm-12 " >
+					<!-- 
 					<button type="submit" name="Submit" class="btn ">Submit Registration</button>
+					-->
+					<button type="button" name="register" class="btn " onclick="CurveStomp.registration.user()">Submit Registration</button>
 				</div>
 			</div>
 		</div>
