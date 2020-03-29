@@ -17,7 +17,7 @@
 	<title>DRAFT: COVID-19 Self-Reporting Questionnaire</title>
 </head>
 <body>
-	<h1>DRAFT: COVID-19 Self-Reporting Questionnaire</h1>
+	<h1 id="in_page_title">DRAFT: COVID-19 Self-Reporting Questionnaire</h1>
   
 	<div id="content_main" class="col-sm-12" >
 		
@@ -118,13 +118,13 @@
 						</p>
 					</div>
 					<div class="row " >
-						<div id="" class="col-sm-2 question" >
+						<div id="" class="col-sm-3 question" >
 							Household Members:
 						</div>
-						<div id="" class="col-sm-1 " >
+						<div id="" class="col-sm-2 " >
 							<input type="text" class="question int_field" width="1"  name="household_size" value="0">
 						</div>
-						<div id="" class="col-sm-4 " >
+						<div id="" class="col-sm-6 " >
 							<div class="question " id="household_size"></div>
 						</div>
 					</div>
@@ -158,10 +158,14 @@
 				about your profile. This information will be used to associate reports <br>
 				to geographical areas for analysis, and should not be personally identifiable.<br>
 				</p>
-				<p>Location ID is a Globally Unique Identifier (within your region), you may:<br>
+				<p>Household ID is a unique hash value to distinguish different households <br>
+				within your area, you may:<br>
 				* enter a name of your choosing<br>
-				* generate a hash <br>
-				* enter a lattitude and longitude with a chosen degree of accuracy<br>
+				* use the automatically generated hash <br>
+				</p>
+				<p> Location data will only be generated with your consent. <br>
+					If you consent to using location data you will be able to choose.<br>  
+					The map interface will allow you to control the degree of accuracy.<br>
 				</p>
 			</div>
 			<div class="row " >
@@ -207,47 +211,28 @@
 			</div>
 			<div class="row " >
 				<div id="" class="col-sm-2 " >
-					Location ID
+					Household ID
 				</div>
-				<div id="" class="col-sm-2 " >
-					<input type="text" class="" id="household_guid" name="household_guid" value="">
+				<div id="" class="col-sm-4 " >
+					<input type="text" class="col-sm-12" id="household_guid" name="household_guid" width="36" value="">
 				</div>
 				<div id="" class="col-sm-1 " >
 					&nbsp;
 				</div>
-				<div id="" class="col-sm-2 " >
-					<button type="create_hash" name="create_hash" class="btn ">Create Hash</button>
-				</div>
+				
+				
+			</div>
+			<div class="row " >	
 				<div id="" class="col-sm-2 " >
 						<button 
 							type="button" 
 							name="get_map" 
 							class="btn "  
 							onclick="CurveStomp.validateGeoRequest();"
-						>Choose Lat/Long</button>
-				</div>
-				
+						>Include Location Data</button>
+				</div>				
 			</div>
-			<div class="row " >
-				<div id="" class="col-sm-12 " >
-					Coordinates
-				</div>
-				<div id="" class="col-sm-2 " >
-					Lattitude
-				</div>
-				<div id="" class="col-sm-2 " >
-					<input type="text" class="" id="lattitude" name="lattitude" value="">
-				</div>
-				<div id="" class="col-sm-1 " >
-					&nbsp;
-				</div>
-				<div id="" class="col-sm-2 " >
-					Longitude 
-				</div>
-				<div id="" class="col-sm-2 " >
-					<input type="text" class="" id="longitude" name="longitude" value="">
-				</div>
-			</div>
+
 			
 			<div id="mapid" style="display: none;" ></div>
 			<div id="map_bucket" style="display: none;" ></div>
@@ -277,7 +262,7 @@
 					>Registration Form</button>
 				</div>
 				-->
-				<div id="" class="col-sm-2 " >
+				<div id="" class="col-sm-3 " >
 					<button 
 						type="button" 
 						name="report_symptom_status" 
@@ -286,7 +271,7 @@
 						CurveStomp.reports.renderReport('symptom');"
 					>Report Symptom Status</button>
 				</div>
-				<div id="" class="col-sm-2 " >
+				<div id="" class="col-sm-3 " >
 					<button 
 						type="button" 
 						name="report_resource" 
@@ -294,7 +279,7 @@
 						onclick="CurveStomp.reports.renderTestingReport();"
 					>Report Testing Status</button>
 				</div>
-				<div id="" class="col-sm-2 " >
+				<div id="" class="col-sm-3 " >
 					<button 
 						type="button" 
 						name="report_resource" 
@@ -565,8 +550,12 @@
 	<div template="map_controls" map_controls >
 			<div id="map_controls" style="display: block;">
 				<div class="row " >
+					<div id="coordinates" class="col-sm-12 " >
+						Coordinates
+					</div>				
+				</div>
+				<div class="row " >
 					<div id="" class="" >
-
 						<button 
 							type="button" 
 							name="report_symptom_status" 
@@ -581,7 +570,6 @@
 							onclick="pageSingle('symptom_form'), 
 							CurveStomp.setMapAccuracy('less');"
 						>Less Accurate</button>
-						
 					</div>
 					<div id="" style="text-align: center;" >
 						<button 
@@ -591,7 +579,22 @@
 							onclick="pageSingle('symptom_form'), 
 							CurveStomp.acceptSettings();"
 						>Accept Settings</button>
-					
+					</div>
+				</div>
+				<div class="row " >
+					<div id="" class="col-sm-3 " >
+						Lattitude
+					</div>
+					<div id="" class="col-sm-2 " >
+						<input type="text" class="" id="lattitude" name="lattitude" value="">
+					</div>
+				</div>
+				<div class="row " >
+					<div id="" class="col-sm-3 " >
+						Longitude 
+					</div>
+					<div id="" class="col-sm-2 " >
+						<input type="text" class="" id="longitude" name="longitude" value="">
 					</div>
 				</div>
 			</div>
@@ -599,6 +602,10 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
+
 <script  type="text/javascript"    src="assets/js/curvestomp.js" ></script>
 <script  type="text/javascript"    src="assets/js/countries.js" ></script>
 
@@ -691,16 +698,28 @@
 		});
 	}
 
-	if($( '#create_hash' )){
-		$( '#create_hash' ).on( 'focus', function() {
+	if($( '#household_guid' )){
+		$( '#household_guid' ).on( 'focus', function() {
 			console.log('create_hash CALLED');
-			//var map = L.map('map').setView([51.505, -0.09], 13);
+			var household_guid = $( '#household_guid' ).val();
+			if('' != household_guid){
+				return;
+			}
+			var country	= $( '#country' ).val();
+			var region = $( '#region' ).val();
+			var city = $( '#city' ).val();
+			var street = $( '#street' ).val();
+			var postal_code = $( '#postal_code' ).val();
+			var time_stamp = Date.now();
+			var hash_string = country+region+city+street+postal_code+time_stamp;
+			hash_string = CurveStomp.createHash('MD5',hash_string);
+			$( '#household_guid' ).val(hash_string);
 		});
 	}
 	
 
-$( '#location' ).show();
 /*
+$( '#location' ).show();
 $( '#identity' ).show();
 $( '#returning' ).show();
 household_guid

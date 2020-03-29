@@ -108,7 +108,7 @@ CurveStomp = {
 		longitude : 0,
 		display : {},
 	},
-	
+	notice_delay: 500,
 	validateGeoRequest: function() {
 		if ("geolocation" in navigator) {
 			/* geolocation is available */
@@ -131,6 +131,7 @@ CurveStomp = {
 	
 	getMap: function(lati=0,longi=0 ) {
 		console.log('Do getMap');
+
 		$('#mapid').show();
 		/**
 		43.65700
@@ -156,74 +157,82 @@ CurveStomp = {
 		/*
 		L_bound = L_bound.toFixed(5);
 		U_bound = U_bound.toFixed(5);
+		CurveStomp.map.display.removeLayer(CurveStomp.map.display.popup);
 		*/
 		
 		console.log('L_bound: '+L_bound);
 		console.log('U_bound: '+U_bound);
 		
-		CurveStomp.map.display = L.map('mapid').setView([L_bound, U_bound], 15);
+		//CurveStomp.map.display = L.map('mapid').setView([L_bound, U_bound], 15);
+		//CurveStomp.map.display = L.map('mapid').setView([longi, lati], 15);
+		CurveStomp.map.display = L.map('mapid');
+		CurveStomp.map.display.setView([longi, lati], 15);
 		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(CurveStomp.map.display);
+		
+		if(!CurveStomp.map.display.popup){
+			var popupbody = $('[template="map_controls"]').clone(true);
+			var renderedHTML = CurveStomp.templater.renderHTML('map', {}, popupbody);
 
-		
-		var popupbody = $('[template="map_controls"]').clone(true);
-		var renderedHTML = CurveStomp.templater.renderHTML('map', {}, popupbody);
-
-		$('#map_bucket').append(renderedHTML);
-		console.log('renderedHTML  '  + renderedHTML.toString);
-		//popupbody.removeAttr('template');
-		renderedHTML = $('#map_bucket').html();
-		console.log('renderedHTML  '  + renderedHTML.toString);
-		
-		
-		
-		CurveStomp.map.display.popup = L.marker([lati, longi]).addTo(CurveStomp.map.display)
-			.bindPopup(renderedHTML)
-		.openPopup();
-		
+			$('#map_bucket').append(renderedHTML);
+			console.log('renderedHTML  '  + renderedHTML.toString);
+			popupbody.removeAttr('template');
+			renderedHTML = $('#map_bucket').html();
+			console.log('renderedHTML  '  + renderedHTML.toString);
+			
+			CurveStomp.map.display.popup = L.marker([lati, longi]);
+			CurveStomp.map.display.popup.addTo(CurveStomp.map.display);
+			CurveStomp.map.display.popup.bindPopup(renderedHTML).openPopup();
+		}
+		$('#lattitude').val(lati);
+		$('#longitude').val(longi);
 	},
 	
 
+	clearNotice: function() {
+		 $('#notice').remove();
+	},
+	
 	setMapAccuracy: function(modifier) {
+		console.log('setMapAccuracy: '+modifier);
+		
 		increment = [
-			0.00000,
-			0.0001,
-			0.001,
-			0.01,
-			0.1,
+			[0.00000, 5],
+			[0.0001,4],
+			[0.001,3],
+			[0.01,2],
+			[0.1,1]
 		];
 		
 		var inc_list_length = increment.length;
-		
 		
 		if('less' == modifier){
 			if(CurveStomp.map.current_increment_idx + 1 < increment.length){
 				CurveStomp.map.current_increment_idx++;
 			}else{
-				alert('limit reached');
+				$('#coordinates').before('<div id="notice" class="col-sm-12 h3">limit reached</div>')
+				$('#notice').delay(CurveStomp.notice_delay).fadeOut(function() {$(this).remove();});
 				return;
 			}
 		}else{
 			if(CurveStomp.map.current_increment_idx - 1 >= 0){
 				CurveStomp.map.current_increment_idx--;
 			}else{
-				alert('limit reached');
+				//alert('limit reached');
+				$('#coordinates').before('<div id="notice" class="col-sm-12 h3">limit reached</div>');
+				$('#notice').delay(CurveStomp.notice_delay).fadeOut(function() {$(this).remove();});
 				return;
 			}
 		}
 		
-		var current_increment = increment[CurveStomp.map.current_increment_idx];
-		LA_TOP = (CurveStomp.map.lattitude + current_increment);
-		LA_BOT = (CurveStomp.map.lattitude - current_increment);
-		LO_LEFT = (CurveStomp.map.longitude - current_increment);
-		LO_RIGHT = (CurveStomp.map.longitude + current_increment);
+		var current_increment = increment[CurveStomp.map.current_increment_idx][0];
+		console.log('current_increment: '+current_increment);
+		LA_TOP = (CurveStomp.map.lattitude + current_increment).toFixed(increment[CurveStomp.map.current_increment_idx][1]);
+		LA_BOT = Number(CurveStomp.map.lattitude - current_increment).toFixed(increment[CurveStomp.map.current_increment_idx][1]);
+		LO_LEFT = Number(CurveStomp.map.longitude - current_increment).toFixed(increment[CurveStomp.map.current_increment_idx][1]);
+		LO_RIGHT = Number(CurveStomp.map.longitude + current_increment).toFixed(increment[CurveStomp.map.current_increment_idx][1]);
 		
-		
-		LA_TOP = LA_TOP.toFixed(5);
-		LA_BOT = LA_BOT.toFixed(5);
-		LO_LEFT = LO_LEFT.toFixed(5);
-		LO_RIGHT = LO_RIGHT.toFixed(5);
 		$('#lattitude').val(LA_TOP);
 		$('#longitude').val(LO_LEFT);
 		if(CurveStomp.map.display.polygon){
@@ -234,17 +243,36 @@ CurveStomp = {
 			[LA_TOP, LO_RIGHT],
 			[LA_BOT, LO_RIGHT],
 			[LA_BOT, LO_LEFT]
-		]).addTo(CurveStomp.map.display);
+		]);
+		CurveStomp.map.display.polygon.addTo(CurveStomp.map.display);
+		
+		//var latLngs = [LA_TOP, LO_LEFT];
+		//var markerBounds = CurveStomp.map.display.polygon.latLngBounds(latLngs);
+		CurveStomp.map.display.fitBounds([
+			[LA_TOP, LO_LEFT],
+			[LA_BOT, LO_RIGHT]
+		]);
 	},
 	
 	acceptSettings: function(modifier) {
-		CurveStomp.map.display.popup.remove();
+		
+		//CurveStomp.map.display.popup.remove(); 
 		setTimeout(() => {  
-			CurveStomp.map.display.remove(); 
+			//CurveStomp.map.display.remove(); 
 			$('#mapid').hide();
 		
-		}, 500);
+		}, 1500);
 		
+		
+	},
+	
+	createHash: function(hash_type=null,stringToHash) {
+		if('SHA-3' == hash_type){
+			var hashed_value = CryptoJS.SHA3(stringToHash).toString();
+		}else{
+			var hashed_value = CryptoJS.MD5(stringToHash).toString(CryptoJS.enc.Base64);
+		}
+		return hashed_value;
 	},
 };
 
@@ -621,24 +649,24 @@ CurveStomp.reports = {
 		//symptom_log_pk
 		//individual_fk
 		//symptom_log_timestamp
-		dry_cough : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
-		pneumonia : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
-		difficulty_breathing : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
-		difficulty_walking : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
-		appetite : {value: 5, min: 1, max: 9, min_label: 'lower', max_label: 'higher', step: 1},
-		diarrhea : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
-		muscle_ache : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
-		fatigue : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
-		runny_nose : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
-		congestion : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
-		sore_throat : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		dry_cough : {value: 0, min: 0, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		pneumonia : {value: 0, min: 0, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		difficulty_breathing : {value: 0, min: 0, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		difficulty_walking : {value: 0, min: 0, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		appetite : {value: 5, min: 0, max: 9, min_label: 'lower', max_label: 'higher', step: 1},
+		diarrhea : {value: 0, min: 0, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		muscle_ache : {value: 0, min: 0, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		fatigue : {value: 0, min: 0, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		runny_nose : {value: 0, min: 0, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		congestion : {value: 0, min: 0, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		sore_throat : {value: 0, min: 0, max: 9, min_label: 'none', max_label: 'severe', step: 1},
 		//fever_f : {value: 5, min: 1, max: 9, min_label: 'low', max_label: 'high', step: 0.1},
-		fever_c : {value: 5, min: 1, max: 9, min_label: 'lower', max_label: 'higher', step: 0.1},
-		headache : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
-		confusion__dizzyness : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
-		nausea : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
-		chills : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1},
-		other_pain : {value: 1, min: 1, max: 9, min_label: 'none', max_label: 'severe', step: 1}
+		fever_c : {value: 5, min: 0, max: 9, min_label: 'lower', max_label: 'higher', step: 0.1},
+		headache : {value: 0, min: 0, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		confusion__dizzyness : {value: 0, min: 0, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		nausea : {value: 0, min: 0, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		chills : {value: 0, min: 0, max: 9, min_label: 'none', max_label: 'severe', step: 1},
+		other_pain : {value: 0, min: 0, max: 9, min_label: 'none', max_label: 'severe', step: 1}
 		
 	}, 
 	
