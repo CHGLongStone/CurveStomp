@@ -8,7 +8,7 @@ central reporting
 
 The initial implementation will be node.js
 
-[Identity & Household Profile](https://raw.githubusercontent.com/CHGLongStone/CurveStomp/master/screenshots/identity_household_profile.jpg)
+
 
 # Data model and workflow and any other technical information will be laid out in Wiki 
 
@@ -18,7 +18,11 @@ The initial implementation will be node.js
  * Effort co-ordination with Coronavirus Census Collective
 
 ## Screen Shots
- * 
+ * [Identity & Household Profile](https://raw.githubusercontent.com/CHGLongStone/CurveStomp/master/screenshots/identity_household_profile.jpg)
+ * [Location Profile](https://raw.githubusercontent.com/CHGLongStone/CurveStomp/master/screenshots/location_profile.jpg)
+ * [Location Profile](https://raw.githubusercontent.com/CHGLongStone/CurveStomp/master/screenshots/location_profile_1_step_out.jpg)
+ * [Location Profile](https://raw.githubusercontent.com/CHGLongStone/CurveStomp/master/screenshots/location_profile_2_step_out.jpg)
+ * [Location Profile](https://raw.githubusercontent.com/CHGLongStone/CurveStomp/master/screenshots/location_profile_max_step_out.jpg)
 
 ## Basic premise(s):
 1.  If exponential growth continues, lab-based testing won't keep up with the virus.
