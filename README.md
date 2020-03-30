@@ -8,14 +8,17 @@ central reporting
 
 The initial implementation will be node.js
 
-![](https://raw.githubusercontent.com/CHGLongStone/CurveStomp/master/screenshots/identity_household_profile.jpg)
+[Identity & Household Profile](https://raw.githubusercontent.com/CHGLongStone/CurveStomp/master/screenshots/identity_household_profile.jpg)
 
 # Data model and workflow and any other technical information will be laid out in Wiki 
 
 ## Current Status
  * communications management - Slack Chosen
  * hosting - sourced
- * Effort co-ordination with 
+ * Effort co-ordination with Coronavirus Census Collective
+
+## Screen Shots
+ * 
 
 ## Basic premise(s):
 1.  If exponential growth continues, lab-based testing won't keep up with the virus.
