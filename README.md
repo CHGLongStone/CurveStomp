@@ -8,7 +8,7 @@ central reporting
 
 The initial implementation will be node.js
 
-![](/raw/master/screenshots/identity_household_profile.jpg)
+![](https://raw.githubusercontent.com/CHGLongStone/CurveStomp/master/screenshots/identity_household_profile.jpg)
 
 # Data model and workflow and any other technical information will be laid out in Wiki 
 
