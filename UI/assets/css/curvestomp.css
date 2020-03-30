@@ -94,6 +94,11 @@ a {
     text-transform: capitalize;
 }
 
+.question_field {
+    padding-left: 2px;
+    text-transform: capitalize;
+}
+
 .int_field {
     /**
     padding-left: 20px;
@@ -110,7 +115,7 @@ a {
 
 #mapid {
     height: 680px;
-    width: 880px;
+    width: 100%;
 }
 
 

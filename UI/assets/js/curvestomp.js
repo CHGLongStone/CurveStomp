@@ -105,6 +105,61 @@ CurveStomp = {
 		$('html, body').animate({scrollTop:$(document).height()}, 'slow');
 	},
 	
+	validateIdentityProfile: function() {
+		//$('html, body').animate({scrollTop:$(document).height()}, 'slow');
+		console.log('validateIdentityProfile');
+		var userIDSet = false;
+		var notice = 'enter and email address'+"\r\n"+'or'+"\r\n"+'or a user identity';
+		if('' != $('#email').val()){
+			var email = $('#email').val();
+			var iSValidEmail = CurveStomp.service.isValidEmailAddress(email);
+			if(true === iSValidEmail){
+				userIDSet = true;
+				notice ='';
+			}else{
+				notice = ' email address failed validation ';
+			}
+		}
+		if('' != $('#user_identity').val()){
+			var user_identity = $('#user_identity').val();
+			if(12 > user_identity.length){
+				notice = ' user identity too short ';
+			}else{
+				userIDSet = true;
+				notice ='';
+			}
+		}
+		
+		var pwdSet = false;
+		var pwd_input = $('#pwd_input').val();
+		var pwd_input_confirm = $('#pwd_input_confirm').val();
+		
+		if(
+			pwd_input == pwd_input_confirm
+			&& 
+			'' != pwd_input_confirm
+		){
+			pwdSet = true;
+		}else{
+			notice = notice+"\r\n"+ ' password must be set and match confirmation field ';
+		}
+
+		var household_size = 0;
+		household_size = $('#household_members').find(".member_row").length;
+		if(0 == household_size){
+			notice = notice+"\r\n"+ ' you must specify at least one person for a household ';
+		}
+		if(false === userIDSet || false === pwdSet || 0 == household_size){
+			alert(notice);
+			return;
+		}
+		$( '#location' ).show();
+		CurveStomp.scrollPage();
+	},
+	
+	validateLocationProfile: function() {}
+	
+	
 	map :{
 		current_increment_idx : 0,
 		lattitude : 0,
@@ -229,12 +284,23 @@ CurveStomp = {
 	},
 	
 	createHash: function(hash_type=null,stringToHash) {
+		console.log('createHash-hash_type: '+hash_type);
+		 wordArray = CryptoJS.lib.WordArray.create();
+		 stringToHash = stringToHash.toString();
+		console.log('createHash-stringToHash: '+stringToHash);
+		console.log('createHash-wordArray: '+wordArray);
 		if('SHA-3' == hash_type){
-			var hashed_value = CryptoJS.SHA3(stringToHash).toString();
+			var hashed_value = CryptoJS.SHA3(stringToHash);
+			hashed_value = hashed_value.toString();
 		}else{
 			var hashed_value = CryptoJS.MD5(stringToHash).toString(CryptoJS.enc.Base64);
 		}
 		return hashed_value;
+	},
+	uuidv4: function () {
+	  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+		(c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+	  );
 	},
 };
 
