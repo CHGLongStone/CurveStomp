@@ -6,15 +6,20 @@ This project will lay out an initial specification including a transport envelop
 for aggregate reporting. It may be more effective for people to manage local instances but we need
 central reporting 
 
-The initial implementation will be LAMP based, converting this to node.js would be helpful
+The initial implementation will be node.js
+
 
 
 # Data model and workflow and any other technical information will be laid out in Wiki 
 
-## what we need right now
+[Wiki](https://github.com/CHGLongStone/CurveStomp/wiki)
+
+## Current Status
  * communications management - Slack Chosen
- * hosting - TBD
- * project management/resource coordination
+ * hosting - sourced
+ * Effort co-ordination with Coronavirus Census Collective
+
+
 
 ## Basic premise(s):
 1.  If exponential growth continues, lab-based testing won't keep up with the virus.
