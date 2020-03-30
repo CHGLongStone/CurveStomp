@@ -271,17 +271,7 @@
 				<h2>Report List</h2>
 			</div>
 			<div class="row " >
-				<!-- 
-				<div id="" class="col-sm-2 " >
-					<button 
-						type="button" 
-						name="register_form" 
-						class="btn " 
-						onclick="pageSingle('register_form')"
-					>Registration Form</button>
-				</div>
-				-->
-				<div id="" class="col-sm-3 " >
+				<div id="" class="col-sm-4 " >
 					<button 
 						type="button" 
 						name="report_symptom_status" 
@@ -290,7 +280,7 @@
 						CurveStomp.reports.renderReport('symptom');"
 					>Report Symptom Status</button>
 				</div>
-				<div id="" class="col-sm-3 " >
+				<div id="" class="col-sm-4 " >
 					<button 
 						type="button" 
 						name="report_resource" 
@@ -298,7 +288,7 @@
 						onclick="CurveStomp.reports.renderTestingReport();"
 					>Report Testing Status</button>
 				</div>
-				<div id="" class="col-sm-3 " >
+				<div id="" class="col-sm-4 " >
 					<button 
 						type="button" 
 						name="report_resource" 
@@ -306,26 +296,6 @@
 						onclick="CurveStomp.reports.renderReport('transmission');"
 					>Report Transmission Profile</button>
 				</div>
-				
-				<!-- 
-				<div id="" class="col-sm-2 " >
-					<button 
-						type="button" 
-						name="report_resource" 
-						class="btn "  
-						onclick="pageSingle('resource_status_form')"
-					>Report Resource</button>
-				</div>
-				<div id="" class="col-sm-2 " >
-					<button 
-						type="button" 
-						name="report_resource" 
-						class="btn "  
-						onclick="pageSingle('resource_status_form')"
-					>Report Resource</button>
-				</div>
-				-->
-				
 			</div>
 		</div>
 		
@@ -391,46 +361,25 @@
 						
 					</div>
 					<div id="" class="col-sm-1 question household_member_stats" >
-						<input type="hidden" class="" id="" name="member_id[]" value="" household-member_id>
+						<input type="hidden" class="" id="" name="member_id" value="" household-member_id>
 						Age
 					</div>
 					<div id="" class="col-sm-2 " >
 						
-						<input type="text" class=" household_member_stats int_field" id="age" name="member_age[]" value="">
+						<input type="text" class=" household_member_stats int_field" id="" name="member_age" value="">
 					</div>
 					<div id="" class="col-sm-2 question household_member_stats" >
 						Gender
 					</div>
 					<div id="" class="col-sm-6 " >
-						<select name="country_select" id="country_select" class="select-css"  title="country" onchange="setCountry();">
-							<option value="2" selected >-- Unspecified --</option>
+						<select name="gender_select" id="" class="select-css"  title="country"  >
+							<option value="2"  >-- Unspecified --</option>
 							<option value="0"  >Female</option>
 							<option value="1"  >Male</option>
 						</select>
 					</div>
 				</div>
 	</div>
-	<!-- 
-		dry_cough : {value: 1, min: 1, max: 9,},
-		pneumonia : {value: 1, min: 1, max: 9,},
-		difficulty_breathing : {value: 1, min: 1, max: 9,},
-		difficulty_walking : {value: 1, min: 1, max: 9,},
-		appetite : {value: 5, min: 1, max: 9,},
-		diarrhea : {value: 1, min: 1, max: 9,},
-		muscle_ache : {value: 1, min: 1, max: 9,},
-		fatigue : {value: 1, min: 1, max: 9,},
-		runny_nose : {value: 1, min: 1, max: 9,},
-		congestion : {value: 1, min: 1, max: 9,},
-		sore_throat : {value: 1, min: 1, max: 9,},
-		fever_f : {value: 98.6, min: 93.8, max: 104.8,},
-		fever_c : {value: 37, min: 34.3, max: 40.4,},
-		headache : {value: 1, min: 1, max: 9,},
-		confusion__dizzyness : {value: 1, min: 1, max: 9,},
-		nausea : {value: 1, min: 1, max: 9,},
-		chills : {value: 1, min: 1, max: 9,},
-		other_pain : {value: 1, min: 1, max: 9,}
-						<input type="text" class="" id="" name="individual_fk[]" value="" report_item-individual_fk>
-	-->
 	
 	<div template="symptom_report_item" symptom_report_item >
 					<div class="row " >
@@ -756,15 +705,24 @@
 	
 	if($( '#user_identity' )){
 		$( '#user_identity' ).on( 'focus', function() {
-			/**
-			var time_stamp = Date.now();
-			var hash_string = time_stamp;
-			hash_string = CurveStomp.createHash('SHA-3',hash_string);
-			*/
 			hash_string = CurveStomp.uuidv4();
 			$( '#user_identity' ).val(hash_string);
 		});
 	}
+	
+	if($( '[name=region]' )){
+		$( '[name=region]' ).on( 'change', function() {
+			console.log('region touched');
+			console.log('region'+$( '[name=region]' ).val());
+			
+		});
+
+	}
+	
+	
+	
+	
+	
 		
 /*
 $.i18n().load( {

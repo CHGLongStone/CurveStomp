@@ -104,7 +104,9 @@ CurveStomp = {
 	scrollPage: function() {
 		$('html, body').animate({scrollTop:$(document).height()}, 'slow');
 	},
-	
+	/**
+	*
+	**/
 	validateIdentityProfile: function() {
 		//$('html, body').animate({scrollTop:$(document).height()}, 'slow');
 		console.log('validateIdentityProfile');
@@ -157,14 +159,46 @@ CurveStomp = {
 		CurveStomp.scrollPage();
 	},
 	
-	validateLocationProfile: function() {}
+	validateLocationProfile: function() {
+		console.log('validateLocationProfile');
+		var location = false;
+		var notice = 'address fields are required';
+		
+		
+		if('' == $('[name=country]').val()){
+			notice =  notice+"\r\n"+' country ';
+		}
+		if('' == $('[name=country_iso]').val()){
+			notice =  notice+"\r\n"+' country ';
+		}
+		if('' == $('[name=region]').val()){
+			notice =  notice+"\r\n"+' region (state or province) ';
+		}
+		if('' == $('[name=city]').val()){
+			notice =  notice+"\r\n"+' city ';
+		}
+		if('' == $('[name=street]').val()){
+			notice =  notice+"\r\n"+' street ';
+		}
+		if('' == $('[name=postal_code]').val()){
+			notice =  notice+"\r\n"+' postal_code ';
+		}
+		if('' == $('[name=household_guid]').val()){
+			notice =  notice+"\r\n"+' household id ';
+		}
+		
+		if('address fields are required' != notice){
+			alert(notice);
+		}
+	},
 	
+
 	
 	map :{
 		current_increment_idx : 0,
 		lattitude : 0,
 		longitude : 0,
-		display : {},
+		//display : {},
 	},
 	notice_delay: 500,
 	validateGeoRequest: function() {
@@ -622,7 +656,53 @@ console.log(CurveStomp);
 CurveStomp.registration = {
 	user: function() {
 		console.log('CurveStomp.registration.user');
+		CurveStomp.validateIdentityProfile();
+		console.log('CurveStomp.registration.user-identity validation done');
+		CurveStomp.validateLocationProfile();
+		console.log('CurveStomp.registration.user-location validation done');
+		var household_members = [];
+		var inc =1;
+		$('#household_members').find(".member_row").each(function( index ) {
+			//console.log( index + ": " + $( this ).text() );
+			
+			console.log( index + ": " + $( this ).find( '[name=member_age]' ).val() );
+			var member = {
+				age: $( this ).find( '[name=member_age]' ).val(),
+				gender: $( this ).find( '[name=gender_select]' ).val(),
+				member_id : $( this ).find( '[name=member_id]' ).val(),
+			};
+			household_members[inc] = member;
+			inc++;
+		});
 		
+		console.log('CurveStomp.registration.user-prevalidation done');
+		
+		var params = {
+			identity : {
+				email:  $('#email').val(),
+				user_identity:  $('#user_identity').val(),
+				pwd_input:  $('#pwd_input').val(),
+				pwd_input_confirm:  $('#pwd_input_confirm').val(),
+				"household_members": household_members
+			},
+			household : {
+				household_size:  $('#household_size').val(),
+			},
+			location : {
+				country:  $('#country').val(),
+				country_iso:  $('#country_iso').val(),
+				region:  $('#region').val(),
+				city:  $('#city').val(),
+				street:  $('#street').val(),
+				postal_code:  $('#postal_code').val(),
+				household_guid:  $('#household_guid').val(),
+				lattitude:  $('#lattitude').val(),
+				longitude:  $('#longitude').val(),
+			}
+			
+			
+		};
+		console.log("params:"+JSON.stringify(params, null, 2));
 		
 		$( '#report_list' ).show();
 		CurveStomp.scrollPage();
@@ -660,15 +740,6 @@ CurveStomp.registration = {
 			htmlTemplate.removeAttr('template');
 			
 		}
-		
-		
-		/*
-		var country_select = $('#country_container').find('#country_select');
-		$.each(countries, function( key, value ) {
-			//console.log('key: '+key+' value: '+JSON.stringify(value, null, 2));
-			$(country_select).append($("<option></option>").attr("value",value.id).text(value.text)); 
-		});
-		*/
 	},
 };
 

@@ -28,8 +28,11 @@ CREATE TABLE `household` (
   `household_pk` int(11) NOT NULL AUTO_INCREMENT,
   `household_postal_fk` int(11) NOT NULL,
   `household_guid` varchar(36) COLLATE utf8_unicode_ci NOT NULL,
+  `language_code_fk` int(11) DEFAULT NULL,
   PRIMARY KEY (`household_pk`),
   KEY `household_postal_fk_idx` (`household_postal_fk`),
+  KEY `household_lang_fk_idx` (`language_code_fk`),
+  CONSTRAINT `household_lang_fk` FOREIGN KEY (`language_code_fk`) REFERENCES `iso_lang` (`iso_lang_pk`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `household_postal_fk` FOREIGN KEY (`household_postal_fk`) REFERENCES `location_profile` (`regional_postal_code_pk`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -106,6 +109,31 @@ CREATE TABLE `iso_countries` (
 LOCK TABLES `iso_countries` WRITE;
 /*!40000 ALTER TABLE `iso_countries` DISABLE KEYS */;
 /*!40000 ALTER TABLE `iso_countries` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `iso_lang`
+--
+
+DROP TABLE IF EXISTS `iso_lang`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `iso_lang` (
+  `iso_lang_pk` int(11) NOT NULL AUTO_INCREMENT,
+  `iso_2` varchar(2) DEFAULT NULL,
+  `iso_5` varchar(5) DEFAULT NULL,
+  PRIMARY KEY (`iso_lang_pk`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `iso_lang`
+--
+-- ORDER BY:  `iso_lang_pk`
+
+LOCK TABLES `iso_lang` WRITE;
+/*!40000 ALTER TABLE `iso_lang` DISABLE KEYS */;
+/*!40000 ALTER TABLE `iso_lang` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -246,7 +274,7 @@ CREATE TABLE `symptom_log` (
   `runny_nose` int(1) NOT NULL DEFAULT 0,
   `congestion` int(1) NOT NULL DEFAULT 0,
   `sore_throat` int(1) NOT NULL DEFAULT 0,
-  `fever` int(1) NOT NULL DEFAULT 5,
+  `fever` float(3,1) NOT NULL DEFAULT 37.0,
   `headache` int(1) NOT NULL DEFAULT 0,
   `confusion__dizzyness` int(1) NOT NULL DEFAULT 0,
   `nausea` int(1) NOT NULL DEFAULT 0,
@@ -267,6 +295,68 @@ LOCK TABLES `symptom_log` WRITE;
 /*!40000 ALTER TABLE `symptom_log` DISABLE KEYS */;
 /*!40000 ALTER TABLE `symptom_log` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `testing_log`
+--
+
+DROP TABLE IF EXISTS `testing_log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `testing_log` (
+  `testing_log_pk` int(11) NOT NULL AUTO_INCREMENT,
+  `individual_fk` int(11) DEFAULT NULL,
+  `test_result` int(1) DEFAULT NULL,
+  `recovered` int(1) DEFAULT NULL,
+  `hospitalized` int(1) DEFAULT NULL,
+  `ventilation` int(1) DEFAULT NULL,
+  `oxygen` int(1) DEFAULT NULL,
+  PRIMARY KEY (`testing_log_pk`),
+  KEY `individual_test_idx_idx` (`individual_fk`),
+  CONSTRAINT `individual_test_idx` FOREIGN KEY (`individual_fk`) REFERENCES `individual` (`individual_pk`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `testing_log`
+--
+-- ORDER BY:  `testing_log_pk`
+
+LOCK TABLES `testing_log` WRITE;
+/*!40000 ALTER TABLE `testing_log` DISABLE KEYS */;
+/*!40000 ALTER TABLE `testing_log` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `transmission_profile_log`
+--
+
+DROP TABLE IF EXISTS `transmission_profile_log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `transmission_profile_log` (
+  `transmission_profile_log_pk` int(11) NOT NULL AUTO_INCREMENT,
+  `individual_fk` int(11) DEFAULT NULL,
+  `isolation` int(1) DEFAULT NULL,
+  `travel_amount` int(1) DEFAULT NULL,
+  `travel_distance` int(2) DEFAULT NULL,
+  `surface_touch` int(1) DEFAULT NULL,
+  `number_of_regular_contacts` int(1) DEFAULT NULL,
+  PRIMARY KEY (`transmission_profile_log_pk`),
+  KEY `individual_transmission_profile_idx_idx` (`individual_fk`),
+  CONSTRAINT `individual_transmission_profile_idx` FOREIGN KEY (`individual_fk`) REFERENCES `individual` (`individual_pk`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `transmission_profile_log`
+--
+-- ORDER BY:  `transmission_profile_log_pk`
+
+LOCK TABLES `transmission_profile_log` WRITE;
+/*!40000 ALTER TABLE `transmission_profile_log` DISABLE KEYS */;
+/*!40000 ALTER TABLE `transmission_profile_log` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -277,4 +367,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-24 14:34:00
+-- Dump completed on 2020-03-30 18:30:29

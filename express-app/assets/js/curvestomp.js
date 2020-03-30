@@ -104,12 +104,101 @@ CurveStomp = {
 	scrollPage: function() {
 		$('html, body').animate({scrollTop:$(document).height()}, 'slow');
 	},
+	/**
+	*
+	**/
+	validateIdentityProfile: function() {
+		//$('html, body').animate({scrollTop:$(document).height()}, 'slow');
+		console.log('validateIdentityProfile');
+		var userIDSet = false;
+		var notice = 'enter and email address'+"\r\n"+'or'+"\r\n"+'or a user identity';
+		if('' != $('#email').val()){
+			var email = $('#email').val();
+			var iSValidEmail = CurveStomp.service.isValidEmailAddress(email);
+			if(true === iSValidEmail){
+				userIDSet = true;
+				notice ='';
+			}else{
+				notice = ' email address failed validation ';
+			}
+		}
+		if('' != $('#user_identity').val()){
+			var user_identity = $('#user_identity').val();
+			if(12 > user_identity.length){
+				notice = ' user identity too short ';
+			}else{
+				userIDSet = true;
+				notice ='';
+			}
+		}
+		
+		var pwdSet = false;
+		var pwd_input = $('#pwd_input').val();
+		var pwd_input_confirm = $('#pwd_input_confirm').val();
+		
+		if(
+			pwd_input == pwd_input_confirm
+			&& 
+			'' != pwd_input_confirm
+		){
+			pwdSet = true;
+		}else{
+			notice = notice+"\r\n"+ ' password must be set and match confirmation field ';
+		}
+
+		var household_size = 0;
+		household_size = $('#household_members').find(".member_row").length;
+		if(0 == household_size){
+			notice = notice+"\r\n"+ ' you must specify at least one person for a household ';
+		}
+		if(false === userIDSet || false === pwdSet || 0 == household_size){
+			alert(notice);
+			return;
+		}
+		$( '#location' ).show();
+		CurveStomp.scrollPage();
+	},
+	
+	validateLocationProfile: function() {
+		console.log('validateLocationProfile');
+		var location = false;
+		var notice = 'address fields are required';
+		
+		
+		if('' == $('[name=country]').val()){
+			notice =  notice+"\r\n"+' country ';
+		}
+		if('' == $('[name=country_iso]').val()){
+			notice =  notice+"\r\n"+' country ';
+		}
+		if('' == $('[name=region]').val()){
+			notice =  notice+"\r\n"+' region (state or province) ';
+		}
+		if('' == $('[name=city]').val()){
+			notice =  notice+"\r\n"+' city ';
+		}
+		if('' == $('[name=street]').val()){
+			notice =  notice+"\r\n"+' street ';
+		}
+		if('' == $('[name=postal_code]').val()){
+			notice =  notice+"\r\n"+' postal_code ';
+		}
+		if('' == $('[name=household_guid]').val()){
+			notice =  notice+"\r\n"+' household id ';
+		}
+		
+		if('address fields are required' != notice){
+			alert(notice);
+		}
+	},
+	
+
 	
 	map :{
 		current_increment_idx : 0,
 		lattitude : 0,
 		longitude : 0,
-		display : {},
+		//display : {},
 	},
 	notice_delay: 500,
 	validateGeoRequest: function() {
@@ -229,12 +318,23 @@ CurveStomp = {
 	},
 	
 	createHash: function(hash_type=null,stringToHash) {
+		console.log('createHash-hash_type: '+hash_type);
+		 wordArray = CryptoJS.lib.WordArray.create();
+		 stringToHash = stringToHash.toString();
+		console.log('createHash-stringToHash: '+stringToHash);
+		console.log('createHash-wordArray: '+wordArray);
 		if('SHA-3' == hash_type){
-			var hashed_value = CryptoJS.SHA3(stringToHash).toString();
+			var hashed_value = CryptoJS.SHA3(stringToHash);
+			hashed_value = hashed_value.toString();
 		}else{
 			var hashed_value = CryptoJS.MD5(stringToHash).toString(CryptoJS.enc.Base64);
 		}
 		return hashed_value;
+	},
+	uuidv4: function () {
+	  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+		(c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+	  );
 	},
 };
 
@@ -556,7 +656,53 @@ console.log(CurveStomp);
 CurveStomp.registration = {
 	user: function() {
 		console.log('CurveStomp.registration.user');
+		CurveStomp.validateIdentityProfile();
+		console.log('CurveStomp.registration.user-identity validation done');
+		CurveStomp.validateLocationProfile();
+		console.log('CurveStomp.registration.user-location validation done');
+		var household_members = [];
+		var inc =1;
+		$('#household_members').find(".member_row").each(function( index ) {
+			//console.log( index + ": " + $( this ).text() );
+			
+			console.log( index + ": " + $( this ).find( '[name=member_age]' ).val() );
+			var member = {
+				age: $( this ).find( '[name=member_age]' ).val(),
+				gender: $( this ).find( '[name=gender_select]' ).val(),
+				member_id : $( this ).find( '[name=member_id]' ).val(),
+			};
+			household_members[inc] = member;
+			inc++;
+		});
 		
+		console.log('CurveStomp.registration.user-prevalidation done');
+		
+		var params = {
+			identity : {
+				email:  $('#email').val(),
+				user_identity:  $('#user_identity').val(),
+				pwd_input:  $('#pwd_input').val(),
+				pwd_input_confirm:  $('#pwd_input_confirm').val(),
+				"household_members": household_members
+			},
+			household : {
+				household_size:  $('#household_size').val(),
+			},
+			location : {
+				country:  $('#country').val(),
+				country_iso:  $('#country_iso').val(),
+				region:  $('#region').val(),
+				city:  $('#city').val(),
+				street:  $('#street').val(),
+				postal_code:  $('#postal_code').val(),
+				household_guid:  $('#household_guid').val(),
+				lattitude:  $('#lattitude').val(),
+				longitude:  $('#longitude').val(),
+			}
+			
+			
+		};
+		console.log("params:"+JSON.stringify(params, null, 2));
 		
 		$( '#report_list' ).show();
 		CurveStomp.scrollPage();
@@ -594,15 +740,6 @@ CurveStomp.registration = {
 			htmlTemplate.removeAttr('template');
 			
 		}
-		
-		
-		/*
-		var country_select = $('#country_container').find('#country_select');
-		$.each(countries, function( key, value ) {
-			//console.log('key: '+key+' value: '+JSON.stringify(value, null, 2));
-			$(country_select).append($("<option></option>").attr("value",value.id).text(value.text)); 
-		});
-		*/
 	},
 };
 

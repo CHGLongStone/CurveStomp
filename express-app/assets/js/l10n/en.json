@@ -1,0 +1,24 @@
+{
+	"@metadata": {
+		"authors": [
+			"CHGLongstone",
+			"ResidentSix",
+			"PatientZero",
+			"Jonenk",
+		],
+		"last-updated": "2020-03-29",
+		"locale": "en",
+		"message-documentation": "qqq",
+		"AnotherMetadata": "AnotherMedatadataValue"
+	},
+	"appname-title": "Curve Stomp",
+	"appname-sub-title": "DRAFT: COVID-19 Self-Reporting Questionnaire",
+	"appname-header-introduction": "Introduction",
+	"appname-about": "About this application",
+	"appname-isfirst-report": "Is This Your First Time Reporting?",
+	
+	"appname-intentity-profile-title": "Identity Profilez",
+	"appname-intentity-profile-title2": "Identity Profile",
+	
+	"appname-footer": "Footer text"
+}
