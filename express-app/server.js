@@ -13,8 +13,11 @@ app.use(bodyParser.json());
 app.use('/assets', express.static(__dirname + '/assets'));
 
 app.get('/',function(req,res){
-    res.render('index');
+    res.render('home');
 });
+app.get('/form',(req,res)=>{
+  res.render('index');
+})
 app.post('/report.symptom',(req,res)=>{
   var user_guid = req.body.user_guid;
   var member_id = req.body.member_id;
