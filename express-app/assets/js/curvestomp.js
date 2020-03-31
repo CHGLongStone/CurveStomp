@@ -62,7 +62,7 @@ SESSIONID ='';
 members_in_household = [];
 
 CurveStomp = {
-	API_PATH: '/formdata',
+	API_PATH: '/',
 	request: function(callback) {
 		console.log('Do Request');
 	},
@@ -495,7 +495,7 @@ CurveStomp.service = {
 			},
 			*/
 			dataType: "json",
-			url: requestParams.method,
+			url: '../'+requestParams.method,
 			data: request,
 			cache: false
 		})
