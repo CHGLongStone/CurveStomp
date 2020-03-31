@@ -449,6 +449,7 @@ CurveStomp.service = {
 	*/
 	call: function(requestParams) {
 		console.log('Start CurveStomp.service.call');
+		/**
 		var fakeCallResult =  {
 				"result": {
 					"status": "OK",
@@ -472,6 +473,7 @@ CurveStomp.service = {
 				"id": null,
 			};
 		return fakeCallResult;
+		*/
 		
 		
 		
@@ -676,7 +678,6 @@ CurveStomp.registration = {
 		});
 		
 		console.log('CurveStomp.registration.user-prevalidation done');
-		
 		var params = {
 			identity : {
 				email:  $('#email').val(),
@@ -702,8 +703,18 @@ CurveStomp.registration = {
 			
 			
 		};
+		
+		number_members_in_household = household_size;
+		
 		console.log("params:"+JSON.stringify(params, null, 2));
 		
+		requestParams = {
+			'SERVICE_CALL': 'register.user',
+			'params':  params
+		};
+
+		callResult = CurveStomp.service.call(requestParams);
+		console.log("callResult:"+JSON.stringify(callResult, null, 2));
 		$( '#report_list' ).show();
 		CurveStomp.scrollPage();
 		return;
