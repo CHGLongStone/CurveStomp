@@ -2,7 +2,7 @@
   "name": "curvestomp",
   "version": "1.0.0",
   "description": "express server for curvestomp",
-  "main": "server.js",
+  "main": "server-dev.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
