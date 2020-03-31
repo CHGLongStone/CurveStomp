@@ -84,7 +84,7 @@ app.post('/register.location',(req,res)=>{
   var passcode_value  = req.body.passcode_value;
   
 });
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
 
 // port to listen
 http.listen(PORT, function(){
