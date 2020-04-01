@@ -2,7 +2,6 @@
 <html lang="en" dir="ltr">
 
 <head>
-
     <meta name="viewport"
           content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width">
     <meta charset="utf-8">
@@ -11,33 +10,27 @@
 
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="assets/js/form2.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
     <link rel="stylesheet" type="text/css"
           href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
-
-
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <!--
     <link rel="localization" hreflang="en" href="assets/js/l10n/en.json" type="application/l10n+json" >
     -->
-
-
-    <title>COVID-19 Self-Reporting Questionnaire</title>
-    <script>
-
-    </script>
+    <title>Symptom Survey for COVID-19 Tracking</title>
 </head>
 
-<body>
 
-<h1 id="in_page_title">COVID-19 Self-Reporting Questionnaire</h1>
+<body>
+<h1 id="in_page_title">Symptom Survey for COVID-19 Tracking</h1>
 
 <div class="row ">
-
     <!-- <nav class="navbar navbar-default" role="navigation">
 <div class="container-fluid">
  <ul class="nav navbar-nav">
@@ -48,19 +41,16 @@
  </ul>
 </div>
 </nav> -->
-
-
-    <br>
 </div>
 
-
 <div class="" id="profilediv">
+
     <p>The following questions will be used to create your profile, so that you may login in for
         subsequent reports track your situation as the pandemic progresses.</p>
-    <p>To ensure anonimity you may create a hashed User Identity instead of using an email
+    <p>To ensure anonymity you may create a hashed User Identity instead of using an email
         address. The hashed "User Identity" will be stored as a cookie, you will not be required
         to login again as long as your cookie exists and has not expired.</p>
-    <p>Please Record your "User Identity" and your passcode, in case you delete your cookies or
+    <p>Please Record your "User Identity" and your pass-code, in case you delete your cookies or
         need to access the survey from a different machine. It is very important that your
         responses be linked to an (anonymous) identifier to track progression over time.</p>
 
@@ -81,6 +71,7 @@
 
     <div id="household">
         <h3>Household Profile</h3>
+
         <p>Please assign each member of your household a unique number, incrementing from 1, and
             make note of each member's number.</p>
         <p>These numbers will be used in subsequent reports to
@@ -105,9 +96,8 @@
             </div>
 
             <a data-toggle="collapse" href="#locationdiv" role="button" class="collapse show"
-               aria-expanded="false"
-               aria-controls="multiCollapseExample1">Provide Location Details</a>
-
+               aria-expanded="false" aria-controls="multiCollapseExample1">Provide Location
+                Details</a>
 
             <div class="collapse" id="locationdiv">
                 <div class="login-form">
@@ -129,7 +119,6 @@
                             <option value="1">Canada</option>
                         </select>
                     </label>
-
                     <label>Region:
                         <input type="text" id="usr_region" placeholder="Enter your region">
                     </label>
@@ -145,17 +134,13 @@
                     <label>Household ID:
                         <input type="text" id="usr_house_id">
                     </label>
+
                     <button id="btnsubmit">Submit Data</button>
-
-
                 </div>
-
             </div>
         </div>
-
-
     </div>
-
+</div>
 
 </body>
 
