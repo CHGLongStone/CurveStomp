@@ -80,32 +80,6 @@
             </div>
         </div>
 
-        <!--    HOUSEHOLD:MEMBERS    -->
-        <div class="section">
-            <h3>Household Members</h3>
-            <div class="explainer">
-                <p>Please assign each member of your household a unique number, incrementing from 1,
-                    and
-                    make note of each member's number.</p>
-                <p>These numbers will be used in subsequent reports to
-                    track the symptom progression of each household member. </p>
-            </div>
-            <div class="field">
-                <label>Number of Household Members:
-                    <span id="slider_value2" style="color:red;font-weight:bold;"></span><br>
-                    1 <input type="range" min="0" max="5" step="1" min="1" max="100" step="1" id="usr_total_members"
-                             name="sld6" value=1">
-                    100
-                </label>
-            </div>
-            <div class="explainer">
-                <p>Please provide basic stats for each household member, to assist researchers
-                    in
-                    statistical analysis.</p>
-            </div>
-            <div id="memberdata"></div>
-        </div>
-
         <!--     HOUSEHOLD:LOCATION   -->
         <div class="section">
             <h3>Location</h3>
@@ -170,6 +144,33 @@
             </div>
 
 
+        </div>
+
+        <!--    HOUSEHOLD:MEMBERS    -->
+        <div class="section">
+            <h3>Household Members</h3>
+            <div class="explainer">
+                <p>Please assign each member of your household a unique number, incrementing from 1,
+                    and
+                    make note of each member's number.</p>
+                <p>These numbers will be used in subsequent reports to
+                    track the symptom progression of each household member. </p>
+            </div>
+            <div class="field">
+                <label>Number of Household Members:
+                    <span id="slider_value2" style="color:red;font-weight:bold;"></span><br>
+                    1 <input type="range" min="0" max="5" step="1" min="1" max="100" step="1"
+                             id="usr_total_members"
+                             name="sld6" value=1">
+                    100
+                </label>
+            </div>
+            <div class="explainer">
+                <p>Please provide basic stats for each household member, to assist researchers
+                    in
+                    statistical analysis.</p>
+            </div>
+            <div id="memberdata"></div>
         </div>
 
     </div>
@@ -310,8 +311,35 @@
             <h3>Transmission</h3>
             <div class="explainer">
                 <p>Please provide the following information about the isolation level of the
-                    household member.</p>
+                    household member. The following questions will assist in regional containment
+                    and mitigation, and in determining the level of self-isolation practiced
+                    within a region. Please answer these questions carefully and honestly.</p>
             </div>
+
+            <div class="field">
+                <label>Isolation:
+                    <input type="range" step="1">
+                </label>
+            </div>
+
+            <div class="field">
+                <label>Distance Travelled:
+                    <input type="range" step="1">
+                </label>
+            </div>
+
+            <div class="field">
+                <label>Surface Exposure:
+                    <input type="range" step="1">
+                </label>
+            </div>
+
+            <div class="field">
+                <label>Human Exposure:
+                    <input type="range" step="1">
+                </label>
+            </div>
+
         </div>
 
         <!--     MEMBER:CLINICAL FINDINGS      -->
@@ -322,6 +350,44 @@
                     us know what the findings where. This will greatly assist researchers in
                     building predictive models of how symptom progression relates to actual
                     infection rates, and will allow us to improve the survey as well.</p>
+            </div>
+
+            <div class="field">
+                Test Results:
+                <label>Positive
+                    <input type="radio" name="test_results">
+                </label>
+                <label>Negative
+                    <input type="radio" name="test_results">
+                </label>
+            </div>
+
+            <div class="field">
+                <label>Recovered:
+                    <input type="checkbox">
+                </label>
+            </div>
+
+            <div class="field">
+                <label>Hospitalized:
+                    <input type="checkbox">
+                </label>
+            </div>
+            <div class="field">
+                <label>Mechanical Ventilation:
+                    <input type="checkbox">
+                </label>
+            </div>
+            <div class="field">
+                <label>Oxygen Support:
+                    <input type="checkbox">
+                </label>
+            </div>
+
+            <div class="field">
+                <label>Additional Symptoms:
+                    <input type="text">
+                </label>
             </div>
 
         </div>
