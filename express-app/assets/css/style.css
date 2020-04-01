@@ -1,0 +1,96 @@
+#main {
+
+    display: flex;
+}
+
+#main div {
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 40px;
+}
+
+.leftbox { 
+    float:left;  
+    width:33%; 
+    height:250px;
+    padding-right: 10px; 
+}
+
+#topdiv{
+    display: block;
+}
+#bottomdiv{
+    display: block;
+}
+#middlebox{ 
+    float:left;  
+    width:33%; 
+    height:280px; 
+} 
+.rightbox{ 
+    float:right;  
+    width:33%; 
+    height:250px; 
+} 
+.lastbox{
+    float: left;
+    width: 33%;
+    padding-top: 300px;
+    height: 250px;
+}
+.login-form {
+    width: 450px;
+    margin-left: 30px;
+    font-family: Tahoma, Geneva, sans-serif;
+}
+
+.login-form h1 {
+    text-align: center;
+    color: #4d4d4d;
+    font-size: 24px;
+    padding: 20px 0 20px 0;
+}
+
+.login-form input[type="password"],
+.login-form input[type="email"],
+.login-form input[type="text"] {
+    width:450px;
+    padding: 15px;
+    border: 1px solid #dddddd;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+.login-form input[type="submit"] {
+    width: 100%;
+    padding: 15px;
+    background-color: #535b63;
+    border: 0;
+    box-sizing: border-box;
+    cursor: pointer;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.selectlist {
+    width: 450px;
+    padding: 15px;
+    border: 1px solid #dddddd;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+#exkeys_filter {
+    display: none;
+}
+
+#btnSubmit {
+    width: 100%;
+    padding: 15px;
+    background-color: #535b63;
+    border: 0;
+    box-sizing: border-box;
+    cursor: pointer;
+    font-weight: bold;
+    color: #ffffff;
+}

@@ -17,7 +17,11 @@ app.get('/',function(req,res){
 });
 app.get('/form',(req,res)=>{
   res.render('index');
-})
+});
+
+app.get('/form2',(req,res)=>{
+  res.render('form2');
+});
 app.post('/report.symptom',(req,res)=>{
   var user_guid = req.body.user_guid;
   var member_id = req.body.member_id;
