@@ -93,7 +93,7 @@
             <div class="field">
                 <label>Number of Household Members:
                     <span id="slider_value2" style="color:red;font-weight:bold;"></span><br>
-                    1 <input type="range" min="1" max="100" step="1" id="usr_total_members"
+                    1 <input type="range" min="0" max="5" step="1" min="1" max="100" step="1" id="usr_total_members"
                              name="sld6" value=1">
                     100
                 </label>
@@ -189,10 +189,119 @@
         <div class="section">
             <h3>Symptoms</h3>
             <div class="explainer">
-                <p>Please provide information on your symptoms below. If you are not experiencing
-                    symptoms, please leave the scales at their default positions. Please
-                    <i>do not</i> report any symptoms which predate Dec 1, 2019.</p>
+                <p>Please describe the household member's symptoms. If no symptoms are present,
+                    please leave fields at their default settings. Please <i>do not</i> report
+                    symptoms predating Dec 1, 2019.</p>
             </div>
+
+            <div class="field">
+                <label>Cough:
+                    <input type="range" min="0" max="5" step="1">
+                </label>
+                <label>Productive:
+                    <input type="range" min="0" max="5" step="1">
+                </label>
+            </div>
+
+            <div class="field">
+                <label>Pneumonia:
+                    <input type="checkbox">
+                </label>
+            </div>
+
+            <div class="field">
+                <label>Difficulty Breathing:
+                    <input type="range" min="0" max="4" step="1" list="dl_diff_breathing">
+                </label>
+                <datalist id="dl_diff_breathing">
+                    <option value="0" label="none"></option>
+                    <option value="1"></option>
+                    <option value="2"></option>
+                    <option value="3"></option>
+                    <option value="4" label="severe"></option>
+                </datalist>
+            </div>
+
+            <div class="field">
+                <label>Difficulty Walking:
+                    <input type="range" min="0" max="5" step="1">
+                </label>
+            </div>
+
+            <div class="field">
+                <label>Appetite:
+                    <input type="range" min="0" max="5" step="1">
+                </label>
+            </div>
+
+            <div class="field">
+                <label>Diarrhea:
+                    <input type="range" min="0" max="5" step="1">
+                </label>
+            </div>
+
+            <div class="field">
+                <label>Muscle Ache:
+                    <input type="range" min="0" max="5" step="1">
+                </label>
+            </div>
+
+            <div class="field">
+                <label>General Fatigue:
+                    <input type="range" min="0" max="5" step="1">
+                </label>
+            </div>
+
+            <div class="field">
+                <label>Runny or Congested Nose:
+                    <input type="range" min="0" max="5" step="1">
+                </label>
+            </div>
+
+            <div class="field">
+                <label>Sore Throat:
+                    <input type="range" min="0" max="5" step="1">
+                </label>
+            </div>
+
+
+            <div class="field">
+                <label>Fever:
+                    <input type="range" min="0" max="5" step="1">
+                </label>
+            </div>
+
+            <div class="field">
+                <label>Headache:
+                    <input type="range" min="0" max="5" step="1">
+                </label>
+            </div>
+
+
+            <div class="field">
+                <label>Dizzy / Lightheaded:
+                    <input type="range" min="0" max="5" step="1">
+                </label>
+            </div>
+
+            <div class="field">
+                <label>Nausea:
+                    <input type="range" min="0" max="5" step="1">
+                </label>
+            </div>
+
+            <div class="field">
+                <label>Chills:
+                    <input type="range" min="0" max="5" step="1">
+                </label>
+            </div>
+
+            <div class="field">
+                <label>General Pain:
+                    <input type="checkbox">
+                </label>
+            </div>
+
 
         </div>
 
@@ -200,9 +309,8 @@
         <div class="section">
             <h3>Transmission</h3>
             <div class="explainer">
-                <p>Please provide information on your symptoms below. If you are not experiencing
-                    symptoms, please leave the scales at their default positions. Please
-                    <i>do not</i> report any symptoms which predate Dec 1, 2019.</p>
+                <p>Please provide the following information about the isolation level of the
+                    household member.</p>
             </div>
         </div>
 
