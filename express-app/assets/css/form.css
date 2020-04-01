@@ -101,17 +101,21 @@ div.section h3, div.section div.explainer {
 div.field {
     background-color: var(--light_accents);
     display: flex;
-    align-items: center;
+    flex-flow: column;
+    align-items: stretch;
     justify-content: center;
     grid-area: span 2 / span 2;
 }
 
-
-/* INPUT TYPE STYLING */
-div.field input[type="text"] {
-    border-radius: 0.5em;
+div.section > input[type="button"] {
+    grid-column-start: 2;
+    grid-column-end: 4;
 }
 
+/* INPUT TYPE STYLING */
+input [type="range"] {
+    width:100%;
+}
 
 /* COLLAPSIBLE ELEMENTS */
 .collapsible:hover {

@@ -81,74 +81,65 @@
         </div>
 
         <!--     HOUSEHOLD:LOCATION   -->
-        <div class="section">
-            <h3>Location</h3>
-            <a data-toggle="collapse" href="#locationdiv" role="button" class="collapse show"
-               aria-expanded="false"
-               aria-controls="multiCollapseExample1">Provide Location
-                Details</a>
+        <a data-toggle="collapse" href="#locationdiv" role="button" class="collapse show"
+           aria-expanded="false" aria-controls="multiCollapseExample1">Provide Location Details</a>
 
-            <div class="collapse" id="locationdiv">
-                <div class="explainer">
-                    <p>The following questions will collect anonymous, regional information
-                        about
-                        your profile. This information will be used to associate reports to
-                        geographical areas for analysis, and should not be personally
-                        identifiable.</p>
-                    <p>Household ID is a unique hash value to distinguish different households
-                        within
-                        your area, you may enter a name of your choosing or use an
-                        automatically-generated unique identifier.</p>
-                    <p> Location data will only be generated with your consent. If you consent
-                        to
-                        using location data you will be able to choose. The map interface will
-                        allow
-                        you to control the degree of accuracy.</p>
-                </div>
-                <div class="section">
-                    <div class="field">
-                        <label>Country:
-                            <select id="usr_country" required>
-                                <option value="0">Select Country</option>
-                                <option value="1">Canada</option>
-                            </select>
-                        </label>
-                    </div>
-                    <div class="field">
-                        <label>Region:
-                            <input type="text" id="usr_region" placeholder="Enter your region">
-                        </label>
-                    </div>
-                    <div class="field">
-                        <label>City:
-                            <input type="text" id="usr_city">
-                        </label>
-                    </div>
-                    <div class="field">
-                        <label>Street:
-                            <input type="text" id="usr_street">
-                        </label>
-                    </div>
-                    <div class="field">
-                        <label>Postal Code:
-                            <input type="text" id="usr_pcode">
-                        </label>
-                    </div>
-                    <div class="field">
-                        <label>Household ID:
-                            <input type="text" id="usr_house_id">
-                        </label>
-                    </div>
-                    <button id="btnsubmit">Submit Data</button>
-                </div>
+        <div class="section collapse" id="locationdiv">
+            <h3>Location</h3>
+
+            <div class="explainer">
+                <p> Location data will only be generated with your consent. If you consent
+                    to using location data you will be able to choose. The map interface will
+                    allow you to control the degree of accuracy.</p>
             </div>
 
+            <div class="field">
+                <label>Country:
+                    <select id="usr_country" required>
+                        <option value="0">Select Country</option>
+                        <option value="1">Canada</option>
+                    </select>
+                </label>
+            </div>
+
+            <div class="field">
+                <label>Region:
+                    <input type="text" id="usr_region" placeholder="Enter your region">
+                </label>
+            </div>
+
+            <div class="field">
+                <label>City:
+                    <input type="text" id="usr_city">
+                </label>
+            </div>
+
+            <div class="field">
+                <label>Street:
+                    <input type="text" id="usr_street">
+                </label>
+            </div>
+
+            <div class="field">
+                <label>Postal Code:
+                    <input type="text" id="usr_pcode">
+                </label>
+            </div>
+
+            <div class="field">
+                <label>Household ID:
+                    <input type="text" id="usr_house_id">
+                </label>
+            </div>
+
+            <input type="button" value="done">
 
         </div>
 
         <!--    HOUSEHOLD:MEMBERS    -->
         <div class="section">
             <h3>Household Members</h3>
+
             <div class="explainer">
                 <p>Please assign each member of your household a unique number, incrementing from 1,
                     and
@@ -165,12 +156,16 @@
                     100
                 </label>
             </div>
+
             <div class="explainer">
                 <p>Please provide basic stats for each household member, to assist researchers
                     in
                     statistical analysis.</p>
             </div>
             <div id="memberdata"></div>
+
+            <input type="button" value="done">
+
         </div>
 
     </div>
