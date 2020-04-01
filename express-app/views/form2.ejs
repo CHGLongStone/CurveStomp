@@ -2,145 +2,170 @@
 <html lang="en" dir="ltr">
 
 <head>
-    <meta name="viewport"
-          content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width">
-    <meta charset="utf-8">
-    <meta name="google" value="notranslate">
-    <meta name="referrer" content="strict-origin">
+	<meta name="viewport"
+		content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width">
+	<meta charset="utf-8">
+	<meta name="google" value="notranslate">
+	<meta name="referrer" content="strict-origin">
 
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-    <script src="assets/js/form2.js"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<script src="assets/js/form2.js"></script>
+	<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 
-    <link rel="stylesheet" type="text/css"
-          href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <!--
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/form.css">
+	<!--
     <link rel="localization" hreflang="en" href="assets/js/l10n/en.json" type="application/l10n+json" >
     -->
-    <title>Symptom Survey for COVID-19 Tracking</title>
+	<title>Symptom Survey for COVID-19 Tracking</title>
 </head>
 
 
 <body>
-<h1 id="in_page_title">Symptom Survey for COVID-19 Tracking</h1>
+	<h1 id="in_page_title">Symptom Survey for COVID-19 Tracking</h1>
+	<div id="form_pane">
+		<div class="profile" id="profilediv">
+			<h2>Profile Information</h2>
+			<div class="explainer">
+				<p>The following questions will be used to create your profile, so that you may login in for
+					subsequent reports track your situation as the pandemic progresses.</p>
+				<p>To ensure anonymity you may create a hashed User Identity instead of using an email
+					address. The hashed "User Identity" will be stored as a cookie, you will not be required
+					to login again as long as your cookie exists and has not expired.</p>
+				<p>Please Record your "User Identity" and your pass-code, in case you delete your cookies or
+					need to access the survey from a different machine. It is very important that your
+					responses be linked to an (anonymous) identifier to track progression over time.</p>
 
-<div class="row ">
-    <!-- <nav class="navbar navbar-default" role="navigation">
-<div class="container-fluid">
- <ul class="nav navbar-nav">
-     <li><a  data-toggle="collapse" href="#profilediv" role="button" class="collapse show"
-         aria-expanded="false" aria-controls="multiCollapseExample1">Report for first time</a></li>
+			</div>
+			<div class="section">
+				<div class="field">
+					<label>Email (Optional):
+						<input type="email" class="" id="usr_email" name="email" value="">
+					</label>
+
+				</div>
+				<div class="field">
+					<label>User Identity:
+						<input type="text" id="usr_identity">
+					</label>
+
+				</div>
+				<div class="field">
+					<label>Passcode:
+						<input type="password" class="" id="usr_pass" name="pwd_input" value="">
+					</label>
+				</div>
+				<div class="field">
+					<label>Confirm Passcode:
+						<input type="password" class="" id="usr_pass_conf" name="pwd_input_confirm" value="">
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="profile">
+			<h2>Household Profile</h2>
+			<div class="explainer">
+				<p>Please assign each member of your household a unique number, incrementing from 1, and
+					make note of each member's number.</p>
+				<p>These numbers will be used in subsequent reports to
+					track the symptom progression of each household member. </p>
+
+			</div>
+			<div class="section">
+				<div class="field">
+					<label>Household Members :
+						<span id="slider_value2" style="color:red;font-weight:bold;"></span><br>
+						1 <input type="range" min="1" max="100" step="1" id="usr_total_members" name="sld6" value=1">
+						100
+					</label>
+				</div>
+				<div class="explainer">
+					<p>Please provide basic stats for each household member, to assist researchers in
+						statistical analysis.</p>
+				</div>
 
 
- </ul>
-</div>
-</nav> -->
-</div>
+				<div id="memberdata">
 
-<div class="" id="profilediv">
+				</div>
 
-    <p>The following questions will be used to create your profile, so that you may login in for
-        subsequent reports track your situation as the pandemic progresses.</p>
-    <p>To ensure anonymity you may create a hashed User Identity instead of using an email
-        address. The hashed "User Identity" will be stored as a cookie, you will not be required
-        to login again as long as your cookie exists and has not expired.</p>
-    <p>Please Record your "User Identity" and your pass-code, in case you delete your cookies or
-        need to access the survey from a different machine. It is very important that your
-        responses be linked to an (anonymous) identifier to track progression over time.</p>
 
-    <div class="login-form">
-        <label>Email (Optional):
-            <input type="email" class="" id="usr_email" name="email" value="">
-        </label>
-        <label>User Identity:
-            <input type="text" id="usr_identity">
-        </label>
-        <label>Passcode:
-            <input type="password" class="" id="usr_pass" name="pwd_input" value="">
-        </label>
-        <label>Confirm Passcode:
-            <input type="password" class="" id="usr_pass_conf" name="pwd_input_confirm" value="">
-        </label>
-    </div>
+			</div>
 
-    <div id="household">
-        <h3>Household Profile</h3>
+			<div class="profile">
+				<h2>Location Profile</h2>
+				<a data-toggle="collapse" href="#locationdiv" role="button" class="collapse show" aria-expanded="false"
+					aria-controls="multiCollapseExample1">Provide Location
+					Details</a>
+				<div class="collapse" id="locationdiv">
+					<div class="explainer">
+						<p>The following questions will collect anonymous, regional information about
+							your profile. This information will be used to associate reports to
+							geographical areas for analysis, and should not be personally
+							identifiable.</p>
+						<p>Household ID is a unique hash value to distinguish different households
+							within
+							your area, you may enter a name of your choosing or use an
+							automatically-generated unique identifier.</p>
+						<p> Location data will only be generated with your consent. If you consent to
+							using location data you will be able to choose. The map interface will allow
+							you to control the degree of accuracy.</p>
+					</div>
+					<div class="section">
+						<div class="field">
+							<label>Country:
+								<select id="usr_country" required>
+									<option value="0">Select Country</option>
+									<option value="1">Canada</option>
+								</select>
+							</label>
+						</div>
+						<div class="field">
+							<label>Region:
+								<input type="text" id="usr_region" placeholder="Enter your region">
+							</label>
+						</div>
+						<div class="field">
+							<label>City:
+								<input type="text" id="usr_city">
+							</label>
+						</div>
+						<div class="field">
+							<label>Street:
+								<input type="text" id="usr_street">
+							</label>
+						</div>
+						<div class="field">
+							<label>Postal Code:
+								<input type="text" id="usr_pcode">
+							</label>
+						</div>
+						<div class="field">
+							<label>Household ID:
+								<input type="text" id="usr_house_id">
+							</label>
+						</div>
+						<button id="btnsubmit">Submit Data</button>
+					</div>
+				</div>
 
-        <p>Please assign each member of your household a unique number, incrementing from 1, and
-            make note of each member's number.</p>
-        <p>These numbers will be used in subsequent reports to
-            track the symptom progression of each household member. </p>
 
-        <div>
-            Household Members: <span id="slider_value2"
-                                     style="color:red;font-weight:bold;"></span>
-            <br>
-            <!-- <input type="button" value="-" onClick="subtract_one()"> -->
-            1 <input type="range" min="1" max="100" step="1" id="usr_total_members" name="sld6"
-                     value=1"> 100
-            <!-- <input type="button" value="+" onClick="add_one()">  -->
-        </div>
 
-        <div class="">
-            <p>Please provide basic stats for each household member, to assist researchers in
-                statistical analysis.</p>
 
-            <div id="memberdata">
 
-            </div>
 
-            <a data-toggle="collapse" href="#locationdiv" role="button" class="collapse show"
-               aria-expanded="false" aria-controls="multiCollapseExample1">Provide Location
-                Details</a>
+			</div>
 
-            <div class="collapse" id="locationdiv">
-                <div class="login-form">
-                    <p>The following questions will collect anonymous, regional information about
-                        your profile. This information will be used to associate reports to
-                        geographical areas for analysis, and should not be personally
-                        identifiable.</p>
-                    <p>Household ID is a unique hash value to distinguish different households
-                        within
-                        your area, you may enter a name of your choosing or use an
-                        automatically-generated unique identifier.</p>
-                    <p> Location data will only be generated with your consent. If you consent to
-                        using location data you will be able to choose. The map interface will allow
-                        you to control the degree of accuracy.</p>
+		</div>
 
-                    <label>Country:
-                        <select id="usr_country" required>
-                            <option value="0">Select Country</option>
-                            <option value="1">Canada</option>
-                        </select>
-                    </label>
-                    <label>Region:
-                        <input type="text" id="usr_region" placeholder="Enter your region">
-                    </label>
-                    <label>City:
-                        <input type="text" id="usr_city">
-                    </label>
-                    <label>Street:
-                        <input type="text" id="usr_street">
-                    </label>
-                    <label>Postal Code:
-                        <input type="text" id="usr_pcode">
-                    </label>
-                    <label>Household ID:
-                        <input type="text" id="usr_house_id">
-                    </label>
+	</div>
 
-                    <button id="btnsubmit">Submit Data</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
+
 
 </body>
 

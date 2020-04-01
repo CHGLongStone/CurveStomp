@@ -81,6 +81,11 @@ app.post('/authenticate.user',(req,res)=>{
 
 });
 
+app.post('/createuserprofile',(req,res)=>{
+  console.log(req);
+  res.send("Success");
+});
+
 app.post('/register.location',(req,res)=>{
   var user_guid = req.body.user_guid;
   var user_guid_value = req.body.user_guid_value;
