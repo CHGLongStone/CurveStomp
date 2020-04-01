@@ -29,24 +29,31 @@
 
 <body>
 <h1 id="in_page_title">Symptom Survey for COVID-19 Tracking</h1>
+
 <div id="form_pane">
     <div class="profile" id="profilediv">
-        <h2>Profile Information</h2>
+
+        <h2>Household</h2>
+
         <div class="explainer">
             <p>The following questions will be used to create your profile, so that you may login in
-                for
-                subsequent reports track your situation as the pandemic progresses.</p>
+                for subsequent reports track your situation as the pandemic progresses.</p>
             <p>To ensure anonymity you may create a hashed User Identity instead of using an email
                 address. The hashed "User Identity" will be stored as a cookie, you will not be
-                required
-                to login again as long as your cookie exists and has not expired.</p>
+                required to login again as long as your cookie exists and has not expired.</p>
             <p>Please Record your "User Identity" and your pass-code, in case you delete your
-                cookies or
-                need to access the survey from a different machine. It is very important that your
-                responses be linked to an (anonymous) identifier to track progression over time.</p>
-
+                cookies or need to access the survey from a different machine. It is very
+                important that your responses be linked to an (anonymous) identifier to track
+                progression over time.</p>
         </div>
+
+        <!--    HOUSEHOLD:IDENTITY    -->
         <div class="section">
+            <h3>Identity</h3>
+            <div class="explainer">
+                <p>These fields are used to anonymously identify your household, and correlate
+                    your future reports to the same household.</p>
+            </div>
             <div class="field">
                 <label>Email (Optional):
                     <input type="email" class="" id="usr_email" name="email" value="">
@@ -71,18 +78,17 @@
                 </label>
             </div>
         </div>
-    </div>
-    <div class="profile">
-        <h2>Household Profile</h2>
-        <div class="explainer">
-            <p>Please assign each member of your household a unique number, incrementing from 1, and
-                make note of each member's number.</p>
-            <p>These numbers will be used in subsequent reports to
-                track the symptom progression of each household member. </p>
 
-        </div>
-
+        <!--    HOUSEHOLD:MEMBERS    -->
         <div class="section">
+            <h3>Household Members</h3>
+            <div class="explainer">
+                <p>Please assign each member of your household a unique number, incrementing from 1,
+                    and
+                    make note of each member's number.</p>
+                <p>These numbers will be used in subsequent reports to
+                    track the symptom progression of each household member. </p>
+            </div>
             <div class="field">
                 <label>Household Members :
                     <span id="slider_value2" style="color:red;font-weight:bold;"></span><br>
@@ -92,14 +98,16 @@
                 </label>
             </div>
             <div class="explainer">
-                <p>Please provide basic stats for each household member, to assist researchers in
+                <p>Please provide basic stats for each household member, to assist researchers
+                    in
                     statistical analysis.</p>
             </div>
             <div id="memberdata"></div>
         </div>
 
+        <!--     HOUSEHOLD:LOCATION   -->
         <div class="section">
-            <h3>Location Profile</h3>
+            <h3>Location</h3>
             <a data-toggle="collapse" href="#locationdiv" role="button" class="collapse show"
                aria-expanded="false"
                aria-controls="multiCollapseExample1">Provide Location
@@ -107,7 +115,8 @@
 
             <div class="collapse" id="locationdiv">
                 <div class="explainer">
-                    <p>The following questions will collect anonymous, regional information about
+                    <p>The following questions will collect anonymous, regional information
+                        about
                         your profile. This information will be used to associate reports to
                         geographical areas for analysis, and should not be personally
                         identifiable.</p>
@@ -115,8 +124,10 @@
                         within
                         your area, you may enter a name of your choosing or use an
                         automatically-generated unique identifier.</p>
-                    <p> Location data will only be generated with your consent. If you consent to
-                        using location data you will be able to choose. The map interface will allow
+                    <p> Location data will only be generated with your consent. If you consent
+                        to
+                        using location data you will be able to choose. The map interface will
+                        allow
                         you to control the degree of accuracy.</p>
                 </div>
                 <div class="section">
@@ -163,7 +174,7 @@
     </div>
 
 </div>
-
+</div>
 
 </body>
 
