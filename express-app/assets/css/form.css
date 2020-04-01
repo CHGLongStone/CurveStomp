@@ -1,0 +1,124 @@
+html {
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+:root {
+    /* Color Palette 1 */
+    --light_shades: #F2F5F6;
+    --light_accents: #DCAD8C;
+    --main_brand_color: #9B9C9E;
+    --dark_accents: #C5416A;
+    --dark_shades: #29213C;
+
+    /* Color Palette 2 */
+    --light_shades: #FAF8F9;
+    --light_accents: #729D95;
+    --main_brand_color: #9FA8B8;
+    --dark_accents: #818AA3;
+    --dark_shades: #6C7B82;
+
+    /* Color Palette 3 */
+    --light_shades: #F2F6F6;
+    --light_accents: #747375;
+    --main_brand_color: #A1A8BA;
+    --dark_accents: #82738D;
+    --dark_shades: #4A598E;
+
+    /* Color Palette 4 */
+    --light_shades: #FEFEFD;
+    --light_accents: #8E8482;
+    --main_brand_color: #989696;
+    --dark_accents: #D84F75;
+    --dark_shades: #231A31;
+
+    /* Color Palette 5 */
+    --light_shades: #F1F2F3;
+    --light_accents: #8E806B;
+    --main_brand_color: #838694;
+    --dark_accents: #6C5D69;
+    --dark_shades: #231D24;
+
+    /* Color Palette 7 */
+    --light_shades: #E2E4E8;
+    --light_accents: #879D88;
+    --main_brand_color: #1EB4AD;
+    --dark_accents: #736861;
+    --dark_shades: #292625;
+
+    /* Color Palette 6 */
+    --light_shades: #F7F8F6;
+    --light_accents: #888C94;
+    --main_brand_color: #6F6F78;
+    --dark_accents: #7E8290;
+    --dark_shades: #1D2033;
+
+
+}
+
+
+div#form_pane {
+    width: 80%;
+    max-width: 1024px;
+    margin: auto;
+    display: flex;
+    flex-flow: column;
+    align-content: space-between;
+    background-color: var(--dark_shades);
+}
+
+/* MAJOR FORM COMPONENT LAYOUTS AND RELATIONS */
+div.profile, div.section {
+    border-radius: 5pt;
+}
+
+div.profile {
+    display: flex;
+    flex-flow: column;
+    background-color: var(--light_shades);
+    margin: 10pt 5% 0 5%;
+    padding: 0 20pt 20pt 20pt;
+}
+
+div.section {
+    width: 90%;
+    margin: 10pt 5% 0 5%;
+    padding: 0 20pt 20pt 20pt;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 15pt;
+    row-gap: 1em;
+    background-color: var(--dark_accents);
+}
+
+div.section h3, div.section div.explainer {
+    grid-column: 1 / -1;
+}
+
+div.field {
+    background-color: var(--light_accents);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-area: span 2 / span 2;
+}
+
+
+/* INPUT TYPE STYLING */
+div.field input[type="text"] {
+    border-radius: 0.5em;
+}
+
+
+/* COLLAPSIBLE ELEMENTS */
+.collapsible:hover {
+    background-color: #ccc;
+}
+
+.hidden {
+    display: none !important;
+    overflow: hidden;
+}
