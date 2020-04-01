@@ -62,10 +62,10 @@
 			Please Record your "User Identity" and your passcode<br>
 		</p>
 		<div class="login-form">
-			Email(Optional):<input type="email" class="" id="usr_email" name="email" value="">
-			User Identity:<input type="text" id="usr_identity">
-			Passcode:<input type="password" class="" id="usr_pass" name="pwd_input" value="">
-			Confirm Passcode:<input type="password" class="" id="usr_pass_conf" name="pwd_input_confirm" value="">
+			Email(Optional):<input type="email" class="" id="usr_email" name="email" value="" required>
+			User Identity:<input type="text" id="usr_identity" readonly>
+			Passcode:<input type="password" class="" id="usr_pass" name="pwd_input" value="" required>
+			Confirm Passcode:<input type="password" class="" id="usr_pass_conf" name="pwd_input_confirm" value="" required>
 
 		</div>
 
@@ -119,7 +119,7 @@
 						Street:<input type="text" id="usr_city">
 						Postal Code:<input type="text" id="usr_pcode">
 						HouseHold ID:<input type="text" id="usr_house_id">
-						<button id="btnsubmit">Submit Data</button>
+
 
 
 
@@ -127,6 +127,7 @@
 					</div>
 
 				</div>
+				<button id="btnsubmit">Submit Data</button>
 			</div>
 
 
