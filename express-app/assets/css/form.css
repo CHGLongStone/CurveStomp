@@ -60,6 +60,24 @@ html {
 }
 
 
+form {
+    width: 80%;
+    max-width: 960px;
+    margin: auto;
+}
+
+div.fieldset_container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 15pt;
+    row-gap: 1em;
+}
+
+div.fieldset_container  div.explainer {
+    grid-area: span 1 / span 4;
+}
+
+
 div#form_pane {
     width: 80%;
     max-width: 1024px;
@@ -83,20 +101,20 @@ div.profile {
     padding: 0 20pt 20pt 20pt;
 }
 
-div.section {
-    width: 90%;
-    margin: 10pt 5% 0 5%;
-    padding: 0 20pt 20pt 20pt;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    column-gap: 15pt;
-    row-gap: 1em;
-    background-color: var(--dark_accents);
-}
+/*div.section {*/
+/*    width: 90%;*/
+/*    margin: 10pt 5% 0 5%;*/
+/*    padding: 0 20pt 20pt 20pt;*/
+/*    display: grid;*/
+/*    grid-template-columns: repeat(4, 1fr);*/
+/*    column-gap: 15pt;*/
+/*    row-gap: 1em;*/
+/*    background-color: var(--dark_accents);*/
+/*}*/
 
-div.section h3, div.section div.explainer {
-    grid-column: 1 / -1;
-}
+/*div.section h3, div.section div.explainer {*/
+/*    grid-column: 1 / -1;*/
+/*}*/
 
 div.field {
     background-color: var(--light_accents);
@@ -114,7 +132,7 @@ div.section > input[type="button"] {
 
 /* INPUT TYPE STYLING */
 input [type="range"] {
-    width:100%;
+    width: 100%;
 }
 
 /* COLLAPSIBLE ELEMENTS */
