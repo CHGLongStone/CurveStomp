@@ -55,8 +55,6 @@ html {
     --main_brand_color: #6F6F78;
     --dark_accents: #7E8290;
     --dark_shades: #1D2033;
-
-
 }
 
 
@@ -64,76 +62,44 @@ form {
     width: 80%;
     max-width: 960px;
     margin: auto;
+    border-radius: 5pt;
+    color: var(--dark_shades);
+    border: 1px solid var(--dark_accents);
+    padding: 20pt;
 }
+
+form > section {
+    border-radius: 5pt;
+}
+
+fieldset {
+    border-radius: 5pt;
+    padding: 20pt;
+    margin: 10pt 0 10pt 0;
+}
+
+fieldset > legend {
+    color: var(--light_shades);
+    background-color: var(--dark_shades);
+    border-radius: 5pt;
+    padding: 0.5em;
+}
+
+fieldset > div.explainer > p {}
+
 
 div.fieldset_container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     column-gap: 15pt;
     row-gap: 1em;
+    margin-top: 1em;
 }
 
-div.fieldset_container  div.explainer {
+div.fieldset_container div.explainer {
     grid-area: span 1 / span 4;
 }
 
-
-div#form_pane {
-    width: 80%;
-    max-width: 1024px;
-    margin: auto;
-    display: flex;
-    flex-flow: column;
-    align-content: space-between;
-    background-color: var(--dark_shades);
-}
-
-/* MAJOR FORM COMPONENT LAYOUTS AND RELATIONS */
-div.profile, div.section {
-    border-radius: 5pt;
-}
-
-div.profile {
-    display: flex;
-    flex-flow: column;
-    background-color: var(--light_shades);
-    margin: 10pt 5% 0 5%;
-    padding: 0 20pt 20pt 20pt;
-}
-
-/*div.section {*/
-/*    width: 90%;*/
-/*    margin: 10pt 5% 0 5%;*/
-/*    padding: 0 20pt 20pt 20pt;*/
-/*    display: grid;*/
-/*    grid-template-columns: repeat(4, 1fr);*/
-/*    column-gap: 15pt;*/
-/*    row-gap: 1em;*/
-/*    background-color: var(--dark_accents);*/
-/*}*/
-
-/*div.section h3, div.section div.explainer {*/
-/*    grid-column: 1 / -1;*/
-/*}*/
-
-div.field {
-    background-color: var(--light_accents);
-    display: flex;
-    flex-flow: column;
-    align-items: stretch;
-    justify-content: center;
-    grid-area: span 2 / span 2;
-}
-
-div.section > input[type="button"] {
-    grid-column-start: 2;
-    grid-column-end: 4;
-}
-
-/* INPUT TYPE STYLING */
-input [type="range"] {
-    width: 100%;
-}
 
 /* COLLAPSIBLE ELEMENTS */
 .collapsible:hover {
@@ -141,6 +107,6 @@ input [type="range"] {
 }
 
 .hidden {
-    display: none !important;
+    /*display: none !important;*/
     overflow: hidden;
 }
