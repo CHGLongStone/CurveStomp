@@ -20,7 +20,7 @@ app.get('/form',(req,res)=>{
 });
 
 app.get('/form2',(req,res)=>{
-  res.render('form2');
+  res.render('form3');
 });
 app.post('/report.symptom',(req,res)=>{
   var user_guid = req.body.user_guid;
@@ -83,7 +83,7 @@ app.post('/authenticate.user',(req,res)=>{
 
 app.post('/createuserprofile',(req,res)=>{
   console.log(req);
-  res.send("Success");
+  res.send("Record Submitted");
 });
 
 app.post('/register.location',(req,res)=>{
