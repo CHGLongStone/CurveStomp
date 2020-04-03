@@ -1,21 +1,22 @@
 $(document).ready(function () {
-    $('#usr_identity').click(function () {
-        $('#usr_identity').val(create_UUID());
+    $('#h_id_uid').click(function () {
+        $('#h_id_uid').val(create_UUID());
     })
     $('#usr_house_id').click(function () {
         $('#usr_house_id').val(create_UUID());
     })
 
-    $('#btnsubmit').click(function(e){
+    $('#btnSubmit').click(function(e){
         var usrobj          ={};
-        usrobj['usremail']    = $('#usr_email').val();
-        usrobj['usridn']      = $('#usr_identity').val();
-        usrobj['usrpass']     = $('#usr_pass').val();
-        usrobj['usr_total_mem']   = $('#usr_total_members').val();
-        usrobj['usr_region']      = $('#usr_region').val();
-        usrobj['usr_city']        = $('#usr_city').val();
-        usrobj['usr_street']      = $('#usr_street').val();
-        usrobj['usr_pcode']       = $('#usr_pcode').val();
+        usrobj['usremail']    = $('#h_id_email').val();
+        usrobj['usridn']      = $('#h_id_uid').val();
+        usrobj['usrpass']     = $('#"h_id_pass').val();
+        usrobj['usr_total_mem']   = $('#h_mem_count').val();
+        usrobj['usr_country']        = $('#h_loc_country').val();
+        usrobj['usr_region']      = $('#h_loc_region').val();
+        usrobj['usr_city']        = $('#h_loc_city').val();
+        usrobj['usr_street']      = $('#h_loc_street').val();
+        usrobj['usr_pcode']       = $('#h_loc_pcode').val();
         usrobj['usr_hid']         = $('#usr_hid').val();
        $.ajax({
            type: "POST",
