@@ -79,15 +79,31 @@ form > section > fieldset {
 
 div.fieldset_container {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: 15pt;
     row-gap: 1em;
     margin-top: 1em;
 }
 
-div.fieldset_container > div.explainer {
-    grid-area: span 1 / span 2;
+@media only screen and (max-width: 600px) {
+    div.fieldset_container {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    div.fieldset_container > div.explainer {
+        grid-area: span 1 / span 1;
+    }
 }
+
+@media only screen and (min-width: 600px) {
+    div.fieldset_container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    div.fieldset_container > div.explainer {
+        grid-area: span 1 / span 2;
+    }
+}
+
 
 div.fieldset_container > div.field_container {
     display: flex;
@@ -95,6 +111,10 @@ div.fieldset_container > div.field_container {
     justify-content: space-between;
     align-items: center;
 }
+
+input[type="checkbox"] {
+}
+
 
 fieldset#h_identity > div.fieldset_container {
 
@@ -113,8 +133,6 @@ fieldset > legend {
     border-radius: 2pt;
     padding: 0.2em 0.5em;
 }
-
-
 
 
 /* COLLAPSIBLE ELEMENTS */
