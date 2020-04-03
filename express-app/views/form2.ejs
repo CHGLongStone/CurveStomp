@@ -1,39 +1,18 @@
-<!doctype html>
-<html lang="en" dir="ltr">
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta name="viewport"
-          content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width">
-    <meta charset="utf-8">
-    <meta name="google" value="notranslate">
-    <meta name="referrer" content="strict-origin">
-
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-    <script src="assets/js/form2.js"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-
-    <link rel="stylesheet" type="text/css"
-          href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/form.css">
-    <!--
-    <link rel="localization" hreflang="en" href="assets/js/l10n/en.json" type="application/l10n+json" >
-    -->
-    <title>Symptom Survey for COVID-19 Tracking</title>
+    <link rel="stylesheet" type="text/css" href="assets/css/form.css"/>
+    <!--    <script src="assets/js/form.js"></script>-->
+    <meta charset="UTF-8">
+    <title>COVID-19 Symptom Survey</title>
 </head>
-
-
 <body>
-<h1 id="in_page_title">COVID-19 Symptom Tracking Survey</h1>
 
-<!-- HOUSEHOLD -->
-<div id="form_pane">
-    <div class="profile" id="profilediv">
 
+<form>
+    <h1>COVID-19 Symptom Tracking Survey</h1>
+
+    <section id="household">
         <h2>Household</h2>
 
         <div class="explainer">
@@ -42,268 +21,224 @@
             <p>To ensure anonymity you may create a hashed User Identity instead of using an email
                 address. The hashed "User Identity" will be stored as a cookie, you will not be
                 required to login again as long as your cookie exists and has not expired.</p>
-            <p>Please Record your "User Identity" and your pass-code, in case you delete your
-                cookies or need to access the survey from a different machine. It is very
-                important that your responses be linked to an (anonymous) identifier to track
-                progression over time.</p>
+            <p>Required fields are followed by <strong><abbr title="required">*</abbr></strong>.</p>
         </div>
 
-        <!--    HOUSEHOLD:IDENTITY    -->
-        <div class="section">
-            <h3>Identity</h3>
+        <fieldset id="h_identity">
+            <legend>Identity</legend>
+
             <div class="explainer">
-                <p>These fields are used to anonymously identify your household, and correlate
-                    your future reports to the same household.</p>
+                <p>These fields are used to anonymously identify your household. This is
+                    necessary to correlate your future reports to this household.</p>
+                <p>Please write down your household's unique identifier, along with your chosen
+                    passcode, in case you delete your cookies or need to access the survey from a
+                    different machine. </p>
             </div>
-            <div class="field">
-                <label>Email (Optional):
-                    <input type="email" class="" id="usr_email" name="email" value="">
-                </label>
 
+            <div class="fieldset_container">
+                <div class="field_container">
+                    <label for="h_id_email">Email Address:</label>
+                    <input id="h_id_email" type="email">
+                </div>
+
+                <div class="field_container">
+                    <label for="h_id_uid">Unique Identifier:</label>
+                    <input id="h_id_uid" type="text">
+                </div>
+
+                <div class="field_container">
+                    <label for="h_id_pass">Passcode:</label>
+                    <input id="h_id_pass" type="password">
+                </div>
+
+                <div class="field_container">
+                    <label for="h_id_pass_confirm">Confirm Passcode:</label>
+                    <input id="h_id_pass_confirm" type="password">
+                </div>
             </div>
-            <div class="field">
-                <label>User Identity:
-                    <input type="text" id="usr_identity">
-                </label>
 
-            </div>
-            <div class="field">
-                <label>Passcode:
-                    <input type="password" class="" id="usr_pass" name="pwd_input" value="">
-                </label>
-            </div>
-            <div class="field">
-                <label>Confirm Passcode:
-                    <input type="password" class="" id="usr_pass_conf" name="pwd_input_confirm"
-                           value="">
-                </label>
-            </div>
-        </div>
+        </fieldset>
 
-        <!--     HOUSEHOLD:LOCATION   -->
-        <a data-toggle="collapse" href="#locationdiv" role="button" class="collapse show"
-           aria-expanded="false" aria-controls="multiCollapseExample1">Provide Location Details</a>
-
-        <div class="section collapse" id="locationdiv">
-            <h3>Location</h3>
-
+        <fieldset id="h_location">
+            <legend>Location</legend>
             <div class="explainer">
                 <p> Location data will only be generated with your consent. If you consent
                     to using location data you will be able to choose. The map interface will
                     allow you to control the degree of accuracy.</p>
             </div>
+            <div class="fieldset_container">
+                <div class="field_container">
+                    <label for="h_loc_country">Country:</label>
+                    <input list="country" id="h_loc_country">
+                </div>
 
-            <div class="field">
-                <label>Country:
-                    <select id="usr_country" required>
-                        <option value="0">Select Country</option>
-                        <option value="1">Canada</option>
-                    </select>
-                </label>
+                <div class="field_container">
+                    <label for="h_loc_region">Region:</label>
+                    <input list="region" id="h_loc_region">
+                </div>
+
+                <div class="field_container">
+                    <label for="h_loc_city">City:</label>
+                    <input list="city" id="h_loc_city">
+                </div>
+
+                <div class="field_container">
+                    <label for="h_loc_street">Street:</label>
+                    <input type="text" id="h_loc_street">
+                </div>
+
+                <div class="field_container">
+                    <label for="h_loc_pcode">Postal Code:</label>
+                    <input type="text" id="h_loc_pcode" maxlength="10">
+                </div>
             </div>
+        </fieldset>
 
-            <div class="field">
-                <label>Region:
-                    <input type="text" id="usr_region" placeholder="Enter your region">
-                </label>
-            </div>
-
-            <div class="field">
-                <label>City:
-                    <input type="text" id="usr_city">
-                </label>
-            </div>
-
-            <div class="field">
-                <label>Street:
-                    <input type="text" id="usr_street">
-                </label>
-            </div>
-
-            <div class="field">
-                <label>Postal Code:
-                    <input type="text" id="usr_pcode">
-                </label>
-            </div>
-
-            <div class="field">
-                <label>Household ID:
-                    <input type="text" id="usr_house_id">
-                </label>
-            </div>
-
-            <input type="button" value="done">
-
-        </div>
-
-        <!--    HOUSEHOLD:MEMBERS    -->
-        <div class="section">
-            <h3>Household Members</h3>
-
+        <fieldset id="h_members">
+            <legend>Household Members</legend>
             <div class="explainer">
                 <p>Please assign each member of your household a unique number, incrementing from 1,
-                    and
-                    make note of each member's number.</p>
-                <p>These numbers will be used in subsequent reports to
-                    track the symptom progression of each household member. </p>
+                    and make note of each member's number.</p>
+                <p>These numbers will be used in subsequent reports to track the symptom
+                    progression of each household member. </p>
             </div>
-            <div class="field">
-                <label>Number of Household Members:
-                    <span id="slider_value2" style="color:red;font-weight:bold;"></span><br>
-                    1 <input type="range" min="0" max="5" step="1" min="1" max="100" step="1"
-                             id="usr_total_members"
-                             name="sld6" value=1">
-                    100
-                </label>
+            <div class="fieldset_container">
+                <div class="field_container">
+                    <label for="h_mem_count">Number of Members:</label>
+                    <input id="h_mem_count" type="number" min="1" step="1">
+                </div>
+
+                <div class="explainer">
+                    <p>Please provide basic stats for each household member, to assist researchers
+                        in statistical analysis.</p>
+                </div>
+
+                <div class="field_container">
+                    <label for="h_mem_age">Age: </label>
+                    <input id="h_mem_age" type="number" min="0" step="1">
+                </div>
+
+                <div class="field_container">
+                    <label for="h_mem_bio_gender">Biological Gender:</label>
+                    <input id="h_mem_bio_gender" list="bio_gender" required>
+                </div>
+
             </div>
+        </fieldset>
+    </section>
 
-            <div class="explainer">
-                <p>Please provide basic stats for each household member, to assist researchers
-                    in
-                    statistical analysis.</p>
-            </div>
-            <div id="memberdata"></div>
-
-            <input type="button" value="done">
-
-        </div>
-
-    </div>
-
-    <!-- MEMBER -->
-    <div class="profile" id="member">
+    <section id="member">
         <h2>Household Member</h2>
-
         <div class="explainer">
-            <p>Please answer the following questions in respect to each household member separately.
-                This information will be incorporated into statistical models used to analyze and
+            <p>Please answer the following questions for each individual household member.
+                Responses will be incorporated into statistical models used to analyze and
                 research the COVID-19 pandemic and its spread, and may save lives. Please answer
                 each question as accurately as you can.</p>
+            <p>Currently reporting for household member: <select id="m_cur_member">
+                <option>1</option>
+            </select>/<span id="m_max_member">N</span></p>
         </div>
 
-        <!--    MEMBER:SYMPTOMS    -->
-        <div class="section">
-            <h3>Symptoms</h3>
+        <fieldset id="m_symptoms">
+            <legend>Symptoms</legend>
+
             <div class="explainer">
                 <p>Please describe the household member's symptoms. If no symptoms are present,
                     please leave fields at their default settings. Please <i>do not</i> report
                     symptoms predating Dec 1, 2019.</p>
             </div>
 
-            <div class="field">
-                <label>Cough:
-                    <input type="range" min="0" max="5" step="1">
-                </label>
-                <label>Productive:
-                    <input type="range" min="0" max="5" step="1">
-                </label>
+            <div class="fieldset_container">
+                <div class="field_container">
+                    <label for="m_symp_cough">Cough:</label>
+                    <input id="m_symp_cough" type="range" min="0" max="5" step="1">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_cough_productive">How Productive?</label>
+                    <input id="m_symp_cough_productive" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_pneumonia">Pneumonia:</label>
+                    <input id="m_symp_pneumonia" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_breathing">Difficulty Breathing</label>
+                    <input id="m_symp_breathing" type="range" min="0" max="5" step="1">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_walking">Difficulty Walking</label>
+                    <input id="m_symp_walking" type="range" min="0" max="5" step="1">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_appetite">Appetite</label>
+                    <input id="m_symp_appetite" type="range" min="0" max="5" step="1">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_diarrhea">Diarrhea:</label>
+                    <input id="m_symp_diarrhea" type="range" min="0" max="5" step="1">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_muscle_pain">Muscle Pain:</label>
+                    <input id="m_symp_muscle_pain" type="range" min="0" max="5" step="1">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_fatigue">Fatigue:</label>
+                    <input id="m_symp_fatigue" type="range" min="0" max="5" step="1">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_nose">Runny Nose or Congestion:</label>
+                    <input id="m_symp_nose" type="range" min="0" max="5" step="1">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_throat">Sore Throat:</label>
+                    <input id="m_symp_throat" type="range" min="0" max="5" step="1">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_fever">Fever</label>
+                    <input id="m_symp_fever" type="number" min="36" max="43" step="0.1"
+                           value="36.7">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_headache">Headache</label>
+                    <input id="m_symp_headache" type="range" min="0" max="5" step="1">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_dizziness">Dizziness/Lightheaded:</label>
+                    <input id="m_symp_dizziness" type="range" min="0" max="5" step="1">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_nausea">Nausea:</label>
+                    <input id="m_symp_nausea" type="range" min="0" max="5" step="1">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_chills">Chills/Shivering:</label>
+                    <input id="m_symp_chills" type="range" min="0" max="5" step="1">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_general_pain">Generalized Pain:</label>
+                    <input id="m_symp_general_pain" type="checkbox">
+                </div>
             </div>
+        </fieldset>
 
-            <div class="field">
-                <label>Pneumonia:
-                    <input type="checkbox">
-                </label>
-            </div>
-
-            <div class="field">
-                <label>Difficulty Breathing:
-                    <input type="range" min="0" max="4" step="1" list="dl_diff_breathing">
-                </label>
-                <datalist id="dl_diff_breathing">
-                    <option value="0" label="none"></option>
-                    <option value="1"></option>
-                    <option value="2"></option>
-                    <option value="3"></option>
-                    <option value="4" label="severe"></option>
-                </datalist>
-            </div>
-
-            <div class="field">
-                <label>Difficulty Walking:
-                    <input type="range" min="0" max="5" step="1">
-                </label>
-            </div>
-
-            <div class="field">
-                <label>Appetite:
-                    <input type="range" min="0" max="5" step="1">
-                </label>
-            </div>
-
-            <div class="field">
-                <label>Diarrhea:
-                    <input type="range" min="0" max="5" step="1">
-                </label>
-            </div>
-
-            <div class="field">
-                <label>Muscle Ache:
-                    <input type="range" min="0" max="5" step="1">
-                </label>
-            </div>
-
-            <div class="field">
-                <label>General Fatigue:
-                    <input type="range" min="0" max="5" step="1">
-                </label>
-            </div>
-
-            <div class="field">
-                <label>Runny or Congested Nose:
-                    <input type="range" min="0" max="5" step="1">
-                </label>
-            </div>
-
-            <div class="field">
-                <label>Sore Throat:
-                    <input type="range" min="0" max="5" step="1">
-                </label>
-            </div>
-
-
-            <div class="field">
-                <label>Fever:
-                    <input type="range" min="0" max="5" step="1">
-                </label>
-            </div>
-
-            <div class="field">
-                <label>Headache:
-                    <input type="range" min="0" max="5" step="1">
-                </label>
-            </div>
-
-
-            <div class="field">
-                <label>Dizzy / Lightheaded:
-                    <input type="range" min="0" max="5" step="1">
-                </label>
-            </div>
-
-            <div class="field">
-                <label>Nausea:
-                    <input type="range" min="0" max="5" step="1">
-                </label>
-            </div>
-
-            <div class="field">
-                <label>Chills:
-                    <input type="range" min="0" max="5" step="1">
-                </label>
-            </div>
-
-            <div class="field">
-                <label>General Pain:
-                    <input type="checkbox">
-                </label>
-            </div>
-
-
-        </div>
-
-        <!--    MEMBER:TRANSMISSION   -->
-        <div class="section">
-            <h3>Transmission</h3>
+        <fieldset id="m_transmission">
+            <legend>Transmission</legend>
             <div class="explainer">
                 <p>Please provide the following information about the isolation level of the
                     household member. The following questions will assist in regional containment
@@ -311,86 +246,118 @@
                     within a region. Please answer these questions carefully and honestly.</p>
             </div>
 
-            <div class="field">
-                <label>Isolation:
-                    <input type="range" step="1">
-                </label>
+            <div class="fieldset_container">
+                <div class="field_container">
+                    <label for="m_trans_isolation">Level of Isolation:</label>
+                    <input id="m_trans_isolation" type="range" min="0" max="5" step="1">
+                </div>
+                <div class="field_container">
+                    <label for="m_trans_distance">Farthest Travelled:</label>
+                    <input id="m_trans_distance" type="range" min="0" max="5" step="1">
+                </div>
+                <div class="field_container">
+                    <label for="m_trans_surface">Surface Exposure:</label>
+                    <input id="m_trans_surface" type="range" min="0" max="5" step="1">
+                </div>
+                <div class="field_container">
+                    <label for="m_trans_human">Human Exposure:</label>
+                    <input id="m_trans_human" type="range" min="0" max="5" step="1">
+                </div>
             </div>
+        </fieldset>
 
-            <div class="field">
-                <label>Distance Travelled:
-                    <input type="range" step="1">
-                </label>
-            </div>
+        <fieldset id="m_labresults">
+            <legend>Clinical Results</legend>
 
-            <div class="field">
-                <label>Surface Exposure:
-                    <input type="range" step="1">
-                </label>
-            </div>
-
-            <div class="field">
-                <label>Human Exposure:
-                    <input type="range" step="1">
-                </label>
-            </div>
-
-        </div>
-
-        <!--     MEMBER:CLINICAL FINDINGS      -->
-        <div class="section">
-            <h3>Clinical Findings</h3>
             <div class="explainer">
                 <p>If this household member has undergone clinical testing for COVID-19, please let
-                    us know what the findings where. This will greatly assist researchers in
+                    us know what the findings were. This will greatly assist researchers in
                     building predictive models of how symptom progression relates to actual
                     infection rates, and will allow us to improve the survey as well.</p>
             </div>
 
-            <div class="field">
-                Test Results:
-                <label>Positive
-                    <input type="radio" name="test_results">
-                </label>
-                <label>Negative
-                    <input type="radio" name="test_results">
-                </label>
-            </div>
+            <div class="fieldset_container">
+                <div class="field_container">
+                    <label for="m_lab_tested">Clinically Tested:</label>
+                    <input id="m_lab_tested" type="checkbox">
+                </div>
 
-            <div class="field">
-                <label>Recovered:
-                    <input type="checkbox">
-                </label>
-            </div>
+                <div class="field_container">
+                    <label for="m_lab_result">Test Results:</label>
+                    <input id="m_lab_result" list="lab_results" name="lab_results">
+                </div>
 
-            <div class="field">
-                <label>Hospitalized:
-                    <input type="checkbox">
-                </label>
-            </div>
-            <div class="field">
-                <label>Mechanical Ventilation:
-                    <input type="checkbox">
-                </label>
-            </div>
-            <div class="field">
-                <label>Oxygen Support:
-                    <input type="checkbox">
-                </label>
-            </div>
+                <div class="field_container">
+                    <label for="m_lab_hospitalized">Hospitalized:</label>
+                    <input id="m_lab_hospitalized" type="checkbox">
+                </div>
 
-            <div class="field">
-                <label>Additional Symptoms:
-                    <input type="text">
-                </label>
-            </div>
+                <div class="field_container">
+                    <label for="m_lab_hosp_days">Days in Hospital:</label>
+                    <input id="m_lab_hosp_days" type="number" step="1">
+                </div>
 
+                <div class="field_container">
+                    <label for="m_lab_hosp_icu">Admitted to ICU:</label>
+                    <input id="m_lab_hosp_icu" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_lab_recovered">Has Recovered:</label>
+                    <input id="m_lab_recovered" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_lab_ventilation">Mechanical Ventilation:</label>
+                    <input id="m_lab_ventilation" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_lab_oxygen">Oxygen Support:</label>
+                    <input id="m_lab_oxygen" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_lab_symptoms">Other Symptoms:</label>
+                    <input id="m_lab_symptoms" type="text" placeholder="Comma-Separated List">
+                </div>
+            </div>
+        </fieldset>
+
+        <div id="m_controls">
+            <input id="m_nav_prev" type="button" value="< Previous">
+            <input id="m_nav_next" type="button" value="Next >">
         </div>
+    </section>
+</form>
 
-    </div>
-</div>
 
+<!--  SUPPORTING DATA  -->
+<datalist id="bio_gender">
+    <option value="Male">Male</option>
+    <option value="Female">Female</option>
+</datalist>
+<datalist id="lab_results">
+    <option value="positive">Positive</option>
+    <option value="negative">Negative</option>
+    <option value="unknown">Unknown</option>
+</datalist>
+<datalist id="country"></datalist>
+<datalist id="region"></datalist>
+<datalist id="city"></datalist>
+
+<!--  COLLAPSING SCRIPT  -->
+<script type="application/javascript">
+    for (let header of document.querySelectorAll("h2, legend")) {
+        header.classList.add("collapsible");
+        header.addEventListener("click", () => {
+            Array.from(header.parentNode.children)
+                .filter(n => n !== header)
+                .forEach(n => n.classList.toggle("hidden"))
+        });
+        header.click()
+    }
+</script>
 
 </body>
-
 </html>
