@@ -49,12 +49,12 @@ html {
     --dark_accents: #736861;
     --dark_shades: #292625;
 
-    /* Color Palette 6 */
-    --light_shades: #F7F8F6;
-    --light_accents: #888C94;
-    --main_brand_color: #6F6F78;
-    --dark_accents: #7E8290;
-    --dark_shades: #1D2033;
+    /*!* Color Palette 6 *!*/
+    /*--light_shades: #F7F8F6;*/
+    /*--light_accents: #888C94;*/
+    /*--main_brand_color: #6F6F78;*/
+    /*--dark_accents: #7E8290;*/
+    /*--dark_shades: #1D2033;*/
 }
 
 /* LAYOUT */
@@ -102,18 +102,22 @@ div.fieldset_container div.field_container {
     align-items: center;
 }
 
-
 div.field_container > label {
     width: 50%;
 }
 
-div.field_container > input, div.field_container > select {
+div.field_container > input, div.field_container select {
     max-width: 50% !important;
 }
 
 div.field_container > input[type="range"] {
     width: 50%;
 }
+
+fieldset.h_member_row {
+    border: 1px solid var(--light_accents);
+}
+
 
 @media only screen and (max-width: 900px) {
     div.fieldset_container {
@@ -158,6 +162,6 @@ div.field_container > input[type="range"] {
 }
 
 .hidden {
-    /*display: none !important;*/
+    display: none !important;
     overflow: hidden;
 }
