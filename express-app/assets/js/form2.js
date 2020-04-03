@@ -68,6 +68,7 @@ $(document).ready(function () {
         usrobj['usr_trans_distance']        = $('m_trans_distance').val();
         usrobj['usr_trans_surface']         = $('#m_trans_surface').val();
         usrobj['usr_trans_human']           = $('m_trans_human').val();
+        console.log(usrobj);
         // usrobj['usr_lab_tested']            = $('#m_lab_tested') 
        $.ajax({
            type: "POST",
