@@ -16,7 +16,7 @@ const dbconn = mysql.createConnection({
 
 dbconn.connect(function (err) {
   if (err) throw err;
-  console.log("Connected!");
+  console.log(" Db Connected!");
 });
 var http = require("http").Server(app);
 app.engine('html', require('ejs').renderFile);
@@ -104,6 +104,11 @@ app.post('/createuserprofile', (req, res) => {
   var usr_city = req.body.usr_city;
   var usr_street = req.body.usr_street;
   var usr_pcode = req.body.usr_pcode;
+  dbconn.query('insert into household(household_guid) values("' + usridn + '")',(err,res)=>{
+    if(err) throw err;
+    var rowid = results.insertId;
+    console.log(rowid);
+  });
 
 
   res.send("Record Submitted");
