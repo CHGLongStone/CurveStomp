@@ -105,42 +105,48 @@
                     youngest.</p>
                 <p>These numbers will be used in subsequent reports to track the symptom
                     progression of each household member. </p>
+                <p>Please provide basic stats for each household member, to assist researchers
+                    in statistical analysis.</p>
             </div>
-            <div class="fieldset_container">
-                <div class="field_container">
-                    <label for="h_mem_count">Number of Members:</label>
-                    <input id="h_mem_count" type="number" min="1" step="1">
-                </div>
 
-                <div class="explainer">
-                    <p>Please provide basic stats for each household member, to assist researchers
-                        in statistical analysis.</p>
-                </div>
+            <fieldset class="h_member_row">
+                <legend>AAAS-NN</legend>
+                <div class="fieldset_container">
+                    <div class="field_container">
+                        <label for="h_mem_age">Age:</label>
+                        <input id="h_mem_age" type="number" min="0" step="1" required>
+                    </div>
 
-                <div class="field_container">
-                    <label for="h_mem_age">Age: </label>
-                    <input id="h_mem_age" type="number" min="0" step="1">
-                </div>
+                    <div class="field_container">
+                        <label for="h_mem_bio_gender">Sex:</label>
+                        <select id="h_mem_bio_gender" required>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                        </select>
+                    </div>
 
-                <div class="field_container">
-                    <label for="h_mem_bio_gender">Biological Gender:</label>
-                    <input id="h_mem_bio_gender" list="bio_gender" required>
-                </div>
+                    <div class="field_container">
+                        <label for="h_mem_alias">Alias:</label>
+                        <input id="h_mem_alias" type="text" maxlength="2" required>
+                    </div>
 
-            </div>
+                    <input type="button" id="h_mem_del" value="Delete">
+                </div>
+            </fieldset>
+
+            <input type="button" id="h_mem_add" value="Add Member">
+
+
         </fieldset>
     </section>
 
     <section id="member">
-        <h2>Household Member</h2>
+        <h2>Household Member: <span id="m_cur_memcode">AAAS-NN</span></h2>
         <div class="explainer">
             <p>Please answer the following questions for each individual household member.
                 Responses will be incorporated into statistical models used to analyze and
                 research the COVID-19 pandemic and its spread, and may save lives. Please answer
                 each question as accurately as you can.</p>
-            <p>Currently reporting for household member: <select id="m_cur_member">
-                <option>1</option>
-            </select>/<span id="m_max_member">N</span></p>
         </div>
 
         <fieldset id="m_symptoms">
@@ -160,7 +166,8 @@
 
                 <div class="field_container">
                     <label for="m_symp_cough_productive">Productive Cough:</label>
-                    <input id="m_symp_cough_productive" type="range" min="0" max="5" step="1" value="0">
+                    <input id="m_symp_cough_productive" type="range" min="0" max="5" step="1"
+                           value="0">
                 </div>
 
                 <div class="field_container">
@@ -190,22 +197,22 @@
 
                 <div class="field_container">
                     <label for="m_symp_muscle_pain">Muscle Pain:</label>
-                    <input id="m_symp_muscle_pain" type="range" min="0" max="5" step="1" value="0">
+                    <input id="m_symp_muscle_pain" type="checkbox">
                 </div>
 
                 <div class="field_container">
                     <label for="m_symp_fatigue">Fatigue:</label>
-                    <input id="m_symp_fatigue" type="range" min="0" max="5" step="1" value="0">
+                    <input id="m_symp_fatigue" type="checkbox">
                 </div>
 
                 <div class="field_container">
                     <label for="m_symp_nose">Runny Nose or Congestion:</label>
-                    <input id="m_symp_nose" type="range" min="0" max="5" step="1" value="0">
+                    <input id="m_symp_nose" type="range" min="0" max="2" step="1" value="0">
                 </div>
 
                 <div class="field_container">
                     <label for="m_symp_throat">Sore Throat:</label>
-                    <input id="m_symp_throat" type="range" min="0" max="5" step="1" value="0">
+                    <input id="m_symp_throat" type="checkbox">
                 </div>
 
                 <div class="field_container">
@@ -216,28 +223,29 @@
 
                 <div class="field_container">
                     <label for="m_symp_headache">Headache</label>
-                    <input id="m_symp_headache" type="range" min="0" max="5" step="1" value="0">
+                    <input id="m_symp_headache" type="range" min="0" max="3" step="1" value="0">
                 </div>
 
                 <div class="field_container">
                     <label for="m_symp_dizziness">Dizziness/Lightheaded:</label>
-                    <input id="m_symp_dizziness" type="range" min="0" max="5" step="1" value="0">
+                    <input id="m_symp_dizziness" type="checkbox">
                 </div>
 
                 <div class="field_container">
                     <label for="m_symp_nausea">Nausea:</label>
-                    <input id="m_symp_nausea" type="range" min="0" max="5" step="1" value="0">
+                    <input id="m_symp_nausea" type="checkbox">
                 </div>
 
                 <div class="field_container">
-                    <label for="m_symp_chills">Chills/Shivering:</label>
-                    <input id="m_symp_chills" type="range" min="0" max="5" step="1" value="0">
+                    <label for="m_symp_chills">Chills/Shivers:</label>
+                    <input id="m_symp_chills" type="checkbox">
                 </div>
 
                 <div class="field_container">
                     <label for="m_symp_general_pain">Generalized Pain:</label>
                     <input id="m_symp_general_pain" type="checkbox">
                 </div>
+
             </div>
         </fieldset>
 
@@ -252,12 +260,26 @@
 
             <div class="fieldset_container">
                 <div class="field_container">
-                    <label for="m_trans_isolation">Level of Isolation:</label>
-                    <input id="m_trans_isolation" type="range" min="0" max="5" step="1" value="0">
+                    <label for="m_trans_isolation">Isolation:</label>
+                    <select id="m_trans_isolation">
+                        <option>None</option>
+                        <option>Physical Distancing</option>
+                        <option>Home Isolation</option>
+                        <option>Daily Outings with minimal contacts</option>
+                        <option>Full Quarantine (No leaving house)</option>
+                    </select>
+                    <!--                    <input id="m_trans_isolation" type="range" min="0" max="5" step="1" value="0">-->
                 </div>
                 <div class="field_container">
-                    <label for="m_trans_distance">Farthest Travelled:</label>
-                    <input id="m_trans_distance" type="range" min="0" max="5" step="1" value="0">
+                    <label for="m_trans_distance">Travelled Since Last Report:</label>
+                    <select id="m_trans_distance">
+                        <option>< 1km</option>
+                        <option>1-5km</option>
+                        <option>5-10km</option>
+                        <option>10-100km</option>
+                        <option>100km+</option>
+                    </select>
+                    <!--                    <input id="m_trans_distance" type="range" min="0" max="5" step="1" value="0">-->
                 </div>
                 <div class="field_container">
                     <label for="m_trans_surface">Surface Exposure:</label>
@@ -339,8 +361,8 @@
 
 <!--  SUPPORTING DATA  -->
 <datalist id="bio_gender">
-    <option value="Male">Male</option>
-    <option value="Female">Female</option>
+    <option value="M">Male</option>
+    <option value="F">Female</option>
 </datalist>
 <datalist id="lab_results">
     <option value="positive">Positive</option>
