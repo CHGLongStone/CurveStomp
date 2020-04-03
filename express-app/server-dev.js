@@ -104,10 +104,33 @@ app.post('/createuserprofile', (req, res) => {
   var usr_city = req.body.usr_city;
   var usr_street = req.body.usr_street;
   var usr_pcode = req.body.usr_pcode;
+  var usr_age   = req.body.usr_age;
+  var usr_gender  = req.body.usr_gender;
+  var usr_cough   = req.body.usr_cough;
+  var usr_cough_prod  = req.body.usr_cough_prod;
+  var usr_pneumonia   = req.body.usr_pneumonia;
+  var usr_breathing   = req.body.usr_breathing;
+  var usr_walking     = req.body.usr_walking;
+  var usr_appetite    = req.body.usr_appetite;
+  var usr_diarrhea    = req.body.usr_diarrhea;
+  var usr_musclepain  = req.body.usr_musclepain;
+  var usr_fatigue     = req.body.usr_fatigue;
+  var usr_nose        = req.body.usr_nose;
+  var usr_fever       = req.body.usr_fever;
+  var usr_headache    = req.body.usr_headache;
+  var usr_dizziness   = req.body.usr_dizziness;
+  var usr_nausea      = req.body.usr_nausea;
+  var usr_chills      = req.body.usr_chills;
+  var usr_gpain       = req.body.usr_gpain;
+  var usr_trans_isolation   = req.body.usr_trans_isolation;
+  var usr_trans_distance    = req.body.usr_trans_distance;
+  var usr_trans_surface     = req.body.usr_trans_surface;
+  var usr_trans_human       = req.body.trans_human;
+
+  console.log(req.body);
   dbconn.query('insert into household(household_guid) values("' + usridn + '")',(err,res)=>{
     if(err) throw err;
-    var rowid = results.insertId;
-    console.log(rowid);
+    var rowid = res.insertId;
   });
 
 
