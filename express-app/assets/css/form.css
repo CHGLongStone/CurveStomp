@@ -57,48 +57,64 @@ html {
     --dark_shades: #1D2033;
 }
 
+/* LAYOUT */
 
 form {
     width: 80%;
     max-width: 960px;
     margin: auto;
-    border-radius: 5pt;
-    color: var(--dark_shades);
-    border: 1px solid var(--dark_accents);
     padding: 20pt;
+    border: 1px solid var(--dark_accents);
 }
 
 form > section {
-    border-radius: 5pt;
+    padding: 10pt;
+    margin: 0 0 10pt 0;
+    border: 1px solid var(--dark_accents);
 }
 
-fieldset {
-    border-radius: 5pt;
-    padding: 20pt;
-    margin: 10pt 0 10pt 0;
+form > section > fieldset {
+    margin: 10pt 0;
 }
-
-fieldset > legend {
-    color: var(--light_shades);
-    background-color: var(--dark_shades);
-    border-radius: 5pt;
-    padding: 0.5em;
-}
-
-fieldset > div.explainer > p {}
-
 
 div.fieldset_container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: 15pt;
     row-gap: 1em;
     margin-top: 1em;
 }
 
-div.fieldset_container div.explainer {
-    grid-area: span 1 / span 4;
+div.fieldset_container > div.explainer {
+    grid-area: span 1 / span 2;
 }
+
+div.fieldset_container > div.field_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+fieldset#h_identity > div.fieldset_container {
+
+}
+
+/* DESIGN */
+
+
+h1, h2, h3 {
+    font-family: serif;
+}
+
+fieldset > legend {
+    color: var(--light_shades);
+    background-color: var(--dark_accents);
+    border-radius: 2pt;
+    padding: 0.2em 0.5em;
+}
+
+
 
 
 /* COLLAPSIBLE ELEMENTS */
