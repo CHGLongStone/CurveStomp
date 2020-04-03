@@ -83,7 +83,7 @@ form > section fieldset {
 
 form > section > fieldset > legend {
     color: var(--light_shades);
-    background-color: var(--dark_accents);
+    background-color: var(--dark_shades);
     border-radius: 2pt;
     padding: 0.2em 0.5em;
 }
@@ -129,7 +129,7 @@ fieldset.h_member_row {
     }
 
     fieldset.h_member_row input[type="button"] {
-        width: 50%;
+        width: 100%;
         justify-self: end;
     }
 }
