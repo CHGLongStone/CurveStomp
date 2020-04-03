@@ -99,6 +99,8 @@
             <div class="explainer">
                 <p>Please assign each member of your household a unique number, incrementing from 1,
                     and make note of each member's number.</p>
+                <p>We recommend assigning the numbers in chronological order from oldest to
+                    youngest.</p>
                 <p>These numbers will be used in subsequent reports to track the symptom
                     progression of each household member. </p>
             </div>
@@ -150,58 +152,58 @@
 
             <div class="fieldset_container">
                 <div class="field_container">
-                    <label for="m_symp_cough">Cough:</label>
-                    <input id="m_symp_cough" type="range" min="0" max="5" step="1">
+                    <label for="m_symp_cough">Dry Cough:</label>
+                    <input id="m_symp_cough" type="range" min="0" max="5" step="1" value="0">
                 </div>
 
                 <div class="field_container">
-                    <label for="m_symp_cough_productive">How Productive?</label>
-                    <input id="m_symp_cough_productive" type="checkbox">
+                    <label for="m_symp_cough_productive">Productive Cough:</label>
+                    <input id="m_symp_cough_productive" type="range" min="0" max="5" step="1" value="0">
                 </div>
 
                 <div class="field_container">
-                    <label for="m_symp_pneumonia">Pneumonia:</label>
+                    <label for="m_symp_pneumonia">Pneumonia (Diagnosed):</label>
                     <input id="m_symp_pneumonia" type="checkbox">
                 </div>
 
                 <div class="field_container">
                     <label for="m_symp_breathing">Difficulty Breathing</label>
-                    <input id="m_symp_breathing" type="range" min="0" max="5" step="1">
+                    <input id="m_symp_breathing" type="range" min="0" max="5" step="1" value="0">
                 </div>
 
                 <div class="field_container">
                     <label for="m_symp_walking">Difficulty Walking</label>
-                    <input id="m_symp_walking" type="range" min="0" max="5" step="1">
+                    <input id="m_symp_walking" type="checkbox">
                 </div>
 
                 <div class="field_container">
-                    <label for="m_symp_appetite">Appetite</label>
-                    <input id="m_symp_appetite" type="range" min="0" max="5" step="1">
+                    <label for="m_symp_appetite">Appetite Loss</label>
+                    <input id="m_symp_appetite" type="range" min="0" max="5" step="1" value="0">
                 </div>
 
                 <div class="field_container">
                     <label for="m_symp_diarrhea">Diarrhea:</label>
-                    <input id="m_symp_diarrhea" type="range" min="0" max="5" step="1">
+                    <input id="m_symp_diarrhea" type="checkbox">
                 </div>
 
                 <div class="field_container">
                     <label for="m_symp_muscle_pain">Muscle Pain:</label>
-                    <input id="m_symp_muscle_pain" type="range" min="0" max="5" step="1">
+                    <input id="m_symp_muscle_pain" type="range" min="0" max="5" step="1" value="0">
                 </div>
 
                 <div class="field_container">
                     <label for="m_symp_fatigue">Fatigue:</label>
-                    <input id="m_symp_fatigue" type="range" min="0" max="5" step="1">
+                    <input id="m_symp_fatigue" type="range" min="0" max="5" step="1" value="0">
                 </div>
 
                 <div class="field_container">
                     <label for="m_symp_nose">Runny Nose or Congestion:</label>
-                    <input id="m_symp_nose" type="range" min="0" max="5" step="1">
+                    <input id="m_symp_nose" type="range" min="0" max="5" step="1" value="0">
                 </div>
 
                 <div class="field_container">
                     <label for="m_symp_throat">Sore Throat:</label>
-                    <input id="m_symp_throat" type="range" min="0" max="5" step="1">
+                    <input id="m_symp_throat" type="range" min="0" max="5" step="1" value="0">
                 </div>
 
                 <div class="field_container">
@@ -212,22 +214,22 @@
 
                 <div class="field_container">
                     <label for="m_symp_headache">Headache</label>
-                    <input id="m_symp_headache" type="range" min="0" max="5" step="1">
+                    <input id="m_symp_headache" type="range" min="0" max="5" step="1" value="0">
                 </div>
 
                 <div class="field_container">
                     <label for="m_symp_dizziness">Dizziness/Lightheaded:</label>
-                    <input id="m_symp_dizziness" type="range" min="0" max="5" step="1">
+                    <input id="m_symp_dizziness" type="range" min="0" max="5" step="1" value="0">
                 </div>
 
                 <div class="field_container">
                     <label for="m_symp_nausea">Nausea:</label>
-                    <input id="m_symp_nausea" type="range" min="0" max="5" step="1">
+                    <input id="m_symp_nausea" type="range" min="0" max="5" step="1" value="0">
                 </div>
 
                 <div class="field_container">
                     <label for="m_symp_chills">Chills/Shivering:</label>
-                    <input id="m_symp_chills" type="range" min="0" max="5" step="1">
+                    <input id="m_symp_chills" type="range" min="0" max="5" step="1" value="0">
                 </div>
 
                 <div class="field_container">
@@ -249,19 +251,19 @@
             <div class="fieldset_container">
                 <div class="field_container">
                     <label for="m_trans_isolation">Level of Isolation:</label>
-                    <input id="m_trans_isolation" type="range" min="0" max="5" step="1">
+                    <input id="m_trans_isolation" type="range" min="0" max="5" step="1" value="0">
                 </div>
                 <div class="field_container">
                     <label for="m_trans_distance">Farthest Travelled:</label>
-                    <input id="m_trans_distance" type="range" min="0" max="5" step="1">
+                    <input id="m_trans_distance" type="range" min="0" max="5" step="1" value="0">
                 </div>
                 <div class="field_container">
                     <label for="m_trans_surface">Surface Exposure:</label>
-                    <input id="m_trans_surface" type="range" min="0" max="5" step="1">
+                    <input id="m_trans_surface" type="range" min="0" max="5" step="1" value="0">
                 </div>
                 <div class="field_container">
                     <label for="m_trans_human">Human Exposure:</label>
-                    <input id="m_trans_human" type="range" min="0" max="5" step="1">
+                    <input id="m_trans_human" type="range" min="0" max="5" step="1" value="0">
                 </div>
             </div>
         </fieldset>
