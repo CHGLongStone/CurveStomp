@@ -3,7 +3,7 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const path = require('path');
-const config = require('config');
+const config = require('./config');
 
 var app = express();
 
