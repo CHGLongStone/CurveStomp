@@ -13,7 +13,27 @@
 
 <form>
     <h1>COVID-19 Symptom Tracking Survey</h1>
+    <div class="explainer">
 
+        <p>This survey tracks COVID-19 related symptoms. Households provide anonymous daily
+            reports, and collected information is published freely to aid on-going research
+            efforts. Periodic reporting enables researchers to track symptom progression over time.
+            This information complements laboratory testing. This discussed in greater detail in the
+            following papers.</p>
+
+        <p>We are taking every measure to safeguard the privacy and anonymity of participants. This
+            was not a simple task, as some form of token is needed to correlate a given household's
+            reports over time. <b>All information submitted in this form is surrendered to
+                public domain.</b>
+
+        <p>Please fill out the questionnaire regularly whether you experience symptoms or not.
+            Reports of ‘no symptoms’ are critically important as baseline information.</p>
+
+        <p>We thank you for your participation and ask that you help us spread the word about this
+            effort.</p>
+
+        <p><i>--- Symptometrics.org</i></p>
+    </div>
     <section id="household">
         <h2>Household</h2>
 
@@ -39,7 +59,7 @@
 
             <div class="fieldset_container">
                 <div class="field_container">
-                    <label for="h_id_email">Email Address:</label>
+                    <label for="h_id_email">Email:</label>
                     <input id="h_id_email" type="email">
                 </div>
 
@@ -58,7 +78,6 @@
                     <input id="h_id_pass_confirm" type="password">
                 </div>
             </div>
-
         </fieldset>
 
         <fieldset id="h_location">
@@ -109,7 +128,7 @@
                     in statistical analysis.</p>
             </div>
 
-            <fieldset class="h_member_row"id="h_member_row">
+            <fieldset class="h_member_row">
                 <legend>AAAS-NN</legend>
                 <div class="fieldset_container">
                     <div class="field_container">
@@ -135,8 +154,6 @@
             </fieldset>
 
             <input type="button" id="h_mem_add" value="Add Member">
-
-
         </fieldset>
     </section>
 
@@ -356,6 +373,7 @@
             <input id="btnSubmit" type="button" value="Submit">
         </div>
     </section>
+
 </form>
 
 
@@ -375,7 +393,7 @@
 
 <!--  COLLAPSING SCRIPT  -->
 <script type="application/javascript">
-    for (let header of document.querySelectorAll("h2, legend")) {
+    for (let header of document.querySelectorAll("h2, section > fieldset > legend")) {
         header.classList.add("collapsible");
         header.addEventListener("click", () => {
             Array.from(header.parentNode.children)

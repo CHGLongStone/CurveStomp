@@ -1,5 +1,6 @@
 html {
     box-sizing: border-box;
+    overflow-y: scroll;
 }
 
 *, *:before, *:after {
@@ -59,8 +60,12 @@ html {
 
 /* LAYOUT */
 
+body {
+    font-family: "Calibri", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
 h1, h2, h3 {
-    font-family: serif;
+    font-family: "Roboto Slab", "Times New Roman", serif;
 }
 
 form {
@@ -87,6 +92,8 @@ form > section > fieldset > legend {
     border-radius: 2pt;
     padding: 0.2em 0.5em;
 }
+
+
 
 div.fieldset_container {
     display: grid;
