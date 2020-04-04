@@ -6,11 +6,23 @@ $(document).ready(function () {
     $('#usr_house_id').click(function () {
         $('#usr_house_id').val(create_UUID());
     })
+    $('#h_member_row').find('#h_mem_alias').on('input',function(){
+        var age = $('#h_member_row').find('#h_mem_age').val();
+        var gender  = $('#h_member_row').find('#h_mem_bio_gender').val();
+        var alias   = $('#h_member_row').find('#h_mem_alias').val();
+        if(age==null || age == '')
+        {
+            $('#h_member_row').find('#h_mem_age').css('border-color', 'red');
+        }
+        else
+        {
+            $('#h_member_row').find('#h_mem_age').css('border-color', 'green');
+        }
+        $('#h_member_row').find('legend').html(age+gender+'-'+alias);
+    })
     $('#h_mem_add').click(function(){
         var id='h_member_row'+i;
-        var id2 = 'member'+i;
-        $('#h_member_row').clone(true,true).attr({"id":id}).insertAfter('#h_member_row');
-        $('#member').clone(true,true).attr({"id":id2}).insertAfter('#member');
+        $('#h_member_row').clone().attr({"id":id}).insertAfter('#h_member_row');
         i=i+1;        
     })
 
@@ -30,6 +42,7 @@ $(document).ready(function () {
     })
 
     $('#btnSubmit').click(function(e){
+
         var usrobj          ={};
         usrobj['usremail']    = $('#h_id_email').val();
         usrobj['usridn']      = $('#h_id_uid').val();
