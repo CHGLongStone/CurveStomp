@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    
+    var i=1;
     $('#h_id_uid').click(function () {
         $('#h_id_uid').val(create_UUID());
     })
@@ -7,17 +7,12 @@ $(document).ready(function () {
         $('#usr_house_id').val(create_UUID());
     })
     $('#h_mem_add').click(function(){
-        var i=1;
-        $('#h_member_row1').clone(true).attr({"id":i}).insertAfter('#h_member_row1');
-        for (let header of document.querySelectorAll("h2, legend")) {
-            header.classList.add("collapsible");
-            header.addEventListener("click", () => {
-                Array.from(header.parentNode.children)
-                    .filter(n => n !== header)
-                    .forEach(n => n.classList.toggle("hidden"))
-            });
-            header.click()
-        }        
+        var id='h_member_row'+i;
+        var $elem = $( "#h_member_row" ).data( "arr", [ 1 ] ),
+        $clone = $elem.clone( true,true )
+        .data( "arr", $.extend( [], $elem.data( "arr" ) ) )
+        .attr({"id":id}).insertAfter('#h_member_row');
+        i=i+1;        
     })
     $('#h_id_pass_confirm').change(function(){
         var usrpass = $('#h_id_pass').val();
