@@ -15,16 +15,16 @@
     <h1>COVID-19 Symptom Tracking Survey</h1>
     <div class="explainer">
 
-        <p>This survey tracks COVID-19 related symptoms. Households provide anonymous daily
-            reports, and collected information is published freely to aid on-going research
-            efforts. Periodic reporting enables researchers to track symptom progression over time.
-            This information complements laboratory testing. This discussed in greater detail in the
-            following papers.</p>
+        <p>This survey tracks COVID-19 related symptoms. Households provide anonymous daily reports,
+            and collected information is published freely to aid on-going research efforts. Periodic
+            reporting enables researchers to track symptom progression over time. This information
+            complements laboratory testing. This discussed in greater detail in the following
+            papers.</p>
 
         <p>We are taking every measure to safeguard the privacy and anonymity of participants. This
             was not a simple task, as some form of token is needed to correlate a given household's
-            reports over time. <b>All information submitted in this form is surrendered to
-                public domain.</b>
+            reports over time. <b>All information submitted via this form is surrendered to public
+                domain.</b></p>
 
         <p>Please fill out the questionnaire regularly whether you experience symptoms or not.
             Reports of ‘no symptoms’ are critically important as baseline information.</p>
@@ -33,16 +33,15 @@
             effort.</p>
 
         <p><i>--- Symptometrics.org</i></p>
+
     </div>
     <section id="household">
         <h2>Household</h2>
 
         <div class="explainer">
-            <p>The following questions will be used to create your profile, so that you may login in
-                for subsequent reports track your situation as the pandemic progresses.</p>
-            <p>To ensure anonymity you may create a hashed User Identity instead of using an email
-                address. The hashed "User Identity" will be stored as a cookie, you will not be
-                required to login again as long as your cookie exists and has not expired.</p>
+            <p>In order to track the spread and progression of COVID-19 symptoms, the following
+                questions will establish an anonymous identity for your household and its members.
+                Your future reports will be associated to this identity.</p>
             <p>Required fields are followed by <strong><abbr title="required">*</abbr></strong>.</p>
         </div>
 
@@ -50,11 +49,14 @@
             <legend>Identity</legend>
 
             <div class="explainer">
-                <p>These fields are used to anonymously identify your household. This is
-                    necessary to correlate your future reports to this household.</p>
-                <p>Please write down your household's unique identifier, along with your chosen
-                    passcode, in case you delete your cookies or need to access the survey from a
-                    different machine. </p>
+                <p>If this is your first report, please keep a record of your household’s Unique
+                    Identifier and chosen Passcode in a safe location, for future reports. These
+                    cannot be recovered.</p>
+
+                <p>Your email, if you choose to provide it, will not be published along with the
+                    survey data. It will be used solely for account recovery, and as a means to
+                    notify you about trends which may affect your household, based on the
+                    information you and other households in your region have reported.</p>
             </div>
 
             <div class="fieldset_container">
@@ -83,9 +85,10 @@
         <fieldset id="h_location">
             <legend>Location</legend>
             <div class="explainer">
-                <p> Location data will only be generated with your consent. If you consent
-                    to using location data you will be able to choose. The map interface will
-                    allow you to control the degree of accuracy.</p>
+                <p>Please provide the following information about your household’s location. This
+                    information is critical to understanding the spread of COVID-19 symptoms and
+                    identifying areas which may be overlooked by authorities. Please <b>do not</b>provide
+                    your street or apartment number, as this will undermine anonymity.</p>
             </div>
             <div class="fieldset_container">
                 <div class="field_container">
@@ -118,17 +121,18 @@
         <fieldset id="h_members">
             <legend>Household Members</legend>
             <div class="explainer">
-                <p>Please assign each member of your household a unique number, incrementing from 1,
-                    and make note of each member's number.</p>
-                <p>We recommend assigning the numbers in chronological order from oldest to
-                    youngest.</p>
-                <p>These numbers will be used in subsequent reports to track the symptom
-                    progression of each household member. </p>
-                <p>Please provide basic stats for each household member, to assist researchers
-                    in statistical analysis.</p>
+                <p>In this section you’ll provide basic medical information about the members of
+                    your household. If members join or leave your household, you will be able to
+                    modify this list in your next report.</p>
+
+                <p>We will convert each member’s information into a designator which should allow
+                    you to more easily identify them in the list. The designator is constructed from
+                    their age, biological sex, and a two-letter alias of your choosing. For example,
+                    the designator for a 35-year-old Male with the alias “JG” would be 35M-JG. The
+                    designator for each member of your household must be unique.</p>
             </div>
 
-            <fieldset class="h_member_row">
+            <fieldset class="h_member_row" id="h_member_row">
                 <legend>AAAS-NN</legend>
                 <div class="fieldset_container">
                     <div class="field_container">
@@ -160,19 +164,20 @@
     <section id="member">
         <h2>Household Member: <span id="m_cur_memcode">AAAS-NN</span></h2>
         <div class="explainer">
-            <p>Please answer the following questions for each individual household member.
-                Responses will be incorporated into statistical models used to analyze and
-                research the COVID-19 pandemic and its spread, and may save lives. Please answer
-                each question as accurately as you can.</p>
+            <p>Please answer the following questions <b>for each household member separately</b>.
+                Responses will be incorporated into statistical models used to analyze and research
+                the COVID-19 pandemic and its spread and may save lives. Please answer each question
+                as accurately as you can.</p>
         </div>
 
         <fieldset id="m_symptoms">
             <legend>Symptoms</legend>
 
             <div class="explainer">
-                <p>Please describe the household member's symptoms. If no symptoms are present,
-                    please leave fields at their default settings. Please <i>do not</i> report
-                    symptoms predating Dec 1, 2019.</p>
+                <p>Please describe the household member's symptoms. The following symptoms are known
+                    to be associated with COVID-19. If no symptoms are present, please leave fields
+                    at their default settings. Please do not report symptoms predating Dec 1,
+                    2019.</p>
             </div>
 
             <div class="fieldset_container">
@@ -269,10 +274,10 @@
         <fieldset id="m_transmission">
             <legend>Transmission</legend>
             <div class="explainer">
-                <p>Please provide the following information about the isolation level of the
-                    household member. The following questions will assist in regional containment
-                    and mitigation, and in determining the level of self-isolation practiced
-                    within a region. Please answer these questions carefully and honestly.</p>
+                <p>Please provide information about the household member’s level of isolation. This
+                    will assist in developing regional containment and mitigation strategies and
+                    creating models of the virus’s geographic transmission. Please answer these
+                    questions honestly and as accurately as you can.</p>
             </div>
 
             <div class="fieldset_container">
@@ -313,10 +318,10 @@
             <legend>Clinical Results</legend>
 
             <div class="explainer">
-                <p>If this household member has undergone clinical testing for COVID-19, please let
-                    us know what the findings were. This will greatly assist researchers in
-                    building predictive models of how symptom progression relates to actual
-                    infection rates, and will allow us to improve the survey as well.</p>
+                <p>Please fill out this section <b>only</b> if you have been hospitalized or have been
+                    clinically tested for COVID-19. Information about clinical findings will greatly
+                    assist researchers in building predictive models of how symptom progression
+                    relates to infection rates and could save lives.</p>
             </div>
 
             <div class="fieldset_container">
