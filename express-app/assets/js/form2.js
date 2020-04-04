@@ -8,10 +8,12 @@ $(document).ready(function () {
     })
     $('#h_mem_add').click(function(){
         var id='h_member_row'+i;
-        $('#h_member_row').clone(true,true).attr({"id":id,"class":"collapsible"}).insertAfter('#h_member_row');
+        var id2 = 'member'+i;
+        $('#h_member_row').clone(true,true).attr({"id":id}).insertAfter('#h_member_row');
+        $('#member').clone(true,true).attr({"id":id2}).insertAfter('#member');
         i=i+1;        
     })
-    
+
     $('#h_id_pass_confirm').change(function(){
         var usrpass = $('#h_id_pass').val();
         var usrpasscnf  = $('#h_id_pass_confirm').val();
