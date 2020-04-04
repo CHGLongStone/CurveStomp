@@ -1,5 +1,10 @@
 $(document).ready(function () {
     var i=1;
+    var usrobj      ={};
+    var household   ={};
+    var identity    ={};
+    var location    ={};
+    var members     ={};
     $('#h_id_uid').click(function () {
         $('#h_id_uid').val(create_UUID());
     })
@@ -42,17 +47,18 @@ $(document).ready(function () {
     })
 
     $('#btnSubmit').click(function(e){
-
-        var usrobj          ={};
-        usrobj['usremail']    = $('#h_id_email').val();
-        usrobj['usridn']      = $('#h_id_uid').val();
-        usrobj['usrpass']     = $('#h_id_pass').val();
+        identity['email'] = $('#h_id_email').val();
+        identity['unique_id'] = $('#h_id_uid').val();
+        identity['passcode'] = $('#h_id_pass').val();
+        location['country'] = $('#h_loc_country').val();
+        location['region']  =  $('#h_loc_region').val();
+        location['city']   = $('#h_loc_city').val();
+        location['street_name'] = $('#h_loc_street').val();
+        location['postal_code'] = $('#h_loc_pcode').val();
+        household['identity'] = identity;
+        household['location']  = location;
+        usrobj['household'] = household;
         usrobj['usr_total_mem']   = $('#h_mem_count').val();
-        usrobj['usr_country']        = $('#h_loc_country').val();
-        usrobj['usr_region']      = $('#h_loc_region').val();
-        usrobj['usr_city']        = $('#h_loc_city').val();
-        usrobj['usr_street']      = $('#h_loc_street').val();
-        usrobj['usr_pcode']       = $('#h_loc_pcode').val();
         usrobj['usr_hid']         = $('#usr_hid').val();
         usrobj['usr_age']           = $('#h_mem_age').val();
         usrobj['usr_gender']        = $('#h_mem_bio_gender').val();
