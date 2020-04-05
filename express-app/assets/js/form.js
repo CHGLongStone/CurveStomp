@@ -81,11 +81,11 @@ $(document).ready(function () {
         $('#h_member_row').find('legend').html(age + gender + '-' + alias);
     });
 
-    $('#h_mem_add').click(function () {
-        var id = 'h_member_row' + i;
-        $('#h_member_row').clone(false, false).attr({"id": id}).insertAfter('#h_member_row');
-        i = i + 1;
-    });
+    // $('#h_mem_add').click(function () {
+    //     var id = 'h_member_row' + i;
+    //     $('#h_member_row').clone(false, false).attr({"id": id}).insertAfter('#h_member_row');
+    //     i = i + 1;
+    // });
 
     $('#h_id_pass_confirm').change(function () {
         var usrpass = $('#h_id_pass').val();

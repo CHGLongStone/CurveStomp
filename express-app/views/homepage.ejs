@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="assets/css/form.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/js/homepage.js"></script>
+    <!--    <script type="text/javascript" src="assets/js/form_josh.js"></script>-->
+    <meta charset="UTF-8">
+    <title>COVID-19 Symptom Survey</title>
+</head>
+
+<body>
+    <form action="createhouseholdprofile" method="POST">
+        <fieldset id="h_identity">
+            <legend>Identity</legend>
+
+            <div class="explainer">
+                <p>If this is your first report, please keep a record of your household’s Unique
+                    Identifier and chosen Passcode in a safe location, for future reports. These
+                    cannot be recovered.</p>
+
+                <!--                <p>Your email, if you choose to provide it, will not be published along with the-->
+                <!--                    survey data. It will be used solely for account recovery, and as a means to-->
+                <!--                    notify you about trends which may affect your household, based on the-->
+                <!--                    information you and other households in your region have reported.</p>-->
+            </div>
+
+            <div class="fieldset_container">
+                <!--                <div class="field_container">-->
+                <!--                    <label for="h_id_email">Email:</label>-->
+                <!--                    <input id="h_id_email" type="email">-->
+                <!--                </div>-->
+
+
+                <div class="field_container">
+                    <label for="h_id_uid">Unique Identifier:</label>
+                    <input id="h_id_uid" name="huid" type="text" required>
+                </div>
+
+                <div class="field_container">
+                    <label for="h_id_pass">Passcode:</label>
+                    <input id="h_id_pass" name="hpass" type="password" required>
+                </div>
+
+                <div class="field_container" style="display:none" id="h_id_pass_confirm_container">
+                    <label for="h_id_pass_confirm">Confirm Passcode:</label>
+                    <input id="h_id_pass_confirm" type="password">
+                </div>
+
+                <div style="justify-self:center">
+                    <input id="h_id_login" type="button" value="Login">
+                    <input id="h_id_signup" type="button" value="Signup">
+                </div>
+
+            </div>
+
+        </fieldset>
+
+        <fieldset id="h_location" style="display: none;">
+            <legend>Location</legend>
+            <div class="explainer">
+                <p>Please provide the following information about your household’s location. This
+                    information is critical to understanding the spread of COVID-19 symptoms and
+                    identifying areas which may be overlooked by authorities. Please <b>do
+                        not</b> provide
+                    your house number or apartment number, as this will undermine anonymity.</p>
+            </div>
+            <div class="fieldset_container">
+                <div class="field_container">
+                    <label for="h_loc_country">Country:</label>
+                    <input list="country" name="country" id="h_loc_country">
+                </div>
+
+                <div class="field_container">
+                    <label for="h_loc_region">Region:</label>
+                    <input list="region" name="region" id="h_loc_region">
+                </div>
+
+                <div class="field_container">
+                    <label for="h_loc_city">City:</label>
+                    <input list="city" name="city" id="h_loc_city">
+                </div>
+
+                <div class="field_container">
+                    <label for="h_loc_street">Street Name:</label>
+                    <input type="text" name="street" id="h_loc_street">
+                </div>
+
+                <div class="field_container">
+                    <label for="h_loc_pcode">Postal Code:</label>
+                    <input type="text" name="postal_code" id="h_loc_pcode" maxlength="10">
+                </div>
+                <div style="justify-self:center">
+                    <input id="h_id_submit" type="submit" value="Submit Profile">
+                </div>
+            </div>
+
+        </fieldset>
+
+
+
+
+
+    </form>
+
+
+
+</body>
+
+</html>
