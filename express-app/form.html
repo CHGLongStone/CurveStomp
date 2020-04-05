@@ -4,7 +4,8 @@
     <link rel="stylesheet" type="text/css" href="assets/css/form.css"/>
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script type="text/javascript" src="assets/js/form2.js"></script>
+    <!--    <script type="text/javascript" src="assets/js/form2.js"></script>-->
+    <script type="text/javascript" src="assets/js/form.js"></script>
     <meta charset="UTF-8">
     <title>COVID-19 Symptom Survey</title>
 </head>
@@ -45,6 +46,7 @@
             <p>Required fields are followed by <strong><abbr title="required">*</abbr></strong>.</p>
         </div>
 
+
         <fieldset id="h_identity">
             <legend>Identity</legend>
 
@@ -53,17 +55,18 @@
                     Identifier and chosen Passcode in a safe location, for future reports. These
                     cannot be recovered.</p>
 
-                <p>Your email, if you choose to provide it, will not be published along with the
-                    survey data. It will be used solely for account recovery, and as a means to
-                    notify you about trends which may affect your household, based on the
-                    information you and other households in your region have reported.</p>
+                <!--                <p>Your email, if you choose to provide it, will not be published along with the-->
+                <!--                    survey data. It will be used solely for account recovery, and as a means to-->
+                <!--                    notify you about trends which may affect your household, based on the-->
+                <!--                    information you and other households in your region have reported.</p>-->
             </div>
 
             <div class="fieldset_container">
-                <div class="field_container">
-                    <label for="h_id_email">Email:</label>
-                    <input id="h_id_email" type="email">
-                </div>
+                <!--                <div class="field_container">-->
+                <!--                    <label for="h_id_email">Email:</label>-->
+                <!--                    <input id="h_id_email" type="email">-->
+                <!--                </div>-->
+
 
                 <div class="field_container">
                     <label for="h_id_uid">Unique Identifier:</label>
@@ -75,11 +78,18 @@
                     <input id="h_id_pass" type="password">
                 </div>
 
-                <div class="field_container">
+                <div class="field_container" style="display:none">
                     <label for="h_id_pass_confirm">Confirm Passcode:</label>
                     <input id="h_id_pass_confirm" type="password">
                 </div>
+
+                <div style="justify-self:flex-end">
+                    <input id="h_id_load" type="button" value="Load ID">
+                    <input id="h_id_create" type="button" value="Create ID">
+                </div>
+
             </div>
+
         </fieldset>
 
         <fieldset id="h_location">
@@ -319,7 +329,8 @@
             <legend>Clinical Results</legend>
 
             <div class="explainer">
-                <p>Please fill out this section <b>only</b> if you have been hospitalized or have been
+                <p>Please fill out this section <b>only</b> if you have been hospitalized or have
+                    been
                     clinically tested for COVID-19. Information about clinical findings will greatly
                     assist researchers in building predictive models of how symptom progression
                     relates to infection rates and could save lives.</p>
