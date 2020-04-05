@@ -84,6 +84,7 @@ form > section {
 
 form > section fieldset {
     margin: 10pt 0;
+    display: flex;
 }
 
 form > section > fieldset > legend {
@@ -128,6 +129,9 @@ fieldset#h_identity div.fieldset_container {
     margin: auto;
 }
 
+#h_mem_add {
+    margin: auto;
+}
 
 @media only screen and (max-width: 900px) {
     div.fieldset_container {
@@ -161,8 +165,8 @@ fieldset#h_identity div.fieldset_container {
         grid-template-columns: repeat(1, minmax(0, 1fr));
     }
 
-    fieldset.h_member_row input[type="button"] {
-        justify-self: center;
+    fieldset.h_member_row div.controls {
+        justify-self: flex-end;
     }
 }
 
