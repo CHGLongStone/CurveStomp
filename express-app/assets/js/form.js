@@ -318,7 +318,7 @@ $(document).ready(function () {
     $('#h_mem_add').click(() => {
         let prv = $('fieldset.h_member_row:nth-last-of-type(1)');
         let nxt = prv;
-        if (saveMemberRow(prv)) {
+        if (saveMemberRow(prv) || prv.find("legend").html() != "AAAS-NN") {
             nxt = prv.clone().insertAfter(prv);
             nxt.find('#h_mem_save').click((e) => {
                 saveMemberRow(e.target.parentNode.parentNode.parentNode);
@@ -332,6 +332,6 @@ $(document).ready(function () {
         nxt.find('#h_mem_sex').val(null);
         nxt.find('#h_mem_alias').val(null);
         nxt.find('legend').html("AAAS-NN");
-        return prv;
     });
+
 });
