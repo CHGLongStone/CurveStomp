@@ -84,7 +84,7 @@ form > section {
 
 form > section fieldset {
     margin: 10pt 0;
-    display: flex;
+    /* display: flex; */
 }
 
 form > section > fieldset > legend {
