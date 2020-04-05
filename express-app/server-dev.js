@@ -32,6 +32,12 @@ app.get('/form', (req, res) => {
   res.render('index');
 });
 
+app.post('/login',function(req,res){
+  var exidn   = req.body.identity;
+  var expass  = req.body.pass;
+  console.log(exidn);
+  console.log(expass);
+});
 app.get('/form2', (req, res) => {
   res.render('form2');
 });
