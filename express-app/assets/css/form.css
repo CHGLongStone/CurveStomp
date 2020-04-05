@@ -93,8 +93,6 @@ form > section > fieldset > legend {
     padding: 0.2em 0.5em;
 }
 
-
-
 div.fieldset_container {
     display: grid;
     column-gap: 15pt;
@@ -125,6 +123,11 @@ fieldset.h_member_row {
     border: 1px solid var(--light_accents);
 }
 
+fieldset#h_identity div.fieldset_container {
+    max-width: 300px;
+    margin: auto;
+}
+
 
 @media only screen and (max-width: 900px) {
     div.fieldset_container {
@@ -152,6 +155,10 @@ fieldset.h_member_row {
 
     fieldset.h_member_row > div.fieldset_container {
         grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    fieldset#h_identity > div.fieldset_container {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
     }
 
     fieldset.h_member_row input[type="button"] {
