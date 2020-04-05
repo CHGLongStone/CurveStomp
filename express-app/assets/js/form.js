@@ -78,7 +78,7 @@ $(document).ready(function () {
         } else {
             $('#h_member_row').find('#h_mem_alias').css('border-color', 'green');
         }
-        $('#h_member_row').find('legend').html(age + gender + '-' + alias);
+        // $('#h_member_row').find('legend').html(age + gender + '-' + alias);
     });
 
     // $('#h_mem_add').click(function () {
