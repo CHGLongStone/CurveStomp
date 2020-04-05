@@ -4,8 +4,13 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const path = require('path');
 const config = require('./config');
-
+var user_guid_value;
 var app = express();
+app.use(session({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true
+}));
 
 const dbconn = mysql.createConnection({
   host: "localhost",
@@ -32,6 +37,11 @@ app.get('/form', (req, res) => {
   res.render('index');
 });
 
+app.get('/household',(req,res)=>{
+  console.log(req.session.username);
+  res.render('household',{guid:req.session.username});
+})
+
 app.post('/login',function(req,res){
   var exidn   = req.body.identity;
   var expass  = req.body.pass;
@@ -41,6 +51,9 @@ app.post('/login',function(req,res){
 app.get('/form2', (req, res) => {
   res.render('form2');
 });
+app.get('/homepage',(req,res)=>{
+  res.render('homepage');
+})
 app.post('/report.symptom', (req, res) => {
   var user_guid = req.body.user_guid;
   var member_id = req.body.member_id;
@@ -63,6 +76,21 @@ app.post('/report.symptom', (req, res) => {
   var other_pain = req.body.other_pain;
 });
 
+app.post('/createhouseholdprofile',(request,response)=>{
+  var huid  = request.body.huid;
+  console.log(request);
+  user_guid_value =request.body.huid;
+  var pass  = request.body.pass;
+  var country = request.body.country;
+  var region  = request.body.region;
+  var city    = request.body.city;
+  var street  = request.body.street_name;
+  var postal_code = request.body.postal_code;
+  request.session.loggedin = true;
+  request.session.username = huid;
+  response.redirect('/household');
+ 
+})
 app.post('/report.testing', (req, res) => {
   var user_guid = req.body.user_guid;
   var tested = req.body.tested;

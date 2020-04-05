@@ -1,3 +1,44 @@
+let form_data = {
+    "household": {
+        "identity": {
+            "email": null,
+            "unique_identifier": null,
+            "passcode": null,
+            "confirm_passcode": null
+        },
+        "location": {
+            "country": null,
+            "region": null,
+            "city": null,
+            "street_name": null,
+            "postal_code": null
+        }
+    },
+    "members": {}
+};
+ $(document).ready(()=>{
+   
+    $('#h_mem_add').click(() => {
+        let prv = $('fieldset.h_member_row:nth-last-of-type(1)');
+        let nxt = prv;
+        if (saveMemberRow(prv) || prv.find("legend").html() != "AAAS-NN") {
+            nxt = prv.clone().insertAfter(prv);
+            nxt.find('#h_mem_save').click((e) => {
+                saveMemberRow(e.target.parentNode.parentNode.parentNode);
+            });
+            nxt.find('#h_mem_del').click((e) => {
+                delMember(e.target.parentNode.parentNode.parentNode);
+            });
+        }
+        nxt.attr({"id": 'AAAS-NN'});
+        nxt.find('#h_mem_age').val(null);
+        nxt.find('#h_mem_sex').val(null);
+        nxt.find('#h_mem_alias').val(null);
+        nxt.find('legend').html("AAAS-NN");
+    });
+
+ })
+ 
  // Add a new member row when 'add new member' is clicked
  function saveMemberRow(memb_row) {
 
@@ -61,21 +102,4 @@ function delMember(memb_row) {
     }
 }
 
-$('#h_mem_add').click(() => {
-    let prv = $('fieldset.h_member_row:nth-last-of-type(1)');
-    let nxt = prv;
-    if (saveMemberRow(prv) || prv.find("legend").html() != "AAAS-NN") {
-        nxt = prv.clone().insertAfter(prv);
-        nxt.find('#h_mem_save').click((e) => {
-            saveMemberRow(e.target.parentNode.parentNode.parentNode);
-        });
-        nxt.find('#h_mem_del').click((e) => {
-            delMember(e.target.parentNode.parentNode.parentNode);
-        });
-    }
-    nxt.attr({"id": 'AAAS-NN'});
-    nxt.find('#h_mem_age').val(null);
-    nxt.find('#h_mem_sex').val(null);
-    nxt.find('#h_mem_alias').val(null);
-    nxt.find('legend').html("AAAS-NN");
-});
+
