@@ -4,8 +4,8 @@
     <link rel="stylesheet" type="text/css" href="assets/css/form.css"/>
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script type="text/javascript" src="assets/js/form.js"></script>
-    <!--    <script type="text/javascript" src="assets/js/form_josh.js"></script>-->
+    <!--    <script type="text/javascript" src="assets/js/form.js"></script>-->
+    <script type="text/javascript" src="assets/js/form_flat.js"></script>
     <meta charset="UTF-8">
     <title>COVID-19 Symptom Survey</title>
 </head>
@@ -45,7 +45,6 @@
                 Your future reports will be associated to this identity.</p>
             <p>Required fields are followed by <strong><abbr title="required">*</abbr></strong>.</p>
         </div>
-
 
         <fieldset id="h_identity">
             <legend>Identity</legend>
@@ -166,7 +165,8 @@
 
                     <div class="controls">
                         <input type="button" id="h_mem_save" value="Save">
-                        <input type="button" id="h_mem_del" value="Delete">
+                        <!--                        <input type="button" id="h_mem_report" value="Report">-->
+                        <!--                        <input type="button" id="h_mem_del" value="Delete">-->
                     </div>
 
                 </div>
@@ -175,8 +175,7 @@
             <input type="button" id="h_mem_add" value="Add Member">
         </fieldset>
     </section>
-
-    <section id="member">
+    <section class="hidden" id="member">
         <h2>Household Member: <span id="m_cur_memcode">AAAS-NN</span></h2>
         <div class="explainer">
             <p>Please answer the following questions <b>for each household member separately</b>.
@@ -389,8 +388,8 @@
         </fieldset>
 
         <div id="m_controls">
-            <input id="m_nav_prev" type="button" value="< Previous">
-            <input id="m_nav_next" type="button" value="Next >">
+            <!--            <input id="m_nav_prev" type="button" value="< Previous">-->
+            <!--            <input id="m_nav_next" type="button" value="Next >">-->
             <input id="btnSubmit" type="button" value="Submit">
         </div>
     </section>

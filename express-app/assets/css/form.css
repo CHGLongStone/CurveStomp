@@ -56,6 +56,9 @@ html {
     /*--main_brand_color: #6F6F78;*/
     /*--dark_accents: #7E8290;*/
     /*--dark_shades: #1D2033;*/
+
+    --validated_data: rgba(178, 241, 184, 0.45);
+    --invalid_data: rgba(241, 54, 45, 0.45);
 }
 
 /* LAYOUT */

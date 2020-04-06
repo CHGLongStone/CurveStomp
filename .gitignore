@@ -1,3 +1,4 @@
 slush/*
 *.bak
 *.mwb
+/express-app/node_modules/
