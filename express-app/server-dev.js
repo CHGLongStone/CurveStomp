@@ -54,6 +54,11 @@ app.get('/form2', (req, res) => {
 app.get('/homepage',(req,res)=>{
   res.render('homepage');
 })
+
+app.get('/homepage/',(req,res)=>{
+  res.render('homepage');
+})
+
 app.post('/report.symptom', (req, res) => {
   var user_guid = req.body.user_guid;
   var member_id = req.body.member_id;
@@ -76,9 +81,25 @@ app.post('/report.symptom', (req, res) => {
   var other_pain = req.body.other_pain;
 });
 
+app.post('/homepage/createhouseholdprofile',(request,response)=>{
+  var huid  = request.body.huid;
+  console.log(request.body);
+  user_guid_value =request.body.huid;
+  var pass  = request.body.pass;
+  var country = request.body.country;
+  var region  = request.body.region;
+  var city    = request.body.city;
+  var street  = request.body.street_name;
+  var postal_code = request.body.postal_code;
+  request.session.loggedin = true;
+  request.session.username = huid;
+  response.redirect('/household');
+ 
+})
+
 app.post('/createhouseholdprofile',(request,response)=>{
   var huid  = request.body.huid;
-  console.log(request);
+  console.log(request.body);
   user_guid_value =request.body.huid;
   var pass  = request.body.pass;
   var country = request.body.country;
