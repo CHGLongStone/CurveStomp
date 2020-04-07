@@ -3,6 +3,8 @@
 
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/assets/css/form.css" />
     <script type="text/javascript" src="/assets/js/homepage.js"></script>
     <meta charset="UTF-8">
@@ -11,7 +13,7 @@
 
 <body>
     <%- include('partials/nav.ejs') %>
-    <form action="createhouseholdprofile" method="POST">
+    <form action="login" method="POST">
         <fieldset id="h_identity">
             <legend>Identity</legend>
 
@@ -37,14 +39,16 @@
                     <!-- <label for="h_id_uid">Unique Identifier:</label> -->
                     <input id="h_id_uid" name="huid" style="display: none;" type="text" placeholder="Click to generate" required>
                 </div>
-                <div class="field_container">
+                <!-- <div class="field_container">
                     <label for="h_id_username">Username:</label>
-                    <input id="h_id_username" name="username" type="text" required>
-                </div>
-                <div class="field_container" id="gusername_div" style="display: none">
+                    <input id="h_id_username" name="username" type="text" maxlength="3" required>
+                    <input id="h_id_username" name="username" type="text" max="3" required>
+                    <input id="h_id_username" name="username" type="text" maxlength="3" required>
+                </div> -->
+                <!-- <div class="field_container" id="gusername_div" style="display: none">
                     <label for="h_id_gusername">Generated Username:</label>
                     <input id="h_id_gusername" name="gusername" type="text" readonly>
-                </div>
+                </div> -->
                 <div class="field_container">
                     <label for="h_id_pass">Passcode:</label>
                     <input id="h_id_pass" name="hpass" type="password" required>
@@ -57,7 +61,11 @@
 
                 <div style="justify-self:center">
                     <input id="h_id_login" type="button" value="Login">
-                    <input id="h_id_signup" type="button" value="Signup">
+                    <!-- <input id="h_id_signup" type="button" value="Signup"> -->
+                    <!-- <button type="button" id="h_id_signup"  data-toggle="modal" data-target="#createprofile">
+                        Create Profile
+                      </button> -->
+                      <a data-toggle="modal" href="#createprofile">Create Profile</a>
                 </div>
 
             </div>
@@ -98,9 +106,9 @@
                     <label for="h_loc_pcode">Postal Code:</label>
                     <input type="text" name="postal_code" id="h_loc_pcode" maxlength="10">
                 </div>
-                <div style="justify-self:center">
+                <!-- <div style="justify-self:center">
                     <input id="h_id_submit" type="submit" value="Submit Profile">
-                </div>
+                </div> -->
             </div>
 
         </fieldset>
@@ -110,6 +118,76 @@
 
 
     </form>
+
+    <!-- Modal -->
+<div class="modal fade" id="createprofile" tabindex="-1" role="dialog" aria-labelledby="createprofile" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Create Household Profile</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="field_container">
+                <label for="h_id_pass">Passcode:</label>
+                <input id="h_id_pass" name="hpass" type="password" required>
+            </div>
+
+            <div class="field_container"  id="h_id_pass_confirm_container">
+                <label for="h_id_pass_confirm">Confirm Passcode:</label>
+                <input id="h_id_pass_confirm" type="password">
+            </div>
+            <fieldset id="h_location">
+                <legend>Location</legend>
+                <div class="explainer">
+                    <p>Please provide the following information about your household’s location. This
+                        information is critical to understanding the spread of COVID-19 symptoms and
+                        identifying areas which may be overlooked by authorities. Please <b>do
+                            not</b> provide
+                        your house number or apartment number, as this will undermine anonymity.</p>
+                </div>
+                <div class="fieldset_container">
+                    <div class="field_container">
+                        <label for="h_loc_country">Country:</label>
+                        <input list="country" name="country" id="h_loc_country">
+                    </div>
+    
+                    <div class="field_container">
+                        <label for="h_loc_region">Region:</label>
+                        <input list="region" name="region" id="h_loc_region">
+                    </div>
+    
+                    <div class="field_container">
+                        <label for="h_loc_city">City:</label>
+                        <input list="city" name="city" id="h_loc_city">
+                    </div>
+    
+                    <div class="field_container">
+                        <label for="h_loc_street">Street Name:</label>
+                        <input type="text" name="street" id="h_loc_street">
+                    </div>
+    
+                    <div class="field_container">
+                        <label for="h_loc_pcode">Postal Code:</label>
+                        <input type="text" name="postal_code" id="h_loc_pcode" maxlength="10">
+                    </div>
+                    <!-- <div style="justify-self:center">
+                        <input id="h_id_submit" type="submit" value="Submit Profile">
+                    </div> -->
+                </div>
+    
+            </fieldset>
+    
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Submit Profile</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 
