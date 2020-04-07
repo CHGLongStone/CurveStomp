@@ -39,8 +39,12 @@ app.get('/form', (req, res) => {
 });
 
 app.get('/household', isAuthenticated,(req,res)=>{
-  console.log(req.session.username);
-  res.render('household',{guid:req.session.uid});
+  var guid  = req.session.uid;
+  var firstpart   = guid.slice(0,3);
+  var secondpart  = guid.slice(3,6);
+  var thirdpart   = guid.slice(6,9);
+  var hid = firstpart+"-"+secondpart+"-"+thirdpart;
+  res.render('household',{guid:hid});
 })
 
 app.post('/login',function(req,res){
@@ -59,6 +63,26 @@ app.get('/homepage',(req,res)=>{
 app.get('/homepage/',(req,res)=>{
   res.render('homepage');
 })
+
+app.get('/gethouseholdid',(req,res)=>{
+ var hid  = Math.floor(Math.random() * 900000000) + 100000000;
+  dbconn.query('select household_guid from household where household_guid=?',hid,(error,results)=>{
+    if(error) throw error;
+    if(results.lenght==0)
+    {
+      res.send(hid.toString());
+      
+
+    }
+    else
+    {
+      var hid  = Math.floor(Math.random() * 900000000) + 100000000;
+      res.send(hid.toString());
+
+    }
+  });
+ 
+});
 
 app.post('/report.symptom', (req, res) => {
   var user_guid = req.body.user_guid;
@@ -82,10 +106,9 @@ app.post('/report.symptom', (req, res) => {
   var other_pain = req.body.other_pain;
 });
 
-app.post('/homepage/createhouseholdprofile',(request,response)=>{
+app.post(['/createhouseholdprofile', '/homepage/createhouseholdprofile'],(request,response)=>{
   var huid  = request.body.huid;
-  console.log(request.body.gusername);
-  // var username  = request.body.gusername;
+  console.log(request.body);
   var pass  = request.body.pass;
   var country = request.body.country;
   var region  = request.body.region;
@@ -93,27 +116,13 @@ app.post('/homepage/createhouseholdprofile',(request,response)=>{
   var street  = request.body.street_name;
   var postal_code = request.body.postal_code;
   request.session.loggedin = true;
-  // request.session.username = username;
   request.session.uid = huid;
+  // request.session.username = username;
   response.redirect('/household');
  
 })
 
-app.post('/createhouseholdprofile',(request,response)=>{
-  var huid  = request.body.huid;
-  console.log(request.body.gusername);
-  // var username  = request.body.gusername;
-  var pass  = request.body.pass;
-  var country = request.body.country;
-  var region  = request.body.region;
-  var city    = request.body.city;
-  var street  = request.body.street_name;
-  var postal_code = request.body.postal_code;
-  request.session.loggedin = true;
-  // request.session.username = username;
-  request.session.uid = huid;
-  response.redirect('/household');
-})
+
 app.post('/report.testing', (req, res) => {
   var user_guid = req.body.user_guid;
   var tested = req.body.tested;

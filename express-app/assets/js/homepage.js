@@ -1,22 +1,40 @@
 $(document).ready(()=>{
-   
-    $('#h_id_signup').click(()=>{
-        $('#h_location').show();
-        $('#gusername_div').show();
-        $('#h_id_signup').css("display","none");
-        $('#h_id_login').css("display","none");
-        $('#h_id_pass_confirm_container').show();
-        // $("#h_id_uid").prop("readonly", true);
-        $('#h_id_uid').val(create_UUID());
-    })
+    $('#createprofile').on('shown.bs.modal', function () {
+        var req =1;
+        $.ajax({
+                    type: "GET",
+                    url: "/gethouseholdid",
+                    success: function (response) {
+                        var firstpart   = response.slice(0,3);
+                        var secondpart  = response.slice(3,6);
+                        var thirdpart   = response.slice(6,9);
+                        $('#huid').val(response);
+                        $('#h_id_label').text("Household ID:"+firstpart+"-"+secondpart+"-"+thirdpart);
+                    }
+                })
+        
+      })
+      $('#h_id_pass_confirm').focusout(()=>{
+          
+          var pass  = $('#hpass').val();
+          var passcnf   = $('#h_id_pass_confirm').val();
+          console.log(pass);
+          console.log(passcnf);
+          if(pass==passcnf)
+          {
+              
+              $('#hpass').css("border-color","green");
+              $('#h_id_pass_confirm').css("border-color","green");
+          }
+          else
+          {
+            $('#hpass').css("border-color","red");
+            $('#h_id_pass_confirm').css("border-color","red");
+
+          }
+      })
     $('#h_id_login').click(()=>{
 
-    })
-
-    $('#h_id_username').focusout(()=>{
-        var username    = $('#h_id_username').val();
-        var uuid        = Math.floor(Math.random()*(999-100+1)+100);
-        $('#h_id_gusername').val(username+uuid);
     })
 
     // $('#h_id_submit').click(()=>{
