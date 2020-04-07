@@ -19,6 +19,7 @@ let form_data = {
  $(document).ready(()=>{
    
     $('#h_mem_add').click(() => {
+      
         let prv = $('fieldset.h_member_row:nth-last-of-type(1)');
         let nxt = prv;
         if (saveMemberRow(prv) || prv.find("legend").html() != "AAAS-NN") {

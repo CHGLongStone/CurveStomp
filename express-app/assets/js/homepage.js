@@ -12,29 +12,29 @@ $(document).ready(()=>{
 
     })
 
-    $('#h_id_submit').click(()=>{
-        var profiledata = {};
-        profiledata['huid'] = $('#h_id_uid').val();
-        profiledata['pass'] = $('#h_id_pass').val();
-        profiledata['country']  = $('#h_loc_country').val();
-        profiledata['region']   = $('h_loc_region').val();
-        profiledata['city']     = $('#h_loc_city').val();
-        profiledata['postal_code']  = $('#h_loc_pcode').val();
-        profiledata['street_name']  = $('#h_loc_street').val();
-        console.log(profiledata);
+    // $('#h_id_submit').click(()=>{
+    //     var profiledata = {};
+    //     profiledata['huid'] = create_UUID();
+    //     profiledata['pass'] = $('#h_id_pass').val();
+    //     profiledata['country']  = $('#h_loc_country').val();
+    //     profiledata['region']   = $('h_loc_region').val();
+    //     profiledata['city']     = $('#h_loc_city').val();
+    //     profiledata['postal_code']  = $('#h_loc_pcode').val();
+    //     profiledata['street_name']  = $('#h_loc_street').val();
+    //     console.log(profiledata);
 
-        //POSTING Data to express server
+    //     //POSTING Data to express server
 
-        $.ajax({
-            type: "POST",
-            url: "/creathouseholdprofile",
-            dataType: 'json',
-            data: profiledata,
-            success: function (response) {
-                console.log(response);
-            }
-        })
-    })
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "/creathouseholdprofile",
+    //         dataType: 'json',
+    //         data: profiledata,
+    //         success: function (response) {
+    //             console.log(response);
+    //         }
+    //     })
+    // })
 
     // Generate GUID for New Profile
 
