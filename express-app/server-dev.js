@@ -40,7 +40,7 @@ app.get('/form', (req, res) => {
 
 app.get('/household', isAuthenticated,(req,res)=>{
   console.log(req.session.username);
-  res.render('household',{guid:req.session.uid,username:req.session.username});
+  res.render('household',{guid:req.session.uid});
 })
 
 app.post('/login',function(req,res){
@@ -85,7 +85,7 @@ app.post('/report.symptom', (req, res) => {
 app.post('/homepage/createhouseholdprofile',(request,response)=>{
   var huid  = request.body.huid;
   console.log(request.body.gusername);
-  var username  = request.body.gusername;
+  // var username  = request.body.gusername;
   var pass  = request.body.pass;
   var country = request.body.country;
   var region  = request.body.region;
@@ -93,7 +93,7 @@ app.post('/homepage/createhouseholdprofile',(request,response)=>{
   var street  = request.body.street_name;
   var postal_code = request.body.postal_code;
   request.session.loggedin = true;
-  request.session.username = username;
+  // request.session.username = username;
   request.session.uid = huid;
   response.redirect('/household');
  
@@ -102,7 +102,7 @@ app.post('/homepage/createhouseholdprofile',(request,response)=>{
 app.post('/createhouseholdprofile',(request,response)=>{
   var huid  = request.body.huid;
   console.log(request.body.gusername);
-  var username  = request.body.gusername;
+  // var username  = request.body.gusername;
   var pass  = request.body.pass;
   var country = request.body.country;
   var region  = request.body.region;
@@ -110,7 +110,7 @@ app.post('/createhouseholdprofile',(request,response)=>{
   var street  = request.body.street_name;
   var postal_code = request.body.postal_code;
   request.session.loggedin = true;
-  request.session.username = username;
+  // request.session.username = username;
   request.session.uid = huid;
   response.redirect('/household');
 })
