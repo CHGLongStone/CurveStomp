@@ -10,6 +10,7 @@
 </head>
 
 <body>
+    <%- include('partials/nav.ejs') %>
     <form action="createhouseholdprofile" method="POST">
         <fieldset id="h_identity">
             <legend>Identity</legend>
@@ -39,6 +40,10 @@
                 <div class="field_container">
                     <label for="h_id_username">Username:</label>
                     <input id="h_id_username" name="username" type="text" required>
+                </div>
+                <div class="field_container" id="gusername_div" style="display: none">
+                    <label for="h_id_gusername">Generated Username:</label>
+                    <input id="h_id_gusername" name="gusername" type="text" readonly>
                 </div>
                 <div class="field_container">
                     <label for="h_id_pass">Passcode:</label>

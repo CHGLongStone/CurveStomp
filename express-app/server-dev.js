@@ -25,6 +25,7 @@ dbconn.connect(function (err) {
 });
 var http = require("http").Server(app);
 app.engine('html', require('ejs').renderFile);
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -37,9 +38,9 @@ app.get('/form', (req, res) => {
   res.render('index');
 });
 
-app.get('/household',(req,res)=>{
+app.get('/household', isAuthenticated,(req,res)=>{
   console.log(req.session.username);
-  res.render('household',{guid:req.session.username});
+  res.render('household',{guid:req.session.uid,username:req.session.username});
 })
 
 app.post('/login',function(req,res){
@@ -83,8 +84,8 @@ app.post('/report.symptom', (req, res) => {
 
 app.post('/homepage/createhouseholdprofile',(request,response)=>{
   var huid  = request.body.huid;
-  console.log(request.body);
-  user_guid_value =request.body.huid;
+  console.log(request.body.gusername);
+  var username  = request.body.gusername;
   var pass  = request.body.pass;
   var country = request.body.country;
   var region  = request.body.region;
@@ -92,15 +93,16 @@ app.post('/homepage/createhouseholdprofile',(request,response)=>{
   var street  = request.body.street_name;
   var postal_code = request.body.postal_code;
   request.session.loggedin = true;
-  request.session.username = huid;
+  request.session.username = username;
+  request.session.uid = huid;
   response.redirect('/household');
  
 })
 
 app.post('/createhouseholdprofile',(request,response)=>{
   var huid  = request.body.huid;
-  console.log(request.body);
-  user_guid_value =request.body.huid;
+  console.log(request.body.gusername);
+  var username  = request.body.gusername;
   var pass  = request.body.pass;
   var country = request.body.country;
   var region  = request.body.region;
@@ -108,9 +110,9 @@ app.post('/createhouseholdprofile',(request,response)=>{
   var street  = request.body.street_name;
   var postal_code = request.body.postal_code;
   request.session.loggedin = true;
-  request.session.username = huid;
+  request.session.username = username;
+  request.session.uid = huid;
   response.redirect('/household');
- 
 })
 app.post('/report.testing', (req, res) => {
   var user_guid = req.body.user_guid;
@@ -199,6 +201,15 @@ app.post('/register.location', (req, res) => {
   var passcode_value = req.body.passcode_value;
 
 });
+
+function isAuthenticated(req, res, next) {
+	if (req.session.loggedin == true) {
+		return next();
+	}
+	else {
+		res.redirect('/homepage');
+	}
+}
 const PORT = 37248;
 
 // port to listen

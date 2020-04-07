@@ -2,6 +2,7 @@ $(document).ready(()=>{
    
     $('#h_id_signup').click(()=>{
         $('#h_location').show();
+        $('#gusername_div').show();
         $('#h_id_signup').css("display","none");
         $('#h_id_login').css("display","none");
         $('#h_id_pass_confirm_container').show();
@@ -10,6 +11,12 @@ $(document).ready(()=>{
     })
     $('#h_id_login').click(()=>{
 
+    })
+
+    $('#h_id_username').focusout(()=>{
+        var username    = $('#h_id_username').val();
+        var uuid        = Math.floor(Math.random()*(999-100+1)+100);
+        $('#h_id_gusername').val(username+uuid);
     })
 
     // $('#h_id_submit').click(()=>{
