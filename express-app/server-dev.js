@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const path = require('path');
 const config = require('./config');
+const countryjson = require('../countries');
 var user_guid_value;
 var app = express();
 app.use(session({
@@ -121,7 +122,9 @@ app.post(['/createhouseholdprofile', '/homepage/createhouseholdprofile'],(reques
   response.redirect('/household');
  
 })
-
+app.get('/countrylist',(req,res)=>{
+  res.send(countryjson);
+})
 
 app.post('/report.testing', (req, res) => {
   var user_guid = req.body.user_guid;

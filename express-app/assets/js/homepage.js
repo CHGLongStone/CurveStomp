@@ -1,6 +1,19 @@
 $(document).ready(()=>{
+    var countrylist;
+    $.ajax({
+        type: "GET",
+        url:    "/countrylist",
+        success:function(response){
+            countrylist=response;
+        }
+    })
     $('#createprofile').on('shown.bs.modal', function () {
         var req =1;
+        var select = $("<datalist></datalist>").attr("id", "country_list").attr("name", "country_list");
+        $.each(countrylist,function(index,countrylist){
+         select.append($("<option></option>").attr("value", countrylist.code).text(countrylist.FormalName));
+        });     
+        $("#countrycontainer").append(select);
         $.ajax({
                     type: "GET",
                     url: "/gethouseholdid",
