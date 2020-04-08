@@ -3,6 +3,7 @@
 <head>
     <link rel="stylesheet" type="text/css" href="assets/css/form.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!--    <script type="text/javascript" src="assets/js/form_flat.js"></script>-->
     <script type="text/javascript" src="assets/js/form_flat.js"></script>
     <meta charset="UTF-8">
     <title>COVID-19 Symptom Survey</title>
@@ -18,11 +19,13 @@
             and collected information is published freely to aid on-going research efforts. Periodic
             reporting enables researchers to track symptom progression over time. This information
             complements laboratory testing. This is discussed in greater detail in the following
-            papers:</p>
+            resources:</p>
 
         <ul>
             <li><a href="https://www.medrxiv.org/content/10.1101/2020.04.02.20051284v1.full.pdf">
-                Coronavirus Consensus Collective</a></li>
+                Coronavirus Consensus Collective (PDF)</a></li>
+            <li><a href="https://smelltracker.org/">
+                SmellTracker - chart smell perception using 5 household items</a></li>
         </ul>
 
         <p>We are taking every measure to safeguard the privacy and anonymity of participants. This
@@ -33,20 +36,18 @@
         <p>Please fill out the questionnaire regularly whether you experience symptoms or not.
             Reports of ‘no symptoms’ are critically important as baseline information.</p>
 
-        <p>We thank you for your participation and ask that you help us spread the word about this
-            effort.</p>
+        <p>Thank you for your participation. Please help us spread the word!</p>
 
         <p><i>--- <a href="https://symptometrics.org">Symptometrics.org</a></i></p>
 
     </div>
     <section id="household">
-        <h2>Household</h2>
+        <h2>Household Profile<span id="h_id"></span></h2>
 
         <div class="explainer">
             <p>In order to track the spread and progression of COVID-19 symptoms, the following
                 questions will establish an anonymous identity for your household and its members.
                 Your future reports will be associated to this identity.</p>
-            <p>Required fields are followed by <strong><abbr title="required">*</abbr></strong>.</p>
         </div>
 
         <fieldset id="h_identity">
@@ -56,22 +57,12 @@
                 <p>If this is your first report, please keep a record of your household’s Unique
                     Identifier and chosen Passcode in a safe location, for future reports. These
                     cannot be recovered.</p>
-
-                <!--                <p>Your email, if you choose to provide it, will not be published along with the-->
-                <!--                    survey data. It will be used solely for account recovery, and as a means to-->
-                <!--                    notify you about trends which may affect your household, based on the-->
-                <!--                    information you and other households in your region have reported.</p>-->
             </div>
 
             <div class="fieldset_container">
-                <!--                <div class="field_container">-->
-                <!--                    <label for="h_id_email">Email:</label>-->
-                <!--                    <input id="h_id_email" type="email">-->
-                <!--                </div>-->
-
 
                 <div class="field_container">
-                    <label for="h_id_uid">Unique Identifier:</label>
+                    <label for="h_id_uid">Household ID:</label>
                     <input id="h_id_uid" type="text">
                 </div>
 
@@ -80,16 +71,15 @@
                     <input id="h_id_pass" type="password">
                 </div>
 
-                <div class="field_container" style="display:none">
+                <div class="field_container">
                     <label for="h_id_pass_confirm">Confirm Passcode:</label>
                     <input id="h_id_pass_confirm" type="password">
                 </div>
 
                 <div style="justify-self:center">
-                    <input id="h_id_load" type="button" value="Load ID">
-                    <input id="h_id_create" type="button" value="Create ID">
+                    <input id="h_id_load" type="button" value="Load Profile">
                 </div>
-
+                <a id="h_id_create" href="#"><i>Create New Profile</i></a>
             </div>
 
         </fieldset>
@@ -128,6 +118,7 @@
                     <label for="h_loc_pcode">Postal Code:</label>
                     <input type="text" id="h_loc_pcode" maxlength="10">
                 </div>
+                <input type="button" id="h_loc_save" value="Update">
             </div>
         </fieldset>
 
@@ -176,8 +167,8 @@
             <input type="button" id="h_mem_add" value="Add Member">
         </fieldset>
     </section>
-    <section class="hidden" id="member">
-        <h2>Household Member: <span id="m_cur_memcode">AAAS-NN</span></h2>
+    <section id="member">
+        <h2>Report for: <span id="m_cur_memcode">AAAS-NN</span></h2>
         <div class="explainer">
             <p>Please answer the following questions <b>for each household member separately</b>.
                 Responses will be incorporated into statistical models used to analyze and research
@@ -197,34 +188,58 @@
 
             <div class="fieldset_container">
                 <div class="field_container">
-                    <label for="m_symp_cough">Dry Cough:</label>
-                    <input id="m_symp_cough" type="range" min="0" max="5" step="1" value="0">
+                    <label for="m_symp_cough">Cough:</label>
+                    <select id="m_symp_cough">
+                        <option>None</option>
+                        <option>Mild (Dry)</option>
+                        <option>Mild (Wet)</option>
+                        <option>Severe (Dry)</option>
+                        <option>Severe (Wet)</option>
+                    </select>
                 </div>
 
                 <div class="field_container">
-                    <label for="m_symp_cough_productive">Productive Cough:</label>
-                    <input id="m_symp_cough_productive" type="range" min="0" max="5" step="1"
-                           value="0">
+                    <label for="m_symp_fever">Max. Fever:</label>
+                    <input id="m_symp_fever" type="number" min="36" max="43" step="0.1"
+                           value="36.7">
                 </div>
 
                 <div class="field_container">
-                    <label for="m_symp_pneumonia">Pneumonia (Diagnosed):</label>
-                    <input id="m_symp_pneumonia" type="checkbox">
+                    <label for="m_symp_fatigue">Fatigue:</label>
+                    <input id="m_symp_fatigue" type="checkbox">
                 </div>
 
                 <div class="field_container">
-                    <label for="m_symp_breathing">Difficulty Breathing</label>
-                    <input id="m_symp_breathing" type="range" min="0" max="5" step="1" value="0">
+                    <label for="m_symp_nose">Runny Nose or Congestion:</label>
+                    <input id="m_symp_nose" type="checkbox">
+                    <!--                    <input id="m_symp_nose" type="range" min="0" max="2" step="1" value="0">-->
                 </div>
 
                 <div class="field_container">
-                    <label for="m_symp_walking">Difficulty Walking</label>
+                    <label for="m_symp_breathing">Difficulty Breathing:</label>
+                    <input id="m_symp_breathing" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_throat">Sore Throat:</label>
+                    <input id="m_symp_throat" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_headache">Headache</label>
+                    <input id="m_symp_headache" type="checkbox">
+                    <!--                    <input id="m_symp_headache" type="range" min="0" max="3" step="1" value="0">-->
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_walking">Difficulty Walking:</label>
                     <input id="m_symp_walking" type="checkbox">
                 </div>
 
                 <div class="field_container">
-                    <label for="m_symp_appetite">Appetite Loss</label>
-                    <input id="m_symp_appetite" type="range" min="0" max="5" step="1" value="0">
+                    <label for="m_symp_appetite">Loss of Appetite:</label>
+                    <input id="m_symp_appetite" type="checkbox">
+                    <!--                    <input id="m_symp_appetite" type="range" min="0" max="5" step="1" value="0">-->
                 </div>
 
                 <div class="field_container">
@@ -235,32 +250,6 @@
                 <div class="field_container">
                     <label for="m_symp_muscle_pain">Muscle Pain:</label>
                     <input id="m_symp_muscle_pain" type="checkbox">
-                </div>
-
-                <div class="field_container">
-                    <label for="m_symp_fatigue">Fatigue:</label>
-                    <input id="m_symp_fatigue" type="checkbox">
-                </div>
-
-                <div class="field_container">
-                    <label for="m_symp_nose">Runny Nose or Congestion:</label>
-                    <input id="m_symp_nose" type="range" min="0" max="2" step="1" value="0">
-                </div>
-
-                <div class="field_container">
-                    <label for="m_symp_throat">Sore Throat:</label>
-                    <input id="m_symp_throat" type="checkbox">
-                </div>
-
-                <div class="field_container">
-                    <label for="m_symp_fever">Fever</label>
-                    <input id="m_symp_fever" type="number" min="36" max="43" step="0.1"
-                           value="36.7">
-                </div>
-
-                <div class="field_container">
-                    <label for="m_symp_headache">Headache</label>
-                    <input id="m_symp_headache" type="range" min="0" max="3" step="1" value="0">
                 </div>
 
                 <div class="field_container">
@@ -283,6 +272,10 @@
                     <input id="m_symp_general_pain" type="checkbox">
                 </div>
 
+                <div class="field_container">
+                    <label for="m_symp_smell_loss">Loss of Smell:</label>
+                    <input id="m_symp_smell_loss" type="checkbox">
+                </div>
             </div>
         </fieldset>
 
@@ -296,35 +289,43 @@
             </div>
 
             <div class="fieldset_container">
-                <div class="field_container">
-                    <label for="m_trans_isolation">Isolation:</label>
-                    <select id="m_trans_isolation">
-                        <option>None</option>
-                        <option>Physical Distancing</option>
-                        <option>Home Isolation</option>
-                        <option>Daily Outings with minimal contacts</option>
-                        <option>Full Quarantine (No leaving house)</option>
-                    </select>
-                    <!--                    <input id="m_trans_isolation" type="range" min="0" max="5" step="1" value="0">-->
-                </div>
+                <!--                <div class="field_container">-->
+                <!--                    <label for="m_trans_isolation">Isolation:</label>-->
+                <!--                    <select id="m_trans_isolation">-->
+                <!--                        <option>None</option>-->
+                <!--                        <option>Physical Distancing</option>-->
+                <!--                        <option>Home Isolation</option>-->
+                <!--                        <option>Daily Outings with minimal contacts</option>-->
+                <!--                        <option>Full Quarantine (No leaving house)</option>-->
+                <!--                    </select>-->
+                <!--                </div>-->
                 <div class="field_container">
                     <label for="m_trans_distance">Travelled Since Last Report:</label>
                     <select id="m_trans_distance">
-                        <option>< 1km</option>
+                        <option value selected>< 1km</option>
                         <option>1-5km</option>
                         <option>5-10km</option>
                         <option>10-100km</option>
                         <option>100km+</option>
                     </select>
-                    <!--                    <input id="m_trans_distance" type="range" min="0" max="5" step="1" value="0">-->
                 </div>
                 <div class="field_container">
                     <label for="m_trans_surface">Surface Exposure:</label>
-                    <input id="m_trans_surface" type="range" min="0" max="5" step="1" value="0">
+                    <select id="m_trans_surface">
+                        <option value selected>Household Only</option>
+                        <option>0-5 Surfaces</option>
+                        <option>5-20 Surfaces</option>
+                        <option>20+ Surfaces</option>
+                    </select>
                 </div>
                 <div class="field_container">
                     <label for="m_trans_human">Human Exposure:</label>
-                    <input id="m_trans_human" type="range" min="0" max="5" step="1" value="0">
+                    <select id="m_trans_human">
+                        <option selected>Household Only</option>
+                        <option>0-5 People</option>
+                        <option>5-20 People</option>
+                        <option>20+ People</option>
+                    </select>
                 </div>
             </div>
         </fieldset>
@@ -343,12 +344,11 @@
             <div class="fieldset_container">
                 <div class="field_container">
                     <label for="m_lab_tested">Clinically Tested:</label>
-                    <input id="m_lab_tested" type="checkbox">
-                </div>
-
-                <div class="field_container">
-                    <label for="m_lab_result">Test Results:</label>
-                    <input id="m_lab_result" list="lab_results" name="lab_results">
+                    <select id="m_lab_tested">
+                        <option value selected>Untested</option>
+                        <option value="positive">Tested Positive</option>
+                        <option value="negative">Tested Negative</option>
+                    </select>
                 </div>
 
                 <div class="field_container">
@@ -372,6 +372,11 @@
                 </div>
 
                 <div class="field_container">
+                    <label for="m_symp_pneumonia">Pneumonia (Diagnosed):</label>
+                    <input id="m_symp_pneumonia" type="checkbox">
+                </div>
+
+                <div class="field_container">
                     <label for="m_lab_ventilation">Mechanical Ventilation:</label>
                     <input id="m_lab_ventilation" type="checkbox">
                 </div>
@@ -382,6 +387,15 @@
                 </div>
 
                 <div class="field_container">
+                    <label for="m_lab_antibodies">Antibodies:</label>
+                    <select id="m_lab_antibodies">
+                        <option value selected>Untested</option>
+                        <option value="positive">Tested Positive</option>
+                        <option value="negative">Tested Negative</option>
+                    </select>
+                </div>
+
+                <div class="field_container">
                     <label for="m_lab_symptoms">Other Symptoms:</label>
                     <input id="m_lab_symptoms" type="text" placeholder="Comma-Separated List">
                 </div>
@@ -389,8 +403,6 @@
         </fieldset>
 
         <div id="m_controls">
-            <!--            <input id="m_nav_prev" type="button" value="< Previous">-->
-            <!--            <input id="m_nav_next" type="button" value="Next >">-->
             <input id="btnSubmit" type="button" value="Submit">
         </div>
     </section>
@@ -412,18 +424,6 @@
 <datalist id="region"></datalist>
 <datalist id="city"></datalist>
 
-<!--  COLLAPSING SCRIPT  -->
-<script type="application/javascript">
-    for (let header of document.querySelectorAll("h2, section > fieldset > legend")) {
-        header.classList.add("collapsible");
-        header.addEventListener("click", () => {
-            Array.from(header.parentNode.children)
-                .filter(n => n !== header)
-                .forEach(n => n.classList.toggle("hidden"))
-        });
-        header.click()
-    }
-</script>
 
 </body>
 </html>
