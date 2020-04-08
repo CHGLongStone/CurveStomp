@@ -168,8 +168,20 @@ fieldset#h_identity div.fieldset_container {
     }
 
     fieldset.h_member_row div.controls {
-        justify-self: flex-end;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-evenly;
     }
+}
+
+#m_controls {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+#h_id_create {
+    justify-self: center;
 }
 
 
