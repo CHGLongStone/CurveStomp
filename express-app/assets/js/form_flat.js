@@ -232,16 +232,18 @@ $(document).ready(function () {
     });
     $('#h_mem_add').click(() => {
         let prv = $('fieldset.h_member_row:nth-last-of-type(1)');
+        saveMemberRow(prv);
+
         if (prv.find("legend").html() != "AAAS-NN") {
             let nxt = prv.clone();
             nxt.insertAfter(prv);
-            prv = nxt;
             let btn = nxt.find('#h_mem_delete');
             btn.clone().attr('id', 'h_mem_save').val("Save").insertAfter(btn).click((e) => {
                 saveMemberRow(e.target.parentNode.parentNode.parentNode);
             });
+            prv = nxt;
         }
-        saveMemberRow(prv);
+
         prv.attr({"id": 'AAAS-NN'});
         prv.find('#h_mem_delete').remove();
         prv.find('#h_mem_report').remove();
