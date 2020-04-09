@@ -3,27 +3,33 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const path = require('path');
+
 const config = require('./config');
 const countryjson = require('../countries');
+
 var user_guid_value;
 var app = express();
+
 app.use(session({
     secret: 'secret',
     resave: true,
     saveUninitialized: true
 }));
 
+// ESTABLISH DATABASE CONNECTION
 const dbconn = mysql.createConnection({
     host: "localhost",
-    database: config.CurveStomp.database,
     user: config.CurveStomp.user,
-    password: config.CurveStomp.pass
+    password: config.CurveStomp.pass,
+    database: config.CurveStomp.database,
+    debug: false
 });
-
-dbconn.connect(function (err) {
+dbconn.connect((err) => {
     if (err) throw err;
     console.log(" Db Connected!");
 });
+
+// CONFIGURE WEB SERVER
 var http = require("http").Server(app);
 app.engine('html', require('ejs').renderFile);
 app.set('views', path.join(__dirname, 'views'));
@@ -32,13 +38,21 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use('/assets', express.static(__dirname + '/assets'));
 
-app.get('/', function (req, res) {
+function isAuthenticated(req, res, next) {
+    if (req.session.loggedin == true) {
+        return next();
+    } else {
+        res.redirect('/homepage');
+    }
+}
+
+// CONFIGURE UI ROUTING
+app.get('/', (req, res) => {
     res.render('home');
 });
 app.get('/form', (req, res) => {
     res.render('index');
 });
-
 app.get('/household', isAuthenticated, (req, res) => {
     var guid = req.session.uid;
     var firstpart = guid.slice(0, 3);
@@ -46,9 +60,8 @@ app.get('/household', isAuthenticated, (req, res) => {
     var thirdpart = guid.slice(6, 9);
     var hid = firstpart + "-" + secondpart + "-" + thirdpart;
     res.render('household', {guid: hid});
-})
-
-app.post('/login', function (req, res) {
+});
+app.post('/login', (req, res) => {
     var exidn = req.body.identity;
     var expass = req.body.pass;
     console.log(exidn);
@@ -57,14 +70,11 @@ app.post('/login', function (req, res) {
 app.get('/form2', (req, res) => {
     res.render('form2');
 });
-app.get('/homepage', (req, res) => {
+app.get('/homepage/?', (req, res) => {
     res.render('homepage');
-})
+});
 
-app.get('/homepage/', (req, res) => {
-    res.render('homepage');
-})
-
+// CONFIGURE API ROUTING
 app.get('/gethouseholdid', (req, res) => {
     var hid = Math.floor(Math.random() * 900000000) + 100000000;
     dbconn.query('select household_guid from household where household_guid=?', [hid], (error, results) => {
@@ -81,7 +91,6 @@ app.get('/gethouseholdid', (req, res) => {
     });
 
 });
-
 app.post('/report.symptom', (req, res) => {
     var user_guid = req.body.user_guid;
     var member_id = req.body.member_id;
@@ -103,26 +112,24 @@ app.post('/report.symptom', (req, res) => {
     var chills = req.body.chills;
     var other_pain = req.body.other_pain;
 });
-
-app.post(['/createhouseholdprofile', '/homepage/createhouseholdprofile'], (request, response) => {
-    var huid = request.body.huid;
-    console.log(request.body);
-    var pass = request.body.pass;
-    var country = request.body.country;
-    var region = request.body.region;
-    var city = request.body.city;
-    var street = request.body.street_name;
-    var postal_code = request.body.postal_code;
-    request.session.loggedin = true;
-    request.session.uid = huid;
+app.post(['/createhouseholdprofile', '/homepage/createhouseholdprofile'], (req, res) => {
+    var huid = req.body.huid;
+    console.log(req.body);
+    var pass = req.body.pass;
+    var country = req.body.country;
+    var region = req.body.region;
+    var city = req.body.city;
+    var street = req.body.street_name;
+    var postal_code = req.body.postal_code;
+    req.session.loggedin = true;
+    req.session.uid = huid;
     // request.session.username = username;
-    response.redirect('/household');
+    res.redirect('/household');
 
-})
+});
 app.get('/countrylist', (req, res) => {
     res.send(countryjson);
-})
-
+});
 app.post('/report.testing', (req, res) => {
     var user_guid = req.body.user_guid;
     var tested = req.body.tested;
@@ -133,7 +140,6 @@ app.post('/report.testing', (req, res) => {
     var other_symptoms = req.body.other_symptoms;
 
 });
-
 app.post('/report.transmission', (req, res) => {
     var user_guid = req.body.user_guid;
     var travel_amount = req.body.travel_amount;
@@ -143,7 +149,6 @@ app.post('/report.transmission', (req, res) => {
     var number_of_regular_contacts = req.body.number_of_regular_contacts;
 
 });
-
 app.post('/register.user', (req, res) => {
     var user_guid = req.body.user_guid;
     var passcode = req.body.passcode;
@@ -151,7 +156,6 @@ app.post('/register.user', (req, res) => {
     var passcode_value = req.body.passcode_value;
 
 });
-
 app.post('/authenticate.user', (req, res) => {
     var user_guid = req.body.user_guid;
     var user_guid_value = req.body.user_guid_value;
@@ -159,7 +163,6 @@ app.post('/authenticate.user', (req, res) => {
     var passcode_value = req.body.passcode_value;
 
 });
-
 app.post('/createuserprofile', (req, res) => {
     var usremail = req.body.usremail;
     var usridn = req.body.usridn;
@@ -202,7 +205,6 @@ app.post('/createuserprofile', (req, res) => {
 
     res.send("Record Submitted");
 });
-
 app.post('/register.location', (req, res) => {
     var user_guid = req.body.user_guid;
     var user_guid_value = req.body.user_guid_value;
@@ -211,17 +213,9 @@ app.post('/register.location', (req, res) => {
 
 });
 
-function isAuthenticated(req, res, next) {
-    if (req.session.loggedin == true) {
-        return next();
-    } else {
-        res.redirect('/homepage');
-    }
-}
 
+// FIRE UP SERVER
 const PORT = 37248;
-
-// port to listen
 http.listen(PORT, function () {
     console.log('listening on port: ', PORT);
 });
