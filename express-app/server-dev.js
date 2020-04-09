@@ -61,12 +61,6 @@ app.get('/household', isAuthenticated, (req, res) => {
     var hid = firstpart + "-" + secondpart + "-" + thirdpart;
     res.render('household', {guid: hid});
 });
-app.post('/login', (req, res) => {
-    var exidn = req.body.identity;
-    var expass = req.body.pass;
-    console.log(exidn);
-    console.log(expass);
-});
 app.get('/form2', (req, res) => {
     res.render('form2');
 });
@@ -90,6 +84,15 @@ app.get('/gethouseholdid', (req, res) => {
         }
     });
 
+});
+app.get('/countrylist', (req, res) => {
+    res.send(countryjson);
+});
+app.post('/login', (req, res) => {
+    var exidn = req.body.identity;
+    var expass = req.body.pass;
+    console.log(exidn);
+    console.log(expass);
 });
 app.post('/report.symptom', (req, res) => {
     var user_guid = req.body.user_guid;
@@ -126,9 +129,6 @@ app.post(['/createhouseholdprofile', '/homepage/createhouseholdprofile'], (req, 
     // request.session.username = username;
     res.redirect('/household');
 
-});
-app.get('/countrylist', (req, res) => {
-    res.send(countryjson);
 });
 app.post('/report.testing', (req, res) => {
     var user_guid = req.body.user_guid;
@@ -213,6 +213,9 @@ app.post('/register.location', (req, res) => {
 
 });
 
+app.post('/api/commcheck/?', (req, res) => {
+    res.send(req.body)
+});
 
 // FIRE UP SERVER
 const PORT = 37248;
