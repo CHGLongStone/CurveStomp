@@ -214,10 +214,16 @@ app.post('/register.location', (req, res) => {
 });
 
 
-app.use(express.json());
+app.use(express.json({
+    inflate: true,
+    limit: '100kb',
+    reviver: null,
+    strict: true,
+    type: 'application/json',
+    verify: undefined
+}));
 app.post('/api/commcheck/?', (req, res) => {
-    res.headers({'Content-Type': 'application/json'});
-    res.json({requestBody: req.body});
+    res.json(req.body);
 });
 
 // FIRE UP SERVER
