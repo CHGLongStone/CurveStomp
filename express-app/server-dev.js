@@ -213,8 +213,11 @@ app.post('/register.location', (req, res) => {
 
 });
 
+
+app.use(express.json());
 app.post('/api/commcheck/?', (req, res) => {
-    res.send(req.body)
+    res.headers({'Content-Type': 'application/json'});
+    res.json({requestBody: req.body});
 });
 
 // FIRE UP SERVER
