@@ -1,7 +1,4 @@
-function load_user_data(user_id, passcode) {
-//    Attempt to retrieve user's data based on the unique ID
-    console.log("Attempting to load:" + user_id)
-}
+const SERVERURL = 'http://localhost:37248';
 
 function saveMemberRow(memb_row) {
 
@@ -55,12 +52,7 @@ function saveMemberRow(memb_row) {
     btn.clone().attr('id', 'h_mem_report').val('Report').insertAfter(btn).click(() => {
         // Reference the current member in the section title
         $('#m_cur_memcode').html(memb_id);
-
-        // Hide the household section
-        $('#household').hide();
-
-        // Reveal the member section
-        $('#member').show();
+        displayState('memberReport')
     });
 
     // Remove the "save" button from the member row
@@ -103,6 +95,81 @@ function delMember(memb_row) {
     }
 }
 
+function asyncPostJSON(url, obj) {
+    return fetch(url, {
+        // credentials: 'same-origin',
+        // mode: 'same-origin',
+        // mode: 'no-cors',
+        // crossOrigin: null,
+        method: "post",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(obj)
+    }).then(resp => {
+        if (!resp.ok) {
+            console.log("Status: " + resp.status);
+            return Promise.reject("server")
+        }
+        return resp.json()
+    }).catch(err => {
+        if (err == "server") return;
+        $('#error_info').html(err).show();
+        throw err
+    });
+}
+
+function collapseOn(anchor) {
+    Array.from(anchor.siblings())
+        .forEach(n => {
+            if (!n.classList.contains("hidden"))
+                n.classList.add("hidden");
+        });
+}
+
+function expandOn(anchor) {
+    Array.from(anchor.siblings())
+        .forEach(n => {
+            if (n.classList.contains("hidden"))
+                n.classList.remove("hidden");
+        });
+}
+
+function displayState(state_string) {
+    displayState.cur_display = state_string;
+    if (state_string == 'login') {
+        $('#member').hide();
+        $('fieldset#h_location').hide();
+        $('fieldset#h_members').hide();
+        $('#h_id_pass_confirm').parent().hide();
+    } else if (state_string == 'createProfile') {
+        $('section#member').hide();
+        $('section#household').show();
+        $('form > .explainer').hide();
+        $('section > fieldset#identity').show();
+        $('section > fieldset#h_location').show();
+        $('section > fieldset#h_members').hide();
+        $('#h_id_pass_confirm').parent().show();
+        $('#h_id_load').hide();
+        $('#h_id_create').hide();
+    } else if (state_string == 'memberReport') {
+        $('form > .explainer').hide();
+        $('#household').hide();
+        $('#member').show();
+        $('#m_labresults > legend').click();
+    } else if (state_string == 'profile') {
+        $('form > .explainer').hide();
+        $('#household').show();
+        $('#member').hide();
+        $('section > fieldset#h_location').show();
+        $('section > fieldset#h_members').show();
+        collapseOn($('section > fieldset#h_identity > legend'));
+        collapseOn($('section > fieldset#h_location > legend'))
+    } else {
+        displayState.cur_display = null;
+    }
+    console.log('Display mode: ' + displayState.cur_display);
+}
+
+
 let form_data = {
     "household": {
         "identity": {
@@ -137,7 +204,6 @@ let form_data = {
     }
 };
 
-
 $(document).ready(function () {
 
     // Make all fieldsets and H2 titled elements collapsible
@@ -148,28 +214,21 @@ $(document).ready(function () {
                 .filter(n => n !== header)
                 .forEach(n => n.classList.toggle("hidden"))
         });
-        // Collapse by default:
-        // header.click()
     }
 
-    // Hide member section
-    $('#member').hide();
+    asyncPostJSON(SERVERURL + '/api/commcheck', {
+        'id': 'me',
+        'msg': 'hello world'
+    }).then(res => {
+        console.log(res);
+    });
 
-    // Expand Household section
-    $('fieldset#h_location').hide();
-    $('fieldset#h_members').hide();
-
-    // Hide confirm passcode field
-    $('#h_id_pass_confirm').parent().hide();
+    displayState('login');
 
     // Load existing profile TODO: UN-STUB.
     $('#h_id_load').click(() => {
         // Organize UI
-        $('form > .explainer').hide();
-        $('section > fieldset#h_identity > legend').click();
-        $('section > fieldset#h_location').show();
-        $('section > fieldset#h_location > legend').click();
-        $('section > fieldset#h_members').show();
+        displayState('profile');
 
         // Load Identity information from data obj
         $('#h_id').html(": " + form_data['household']['identity']['unique_identifier']);
@@ -195,13 +254,7 @@ $(document).ready(function () {
             btn.clone().attr('id', 'h_mem_report').val('Report').insertAfter(btn).click(() => {
                 // Reference the current member in the section title
                 $('#m_cur_memcode').html(member);
-
-                // Hide the household section
-                $('#household').hide();
-
-                // Reveal the member section
-                $('#member').show();
-
+                displayState("memberReport");
             });
             // Remove the "save" button from the member row
             btn.remove();
@@ -219,11 +272,13 @@ $(document).ready(function () {
 
     // Save location data to form data
     $('#h_loc_save').click(() => {
-        form_data['household']['location']['country'] = $('#h_loc_country').val();
-        form_data['household']['location']['region'] = $('#h_loc_region').val();
-        form_data['household']['location']['city'] = $('#h_loc_city').val();
-        form_data['household']['location']['street_name'] = $('#h_loc_street').val();
-        form_data['household']['location']['postal_code'] = $('#h_loc_pcode').val();
+        form_data['household']['location'] = {
+            'country': $('#h_loc_country').val(),
+            'region': $('#h_loc_region').val(),
+            'city': $('#h_loc_city').val(),
+            'street_name': $('#h_loc_street').val(),
+            'postal_code': $('#h_loc_pcode').val()
+        };
     });
 
     // Add a new member row when 'add new member' is clicked
@@ -261,12 +316,9 @@ $(document).ready(function () {
     $('#btnSubmit').click(() => {
         let memb_id = $('#m_cur_memcode').html();
 
-        // TODO: Validate all the data in this member's report
-
-        // store data into data store
+        // store data into data store TODO: Validate data
         form_data['members'][memb_id]['symptoms'] = {
             'm_symp_cough': $('#m_symp_cough').val(),
-            'm_symp_cough_productive': $('#m_symp_cough_productive').val(),
             'm_symp_pneumonia': $('#m_symp_pneumonia').val(),
             'm_symp_breathing': $('#m_symp_breathing').val(),
             'm_symp_walking': $('#m_symp_walking').val(),
@@ -284,14 +336,12 @@ $(document).ready(function () {
             'm_symp_general_pain': $('#m_symp_general_pain').val()
         };
         form_data['members'][memb_id]['transmission'] = {
-            'm_trans_isolation': $('#m_trans_isolation').val(),
             'm_trans_distance': $('#m_trans_distance').val(),
             'm_trans_surface': $('#m_trans_surface').val(),
             'm_trans_human': $('#m_trans_human').val()
         };
         form_data['members'][memb_id]['lab_results'] = {
             'm_lab_tested': $('#m_lab_tested').val(),
-            'm_lab_result': $('#m_lab_result').val(),
             'm_lab_hospitalized': $('#m_lab_hospitalized').val(),
             'm_lab_hosp_days': $('#m_lab_hosp_days').val(),
             'm_lab_hosp_icu': $('#m_lab_hosp_icu').val(),
@@ -301,12 +351,17 @@ $(document).ready(function () {
             'm_lab_symptoms': $('#m_lab_symptoms').val()
         };
 
+        let report = {
+            'household': form_data['household'],
+            'report': form_data['members'][memb_id]
+        };
+        asyncPostJSON(SERVERURL + '/api/submit_report', report).then(res => {
+            console.log(res);
+        });
+
         // mark the member row as complete.
         $('#' + memb_id).css('background-color', 'var(--validated_data)');
-        console.log(memb_id);
-
-        $('#member').hide();
-        $('#household').show();
+        displayState('profile')
     });
 
     // Create a new profile
@@ -330,15 +385,8 @@ $(document).ready(function () {
             "members": {}
         };
 
-        // Sort UI
-        $('form > .explainer').hide();
-        $('#h_location').show();
-        $('#h_id_load').hide();
-        $('#h_id_create').remove();
-
         // Stub a new identity:
         $('#h_id_uid').val("987-654-321");
-        $('#h_id_pass_confirm').parent().show();
 
         // Hijack the location save button
         let btn = $('#h_loc_save');
@@ -347,18 +395,16 @@ $(document).ready(function () {
             form_data['household']['identity']['unique_identifier'] = $('#h_id_uid').val();
             form_data['household']['identity']['passcode'] = $('#h_id_pass').val();
             form_data['household']['identity']['confirmed'] = $('#h_id_pass_confirm').val();
-            form_data['household']['location']['country'] = $('#h_id_loc_country').val();
-            form_data['household']['location']['region'] = $('#h_id_loc_region').val();
-            form_data['household']['location']['city'] = $('#h_id_loc_city').val();
-            form_data['household']['location']['street_name'] = $('#h_loc_street').val();
-            form_data['household']['location']['postal_code'] = $('#h_loc_pcode').val();
-            $(e.target).remove();
+            $('#h_loc_save').click();
+            $(e.target).hide();
             btn.show();
             $('#h_id_load').click();
         });
         btn.hide();
-    });
 
+        // Sort UI
+        displayState('createProfile')
+    });
 
 })
 ;

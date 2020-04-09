@@ -3,7 +3,6 @@
 <head>
     <link rel="stylesheet" type="text/css" href="assets/css/form.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <!--    <script type="text/javascript" src="assets/js/form_flat.js"></script>-->
     <script type="text/javascript" src="assets/js/form_flat.js"></script>
     <meta charset="UTF-8">
     <title>COVID-19 Symptom Survey</title>
@@ -41,6 +40,7 @@
         <p><i>--- <a href="https://symptometrics.org">Symptometrics.org</a></i></p>
 
     </div>
+
     <section id="household">
         <h2>Household Profile<span id="h_id"></span></h2>
 
@@ -289,20 +289,10 @@
             </div>
 
             <div class="fieldset_container">
-                <!--                <div class="field_container">-->
-                <!--                    <label for="m_trans_isolation">Isolation:</label>-->
-                <!--                    <select id="m_trans_isolation">-->
-                <!--                        <option>None</option>-->
-                <!--                        <option>Physical Distancing</option>-->
-                <!--                        <option>Home Isolation</option>-->
-                <!--                        <option>Daily Outings with minimal contacts</option>-->
-                <!--                        <option>Full Quarantine (No leaving house)</option>-->
-                <!--                    </select>-->
-                <!--                </div>-->
                 <div class="field_container">
                     <label for="m_trans_distance">Travelled Since Last Report:</label>
                     <select id="m_trans_distance">
-                        <option value selected>< 1km</option>
+                        <option selected>< 1km</option>
                         <option>1-5km</option>
                         <option>5-10km</option>
                         <option>10-100km</option>
@@ -312,7 +302,7 @@
                 <div class="field_container">
                     <label for="m_trans_surface">Surface Exposure:</label>
                     <select id="m_trans_surface">
-                        <option value selected>Household Only</option>
+                        <option selected>Household Only</option>
                         <option>0-5 Surfaces</option>
                         <option>5-20 Surfaces</option>
                         <option>20+ Surfaces</option>
@@ -406,9 +396,11 @@
             <input id="btnSubmit" type="button" value="Submit">
         </div>
     </section>
-
 </form>
 
+<pre id="error_info" style="display: none; background-color: var(--invalid_data);"></pre>
+
+</body>
 
 <!--  SUPPORTING DATA  -->
 <datalist id="bio_gender">
@@ -424,6 +416,4 @@
 <datalist id="region"></datalist>
 <datalist id="city"></datalist>
 
-
-</body>
 </html>

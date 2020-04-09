@@ -214,6 +214,9 @@ app.post('/register.location', (req, res) => {
 });
 
 
+// TODO: REMOVE FROM PRODUCTION SERVER....
+const cors = require('cors');
+app.use(cors({origin: '*'}));
 app.use(express.json({
     inflate: true,
     limit: '100kb',
@@ -222,8 +225,12 @@ app.use(express.json({
     type: 'application/json',
     verify: undefined
 }));
+
 app.post('/api/commcheck/?', (req, res) => {
     res.json(req.body);
+});
+app.post('/api/submit_report/?', (req, res) => {
+    console.log('[' + Date.now() + '] Rx @ ' + req.url + ': ' + JSON.stringify(req.body));
 });
 
 // FIRE UP SERVER
