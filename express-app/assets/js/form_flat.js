@@ -1,4 +1,4 @@
-const SERVERURL = 'http://localhost:37248';
+const SERVERURL = 'http://d0001.symptometer.io';
 
 function saveMemberRow(memb_row) {
 
@@ -172,7 +172,7 @@ function displayState(state_string) {
 function formatHouseholdId(hhid) {
     // hhid is an integer between 0 and 999999999999
     let str = hhid.toString();
-    str = (hhid.length > 9) ? str.padStart(9, '0') : str.padStart(12, '0');
+    str = (str.length > 9) ? str.padStart(12, '0') : str.padStart(9, '0');
     const numChunks = Math.ceil(str.length / 3);
     let chunks = new Array(numChunks);
     for (let i = 0, o = 0; i < numChunks; ++i, o += 3) {
@@ -236,7 +236,7 @@ $(document).ready(function () {
         displayState('profile');
 
         // Load Identity information from data obj
-        $('#h_id').html(": " + form_data['household']['identity']['unique_identifier']);
+        $('#h_id').html(": " + formatHouseholdId(form_data['household']['identity']['unique_identifier']));
         $('#h_loc_country').val(form_data['household']['location']['country']);
         $('#h_loc_region').val(form_data['household']['location']['region']);
         $('#h_loc_city').val(form_data['household']['location']['city']);
@@ -410,8 +410,7 @@ $(document).ready(function () {
             "household": {
                 "identity": {
                     "unique_identifier": null,
-                    "passcode": null,
-                    "confirm_passcode": null
+                    "passcode": null
                 },
                 "location": {
                     "country": null,
@@ -424,23 +423,55 @@ $(document).ready(function () {
             "members": {}
         };
         asyncPostJSON(SERVERURL + '/api/generate_id', {}).then(res => {
-            form_data['household']['identity']['unique_identifier'] = formatHouseholdId(res);
-            // Stub a new identity:
-            $('#h_id_uid').val(form_data['household']['identity']['unique_identifier']);
+            form_data['household']['identity']['unique_identifier'] = res;
+            $('#h_id_uid').val(formatHouseholdId(res)).prop('disabled', true);
 
             // Hijack the location save button
             let btn = $('#h_loc_save');
             btn.clone().insertAfter(btn).val("Create Profile").click((e) => {
+
                 // TODO: Validate inputs
-                form_data['household']['identity']['unique_identifier'] = $('#h_id_uid').val();
-                form_data['household']['identity']['passcode'] = $('#h_id_pass').val();
-                form_data['household']['identity']['confirmed'] = $('#h_id_pass_confirm').val();
-                $('#h_loc_save').click();
-                $(e.target).hide();
-                btn.show();
-                $('#h_id_load').click();
+                // TODO: inform user of failure reasons
+
+                // Validate user's passcode:
+                let pass = $('#h_id_pass');
+                let cnfrm = $('#h_id_pass_confirm');
+                if (pass.val().length < 6 || pass.val() != cnfrm.val()) {
+                    // TODO: warn user about password requirements
+                    pass.val("").css('border-color', 'var(--invalid_data');
+                    cnfrm.val("").css('border-color', 'var(--invalid_data');
+                    return;
+                }
+                // Validate Country:
+                let inspected = $('#h_loc_country');
+                if (inspected.val() == '') {
+                    inspected.val("").css('border-color', 'var(--invalid_data');
+                    return;
+                }
+                // Validate City:
+                inspected = $('#h_loc_city');
+                if (inspected.val() == '') {
+                    inspected.val("").css('border-color', 'var(--invalid_data');
+                    return;
+                }
+                // Validate Street Name:
+                inspected = $('#h_loc_street');
+                if (inspected.val() == '') {
+                    inspected.val("").css('border-color', 'var(--invalid_data');
+                    return;
+                }
+
+                // Save data locally.
+                form_data['household']['identity']['passcode'] = pass.val();
+                btn.click(); // trigger location saving
+
+                asyncPostJSON(SERVERURL + '/api/create_profile', form_data['household']).then(res => {
+                    $(e.target).hide(); // hide the 'create profile' button
+                    btn.show(); // show the 'save location' button to allow location changes
+                    $('#h_id_load').click(); // trigger a profile data load. Needed?
+                });
             });
-            btn.hide();
+            btn.hide(); // Hide the 'save location' button
 
             // Sort UI
             displayState('createProfile')
