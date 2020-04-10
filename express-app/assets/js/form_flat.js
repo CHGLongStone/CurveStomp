@@ -460,8 +460,8 @@ $(document).ready(function () {
                     cnfrm.val("").css('border-color', 'var(--invalid_data');
                     return;
                 } else {
-                    pass.val("").css('border-color', 'var(--validated_data');
-                    cnfrm.val("").css('border-color', 'var(--validated_data');
+                    pass.css('border-color', 'var(--validated_data');
+                    cnfrm.css('border-color', 'var(--validated_data');
                 }
                 // Validate Country:
                 let inspected = $('#h_loc_country');
@@ -469,7 +469,7 @@ $(document).ready(function () {
                     inspected.val("").css('border-color', 'var(--invalid_data');
                     return;
                 } else {
-                    inspected.val("").css('border-color', 'var(--validated_data');
+                    inspected.css('border-color', 'var(--validated_data');
                 }
                 // Validate City:
                 inspected = $('#h_loc_city');
@@ -477,7 +477,7 @@ $(document).ready(function () {
                     inspected.val("").css('border-color', 'var(--invalid_data');
                     return;
                 } else {
-                    inspected.val("").css('border-color', 'var(--validated_data');
+                    inspected.css('border-color', 'var(--validated_data');
                 }
                 // Validate Street Name:
                 inspected = $('#h_loc_street');
@@ -485,7 +485,7 @@ $(document).ready(function () {
                     inspected.val("").css('border-color', 'var(--invalid_data');
                     return;
                 } else {
-                    inspected.val("").css('border-color', 'var(--validated_data');
+                    inspected.css('border-color', 'var(--validated_data');
                 }
 
                 // Save data locally.
