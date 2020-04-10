@@ -279,9 +279,9 @@ app.post('/api/generate_id/?', (req, res) => {
     res.send(max_hid.toString());
 });
 app.post('/api/create_profile/?', (req, res) => {
-    var identity = req.body.identity;
-    var location = req.body.location;
-    if (identity != undefined && location != undefined) {
+    try {
+        var identity = req.body.identity;
+        var location = req.body.location;
         var response = '';
         var uid = identity['unique_identifier'];
         var pass = identity['passcode'];
@@ -290,50 +290,88 @@ app.post('/api/create_profile/?', (req, res) => {
         var region = location['region'];
         var postal_code = location['postal_code'];
         var street_name = location['street_name'];
-        if(country!=undefined && city!=undefined && region!=undefined && postal_code!=undefined && street_name!=undefined)
-        {
-            if (uid == '' || uid == null) {
-                response += "Empty household id";
-            }
-            else if (pass == '' || pass == null) {
-                response += "Empty passcode";
-            }
-            else if (country == '' || country == null) {
-                response += "Empty country";
-            }
-            else if (city == '' || city == null) {
-                response += "Empty city";
-            }
-            else if (postal_code == '' || postal_code == null) {
-                response += "Empty postal_code";
-            }
-            else if (street_name == '' || street_name == null) {
-                response += "Empty postal code";
-            }
-            else
-            {
-                response += "ok";
 
-            }
+    } catch (error) {
+        response += "Invalid Profile Request";
+    }
 
-        }
-        else
-        {
-            response+="Invalid Profile creation request";
-        }
+    if (uid == '' || uid == null) {
+        response += "Empty household id";
+    }
+    else if (pass == '' || pass == null) {
+        response += "Empty passcode";
+    }
+    else if (country == '' || country == null) {
+        response += "Empty country";
+    }
+    else if (city == '' || city == null) {
+        response += "Empty city";
+    }
+    else if (postal_code == '' || postal_code == null) {
+        response += "Empty postal_code";
+    }
+    else if (street_name == '' || street_name == null) {
+        response += "Empty postal code";
+    }
+    else {
+        response += "ok";
 
     }
-    else
-    {
-        response+="Invalid Profile creation request";
 
 
-    }
+    // if (identity != undefined && location != undefined) {
+    //     var response = '';
+    //     var uid = identity['unique_identifier'];
+    //     var pass = identity['passcode'];
+    //     var country = location['country'];
+    //     var city = location['city'];
+    //     var region = location['region'];
+    //     var postal_code = location['postal_code'];
+    //     var street_name = location['street_name'];
+    //     if(country!=undefined && city!=undefined && region!=undefined && postal_code!=undefined && street_name!=undefined)
+    //     {
+    //         if (uid == '' || uid == null) {
+    //             response += "Empty household id";
+    //         }
+    //         else if (pass == '' || pass == null) {
+    //             response += "Empty passcode";
+    //         }
+    //         else if (country == '' || country == null) {
+    //             response += "Empty country";
+    //         }
+    //         else if (city == '' || city == null) {
+    //             response += "Empty city";
+    //         }
+    //         else if (postal_code == '' || postal_code == null) {
+    //             response += "Empty postal_code";
+    //         }
+    //         else if (street_name == '' || street_name == null) {
+    //             response += "Empty postal code";
+    //         }
+    //         else
+    //         {
+    //             response += "ok";
+
+    //         }
+
+    //     }
+    //     else
+    //     {
+    //         response+="Invalid Profile creation request";
+    //     }
+
+    // }
+    // else
+    // {
+    //     response+="Invalid Profile creation request";
+
+
+    // }
     
     console.log(response);
-    // logFmt(req.url, req.body);
-    // TODO: validate data received
-    res.json({ 'response': response });
+// logFmt(req.url, req.body);
+// TODO: validate data received
+res.json({ 'response': response });
 });
 
 
