@@ -444,6 +444,7 @@ $(document).ready(function () {
             "members": {}
         };
         asyncPostJSON(SERVERURL + '/api/generate_id', {}).then(res => {
+            console.log("Got Household ID: " + res.toString());
             form_data['household']['identity']['unique_identifier'] = res;
             $('#h_id_uid').val(formatHouseholdId(res)).prop('disabled', true);
 
@@ -498,6 +499,7 @@ $(document).ready(function () {
                 btn.click(); // trigger location saving
 
                 asyncPostJSON(SERVERURL + '/api/create_profile', form_data['household']).then(res => {
+                    console.log(res);
                     $(e.target).hide(); // hide the 'create profile' button
                     btn.show(); // show the 'save location' button to allow location changes
                     $('#h_id_load').click(); // trigger a profile data load. Needed?
