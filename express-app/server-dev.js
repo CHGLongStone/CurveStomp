@@ -214,8 +214,8 @@ app.post('/register.location', (req, res) => {
 
 let max_hid = 0; // TODO: update max_hid on startup with largest PK in DB.
 
-const cors = require('cors');
-app.use(cors({origin: '*'}));
+const cors = require('cors'); // TODO: Consider removing for production
+app.use(cors({origin: '*'})); // TODO: Consider removing for production
 app.use(express.json({
     inflate: true,
     limit: '100kb',
@@ -229,8 +229,7 @@ function logFmt(url, payload) {
     console.log('[' + Date.now() + '] Rx @ ' + url + ': ' + JSON.stringify(payload))
 };
 
-const {check, validationResult} = require('express-validator');
-
+// HANDLE API REQUESTS
 app.post('/api/commcheck/?', (req, res) => {
     res.json(req.body);
 }); // TODO: Delete for production
