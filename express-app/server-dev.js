@@ -279,9 +279,45 @@ app.post('/api/generate_id/?', (req, res) => {
     res.send(max_hid.toString());
 });
 app.post('/api/create_profile/?', (req, res) => {
-    logFmt(req.url, req.body);
+    var identity    = req.body.identity;
+    var location    = req.body.location;
+    var response    = '';
+    var uid         = identity['unique_identifier'];
+    var pass        = identity['passcode'];
+    var country     = location['country'];
+    var city        = location['city'];
+    var region      = location['region'];
+    var postal_code = location['postal_code'];
+    var street_name = location['street_name'];
+    if(uid==''||uid==null)
+    {
+        response+="Empty household id";
+    }
+    else if(pass==''||pass==null)
+    {
+        response+="Empty passcode";
+    }
+    else if(country==''|| country==null)
+    {
+        response+="Empty country";
+    }
+    else if(city==''|| city==null)
+    {
+        response+="Empty city";
+    }
+    else if(postal_code==''|| postal_code==null)
+    {
+        response+="Empty postal_code";
+    }
+    else if(street_name==''|| street_name==null)
+    {
+        response+="Empty postal code";
+    }
+    response+="ok";
+    console.log(response);
+    // logFmt(req.url, req.body);
     // TODO: validate data received
-    res.json({'response': 'ok'});
+    res.json({'response': response});
 });
 
 
