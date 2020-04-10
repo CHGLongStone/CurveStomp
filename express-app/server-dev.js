@@ -247,7 +247,7 @@ app.post('/api/generate_id/?', (req, res) => {
 app.post('/api/create_profile/?', (req, res) => {
     logFmt(req.url, req.body);
     // validate data received
-    res.send("OK")
+    res.json({'response': 'ok'});
 });
 
 
