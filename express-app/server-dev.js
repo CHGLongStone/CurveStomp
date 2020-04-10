@@ -234,6 +234,7 @@ app.post('/api/commcheck/?', (req, res) => {
 });
 app.post('/api/get_profile/?', (req, res) => {
     logFmt(req.url, req.body);
+    // TODO: validate received data
     res.json({
         "household": {
             "identity": {
@@ -269,6 +270,7 @@ app.post('/api/get_profile/?', (req, res) => {
 });
 app.post('/api/submit_report/?', (req, res) => {
     logFmt(req.url, req.body);
+    // TODO: Validate received data
     res.json(req.body);
 });
 app.post('/api/generate_id/?', (req, res) => {
@@ -277,7 +279,7 @@ app.post('/api/generate_id/?', (req, res) => {
 });
 app.post('/api/create_profile/?', (req, res) => {
     logFmt(req.url, req.body);
-    // validate data received
+    // TODO: validate data received
     res.json({'response': 'ok'});
 });
 

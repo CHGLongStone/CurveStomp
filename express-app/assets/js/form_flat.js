@@ -228,8 +228,8 @@ $(document).ready(function () {
             return;
         }
         form_data['household']['identity'] = {
-            'unique_identifier': hid,
-            'passcode': pass
+            'unique_identifier': hid.val(),
+            'passcode': pass.val()
         };
 
         asyncPostJSON(SERVERURL + '/api/get_profile', form_data['household']['identity']).then(res => {
