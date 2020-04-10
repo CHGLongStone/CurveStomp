@@ -290,25 +290,37 @@ app.post('/api/create_profile/?', (req, res) => {
         var region = location['region'];
         var postal_code = location['postal_code'];
         var street_name = location['street_name'];
-        if (uid == '' || uid == null) {
-            response += "Empty household id";
+        if(country!=undefined && city!=undefined && region!=undefined && postal_code!=undefined && street_name!=undefined)
+        {
+            if (uid == '' || uid == null) {
+                response += "Empty household id";
+            }
+            else if (pass == '' || pass == null) {
+                response += "Empty passcode";
+            }
+            else if (country == '' || country == null) {
+                response += "Empty country";
+            }
+            else if (city == '' || city == null) {
+                response += "Empty city";
+            }
+            else if (postal_code == '' || postal_code == null) {
+                response += "Empty postal_code";
+            }
+            else if (street_name == '' || street_name == null) {
+                response += "Empty postal code";
+            }
+            else
+            {
+                response += "ok";
+
+            }
+
         }
-        else if (pass == '' || pass == null) {
-            response += "Empty passcode";
+        else
+        {
+            response+="Invalid Profile creation request";
         }
-        else if (country == '' || country == null) {
-            response += "Empty country";
-        }
-        else if (city == '' || city == null) {
-            response += "Empty city";
-        }
-        else if (postal_code == '' || postal_code == null) {
-            response += "Empty postal_code";
-        }
-        else if (street_name == '' || street_name == null) {
-            response += "Empty postal code";
-        }
-        response += "ok";
 
     }
     else
