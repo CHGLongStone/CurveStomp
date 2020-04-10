@@ -234,9 +234,7 @@ const {check, validationResult} = require('express-validator');
 app.post('/api/commcheck/?', (req, res) => {
     res.json(req.body);
 }); // TODO: Delete for production
-app.post('/api/get_profile/?', [
-    check()
-], (req, res) => {
+app.post('/api/get_profile/?', (req, res) => {
     logFmt(req.url, req.body);
     // TODO: validate received data
     res.json({
