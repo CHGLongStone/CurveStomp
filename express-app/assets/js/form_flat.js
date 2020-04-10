@@ -171,49 +171,34 @@ function displayState(state_string) {
 
 function formatHouseholdId(hhid) {
     // hhid is an integer between 0 and 999999999999
-    let str = hhid.toString();
-    str = (str.length > 9) ? str.padStart(12, '0') : str.padStart(9, '0');
-    const numChunks = Math.ceil(str.length / 3);
-    let chunks = new Array(numChunks);
-    for (let i = 0, o = 0; i < numChunks; ++i, o += 3) {
-        chunks[i] = str.substr(o, 3)
+    if (hhid != NaN) {
+        let str = hhid.toString();
+        str = str.padStart(str.length > 9 ? 12 : 9, "0");
+        const numChunks = Math.ceil(str.length / 3);
+        let chunks = new Array(numChunks);
+        for (let i = 0, o = 0; i < numChunks; ++i, o += 3) {
+            chunks[i] = str.substr(o, 3)
+        }
+        return chunks.join('-')
     }
-    return chunks.join('-')
+    return ''
 }
 
-// TODO: unstub
-let form_data = {
+form_data = {
     "household": {
         "identity": {
-            "unique_identifier": formatHouseholdId(123456789),
-            "passcode": null,
-            "confirm_passcode": null
+            "unique_identifier": '',
+            "passcode": ''
         },
         "location": {
-            "country": 'Canada',
-            "region": "Ontario",
-            "city": "Ottawa",
-            "street_name": "Triangle St.",
-            "postal_code": "M8C 7J9"
+            "country": '',
+            "region": '',
+            "city": '',
+            "street_name": '',
+            "postal_code": ''
         }
     },
-    "members": {
-        "38M-JG": {
-            "age": 38,
-            "sex": "M",
-            "alias": "JG"
-        },
-        "32F-VG": {
-            "age": 32,
-            "sex": "F",
-            "alias": "VG"
-        },
-        "1M-UG": {
-            "age": 1,
-            "sex": "M",
-            "alias": "UG"
-        },
-    }
+    "members": {}
 };
 
 $(document).ready(function () {
@@ -232,47 +217,69 @@ $(document).ready(function () {
 
     // Load existing profile TODO: UN-STUB.
     $('#h_id_load').click(() => {
-        // Organize UI
-        displayState('profile');
-
-        // Load Identity information from data obj
-        $('#h_id').html(": " + formatHouseholdId(form_data['household']['identity']['unique_identifier']));
-        $('#h_loc_country').val(form_data['household']['location']['country']);
-        $('#h_loc_region').val(form_data['household']['location']['region']);
-        $('#h_loc_city').val(form_data['household']['location']['city']);
-        $('#h_loc_street').val(form_data['household']['location']['street_name']);
-        $('#h_loc_pcode').val(form_data['household']['location']['postal_code']);
-
-        // Load Member information from data obj
-        for (let member of Object.keys(form_data['members'])) {
-            let m_row = $('fieldset.h_member_row:nth-last-of-type(1)');
-            let new_m_row = m_row.clone();
-            m_row.find("#h_mem_age").val(form_data['members'][member]['age']);
-            m_row.find("#h_mem_bio_gender").val(form_data['members'][member]['sex']);
-            m_row.find("#h_mem_alias").val(form_data['members'][member]['alias']);
-            m_row.find('legend').html(member);
-            m_row.attr('id', member);
-            let btn = m_row.find('#h_mem_save');
-            btn.clone().attr('id', 'h_mem_delete').val('Delete').insertAfter(btn).click((e) => {
-                delMember(e.target.parentNode.parentNode.parentNode);
-            });
-            btn.clone().attr('id', 'h_mem_report').val('Report').insertAfter(btn).click(() => {
-                // Reference the current member in the section title
-                $('#m_cur_memcode').html(member);
-                displayState("memberReport");
-            });
-            // Remove the "save" button from the member row
-            btn.remove();
-            new_m_row.insertAfter(m_row);
+        // Validate user's passcode:
+        let pass = $('#h_id_pass');
+        let hid = $('#h_id_uid');
+        hid.val(formatHouseholdId(hid.val().replace(/[^\d]/g, '')))
+        if (hid.val() == '') {
+            hid.val("").css('border-color', 'var(--invalid_data');
+            return;
         }
+        if (pass.val().length < 6) {
+            // TODO: warn user about password requirements
+            pass.val("").css('border-color', 'var(--invalid_data');
+            return;
+        }
+        form_data['household']['identity'] = {
+            'unique_identifier': hid,
+            'passcode': pass
+        };
 
-        // Remove unneccessary member rows:
-        if (!jQuery.isEmptyObject(form_data['members'])) {
-            let m_row = $('fieldset.h_member_row:nth-last-of-type(1)');
-            if (m_row.find('legend').html() == 'AAAS-NN') {
-                m_row.remove();
+        asyncPostJSON(SERVERURL + '/api/get_profile', form_data['household']['identity']).then(res => {
+            form_data = res;
+
+            // Organize UI
+            displayState('profile');
+
+            // Load Identity information from data obj
+            $('#h_id').html(": " + formatHouseholdId(form_data['household']['identity']['unique_identifier']));
+            $('#h_loc_country').val(form_data['household']['location']['country']);
+            $('#h_loc_region').val(form_data['household']['location']['region']);
+            $('#h_loc_city').val(form_data['household']['location']['city']);
+            $('#h_loc_street').val(form_data['household']['location']['street_name']);
+            $('#h_loc_pcode').val(form_data['household']['location']['postal_code']);
+
+            // Load Member information from data obj
+            for (let member of Object.keys(form_data['members'])) {
+                let m_row = $('fieldset.h_member_row:nth-last-of-type(1)');
+                let new_m_row = m_row.clone();
+                m_row.find("#h_mem_age").val(form_data['members'][member]['age']);
+                m_row.find("#h_mem_bio_gender").val(form_data['members'][member]['sex']);
+                m_row.find("#h_mem_alias").val(form_data['members'][member]['alias']);
+                m_row.find('legend').html(member);
+                m_row.attr('id', member);
+                let btn = m_row.find('#h_mem_save');
+                btn.clone().attr('id', 'h_mem_delete').val('Delete').insertAfter(btn).click((e) => {
+                    delMember(e.target.parentNode.parentNode.parentNode);
+                });
+                btn.clone().attr('id', 'h_mem_report').val('Report').insertAfter(btn).click(() => {
+                    // Reference the current member in the section title
+                    $('#m_cur_memcode').html(member);
+                    displayState("memberReport");
+                });
+                // Remove the "save" button from the member row
+                btn.remove();
+                new_m_row.insertAfter(m_row);
             }
-        }
+
+            // Remove unneccessary member rows:
+            if (!jQuery.isEmptyObject(form_data['members'])) {
+                let m_row = $('fieldset.h_member_row:nth-last-of-type(1)');
+                if (m_row.find('legend').html() == 'AAAS-NN') {
+                    m_row.remove();
+                }
+            }
+        })
     });
 
     // Save location data to form data
@@ -441,24 +448,33 @@ $(document).ready(function () {
                     pass.val("").css('border-color', 'var(--invalid_data');
                     cnfrm.val("").css('border-color', 'var(--invalid_data');
                     return;
+                } else {
+                    pass.val("").css('border-color', 'var(--validated_data');
+                    cnfrm.val("").css('border-color', 'var(--validated_data');
                 }
                 // Validate Country:
                 let inspected = $('#h_loc_country');
                 if (inspected.val() == '') {
                     inspected.val("").css('border-color', 'var(--invalid_data');
                     return;
+                } else {
+                    inspected.val("").css('border-color', 'var(--validated_data');
                 }
                 // Validate City:
                 inspected = $('#h_loc_city');
                 if (inspected.val() == '') {
                     inspected.val("").css('border-color', 'var(--invalid_data');
                     return;
+                } else {
+                    inspected.val("").css('border-color', 'var(--validated_data');
                 }
                 // Validate Street Name:
                 inspected = $('#h_loc_street');
                 if (inspected.val() == '') {
                     inspected.val("").css('border-color', 'var(--invalid_data');
                     return;
+                } else {
+                    inspected.val("").css('border-color', 'var(--validated_data');
                 }
 
                 // Save data locally.

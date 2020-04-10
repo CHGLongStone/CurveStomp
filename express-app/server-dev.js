@@ -233,7 +233,40 @@ app.post('/api/commcheck/?', (req, res) => {
     res.json(req.body);
 });
 app.post('/api/get_profile/?', (req, res) => {
-    //
+    logFmt(req.url, req.body);
+    res.json({
+        "household": {
+            "identity": {
+                "unique_identifier": formatHouseholdId(123456789),
+                "passcode": null,
+                "confirm_passcode": null
+            },
+            "location": {
+                "country": 'Canada',
+                "region": "Ontario",
+                "city": "Ottawa",
+                "street_name": "Triangle St.",
+                "postal_code": "M8C 7J9"
+            }
+        },
+        "members": {
+            "38M-JG": {
+                "age": 38,
+                "sex": "M",
+                "alias": "JG"
+            },
+            "32F-VG": {
+                "age": 32,
+                "sex": "F",
+                "alias": "VG"
+            },
+            "1M-UG": {
+                "age": 1,
+                "sex": "M",
+                "alias": "UG"
+            },
+        }
+    });
 });
 app.post('/api/submit_report/?', (req, res) => {
     logFmt(req.url, req.body);
@@ -242,7 +275,6 @@ app.post('/api/submit_report/?', (req, res) => {
 app.post('/api/generate_id/?', (req, res) => {
     max_hid++;
     res.send(max_hid.toString());
-    // var hid = Math.floor(Math.random() * (999999999999 + 1));
 });
 app.post('/api/create_profile/?', (req, res) => {
     logFmt(req.url, req.body);
