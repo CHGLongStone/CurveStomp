@@ -231,7 +231,12 @@ app.post('/api/commcheck/?', (req, res) => {
 });
 app.post('/api/submit_report/?', (req, res) => {
     console.log('[' + Date.now() + '] Rx @ ' + req.url + ': ' + JSON.stringify(req.body));
+    res.json(req.body);
 });
+app.post('/api/generate_id', (req, res) => {
+    //
+});
+
 
 // FIRE UP SERVER
 const PORT = 37248;

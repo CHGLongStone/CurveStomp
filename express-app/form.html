@@ -190,16 +190,16 @@
                 <div class="field_container">
                     <label for="m_symp_cough">Cough:</label>
                     <select id="m_symp_cough">
-                        <option>None</option>
-                        <option>Mild (Dry)</option>
-                        <option>Mild (Wet)</option>
-                        <option>Severe (Dry)</option>
-                        <option>Severe (Wet)</option>
+                        <option value="0" selected>None</option>
+                        <option value="1">Mild (Dry)</option>
+                        <option value="2">Mild (Wet)</option>
+                        <option value="3">Severe (Dry)</option>
+                        <option value="4">Severe (Wet)</option>
                     </select>
                 </div>
 
                 <div class="field_container">
-                    <label for="m_symp_fever">Max. Fever:</label>
+                    <label for="m_symp_fever">Max. Fever (°C):</label>
                     <input id="m_symp_fever" type="number" min="36" max="43" step="0.1"
                            value="36.7">
                 </div>
@@ -212,7 +212,6 @@
                 <div class="field_container">
                     <label for="m_symp_nose">Runny Nose or Congestion:</label>
                     <input id="m_symp_nose" type="checkbox">
-                    <!--                    <input id="m_symp_nose" type="range" min="0" max="2" step="1" value="0">-->
                 </div>
 
                 <div class="field_container">
@@ -228,7 +227,6 @@
                 <div class="field_container">
                     <label for="m_symp_headache">Headache</label>
                     <input id="m_symp_headache" type="checkbox">
-                    <!--                    <input id="m_symp_headache" type="range" min="0" max="3" step="1" value="0">-->
                 </div>
 
                 <div class="field_container">
@@ -239,7 +237,6 @@
                 <div class="field_container">
                     <label for="m_symp_appetite">Loss of Appetite:</label>
                     <input id="m_symp_appetite" type="checkbox">
-                    <!--                    <input id="m_symp_appetite" type="range" min="0" max="5" step="1" value="0">-->
                 </div>
 
                 <div class="field_container">
@@ -335,9 +332,9 @@
                 <div class="field_container">
                     <label for="m_lab_tested">Clinically Tested:</label>
                     <select id="m_lab_tested">
-                        <option value selected>Untested</option>
-                        <option value="positive">Tested Positive</option>
-                        <option value="negative">Tested Negative</option>
+                        <option value="-1" selected>Untested</option>
+                        <option value="1">Tested Positive</option>
+                        <option value="0">Tested Negative</option>
                     </select>
                 </div>
 
@@ -379,9 +376,9 @@
                 <div class="field_container">
                     <label for="m_lab_antibodies">Antibodies:</label>
                     <select id="m_lab_antibodies">
-                        <option value selected>Untested</option>
-                        <option value="positive">Tested Positive</option>
-                        <option value="negative">Tested Negative</option>
+                        <option value="-1" selected>Untested</option>
+                        <option value="1">Tested Positive</option>
+                        <option value="0">Tested Negative</option>
                     </select>
                 </div>
 

@@ -169,7 +169,7 @@ function displayState(state_string) {
     console.log('Display mode: ' + displayState.cur_display);
 }
 
-
+// TODO: unstub
 let form_data = {
     "household": {
         "identity": {
@@ -351,6 +351,38 @@ $(document).ready(function () {
             'm_lab_symptoms': $('#m_lab_symptoms').val()
         };
 
+        // Reset all report fields to their defaults...
+        let selector = '#member .field_container > input, #member .field_container > select';
+        for (let elem of document.querySelectorAll(selector)) {
+            elem = $(elem);
+            if (elem.prop("id") == "m_symp_fever") {
+                elem.val(36.7);
+            } else {
+                switch (elem.prop("type").toLowerCase()) {
+                    case 'text':
+                    case 'password':
+                    case 'textarea':
+                    case 'hidden':
+                        elem.val("");
+                        break;
+                    case 'radio':
+                    case 'checkbox':
+                        elem.prop("checked", false);
+                        break;
+                    case 'select-one':
+                    case 'select-multi':
+                        elem.prop("selectedIndex", 0);
+                        break;
+                    case 'number':
+                        elem.val(0);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        // Send the member's report to the server
         let report = {
             'household': form_data['household'],
             'report': form_data['members'][memb_id]
@@ -360,7 +392,9 @@ $(document).ready(function () {
         });
 
         // mark the member row as complete.
-        $('#' + memb_id).css('background-color', 'var(--validated_data)');
+        $('#' + memb_id).css('background-color', 'var(--validated_data)')
+            .find('#h_mem_report').hide();
+
         displayState('profile')
     });
 
