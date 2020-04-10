@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" type="text/css" href="assets/css/form.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="assets/js/form_flat.js"></script>
     <meta charset="UTF-8">
     <title>COVID-19 Symptom Survey</title>
@@ -63,17 +65,17 @@
 
                 <div class="field_container">
                     <label for="h_id_uid">Household ID:</label>
-                    <input id="h_id_uid" type="text">
+                    <input id="h_id_uid" data-toggle="tooltip" title="Household ID is required" type="text">
                 </div>
 
                 <div class="field_container">
                     <label for="h_id_pass">Passcode:</label>
-                    <input id="h_id_pass" type="password">
+                    <input id="h_id_pass" type="password" required>
                 </div>
 
                 <div class="field_container">
                     <label for="h_id_pass_confirm">Confirm Passcode:</label>
-                    <input id="h_id_pass_confirm" type="password">
+                    <input id="h_id_pass_confirm" type="password" required>
                 </div>
 
                 <div style="justify-self:center">
@@ -96,27 +98,27 @@
             <div class="fieldset_container">
                 <div class="field_container">
                     <label for="h_loc_country">Country:</label>
-                    <input list="country" id="h_loc_country">
+                    <input list="country" id="h_loc_country" required>
                 </div>
 
                 <div class="field_container">
                     <label for="h_loc_region">Region:</label>
-                    <input list="region" id="h_loc_region">
+                    <input list="region" id="h_loc_region" required>
                 </div>
 
                 <div class="field_container">
                     <label for="h_loc_city">City:</label>
-                    <input list="city" id="h_loc_city">
+                    <input list="city" id="h_loc_city" required>
                 </div>
 
                 <div class="field_container">
                     <label for="h_loc_street">Street Name:</label>
-                    <input type="text" id="h_loc_street">
+                    <input type="text" id="h_loc_street" required>
                 </div>
 
                 <div class="field_container">
                     <label for="h_loc_pcode">Postal Code:</label>
-                    <input type="text" id="h_loc_pcode" maxlength="10">
+                    <input type="text" id="h_loc_pcode" maxlength="10" required>
                 </div>
                 <input type="button" id="h_loc_save" value="Update">
             </div>
