@@ -171,7 +171,7 @@ function displayState(state_string) {
 
 function formatHouseholdId(hhid) {
     // hhid is an integer between 0 and 999999999999
-    if (hhid != NaN) {
+    if (hhid != NaN && hhid != '') {
         let str = hhid.toString();
         str = str.padStart(str.length > 9 ? 12 : 9, "0");
         const numChunks = Math.ceil(str.length / 3);
@@ -221,13 +221,10 @@ $(document).ready(function () {
         let pass = $('#h_id_pass');
         let hid = $('#h_id_uid');
         hid.val(formatHouseholdId(hid.val().replace(/[^\d]/g, '')))
-        if (hid.val() == '') {
-            hid.val("").css('border-color', 'var(--invalid_data');
-            return;
-        }
-        if (pass.val().length < 6) {
-            // TODO: warn user about password requirements
+        if (hid.val() == '' || pass.val().length < 6) {
+            // TODO: inform user about passcode requirements
             pass.val("").css('border-color', 'var(--invalid_data');
+            hid.css('border-color', 'var(--invalid_data');
             return;
         }
         form_data['household']['identity'] = {
