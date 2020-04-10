@@ -220,7 +220,8 @@ $(document).ready(function () {
         // Validate user's passcode:
         let pass = $('#h_id_pass');
         let hid = $('#h_id_uid');
-        hid.val(formatHouseholdId(hid.val().replace(/[^\d]/g, '')))
+        let raw_hid = hid.val().replace(/[^\d]/g, '');
+        hid.val(formatHouseholdId(raw_hid));
         if (hid.val() == '' || pass.val().length < 6) {
             // TODO: inform user about passcode requirements
             pass.val("").css('border-color', 'var(--invalid_data');
@@ -228,7 +229,7 @@ $(document).ready(function () {
             return;
         }
         form_data['household']['identity'] = {
-            'unique_identifier': hid.val(),
+            'unique_identifier': parseInt(raw_hid),
             'passcode': pass.val()
         };
 
