@@ -293,7 +293,10 @@ app.post('/api/create_profile/?', (req, res) => {
 
     } catch (error) {
         response += "Invalid Profile Request";
+        res.json({ 'response': response });
+        return;
     }
+
 
     if (uid == '' || uid == null) {
         response += "Empty household id";
@@ -367,11 +370,12 @@ app.post('/api/create_profile/?', (req, res) => {
 
 
     // }
-    
+
     console.log(response);
-// logFmt(req.url, req.body);
-// TODO: validate data received
-res.json({ 'response': response });
+    res.json({ 'response': response });
+    // logFmt(req.url, req.body);
+    // TODO: validate data received
+
 });
 
 
