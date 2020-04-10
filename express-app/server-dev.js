@@ -34,7 +34,7 @@ var http = require("http").Server(app);
 app.engine('html', require('ejs').renderFile);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use('/assets', express.static(__dirname + '/assets'));
 
@@ -59,7 +59,7 @@ app.get('/household', isAuthenticated, (req, res) => {
     var secondpart = guid.slice(3, 6);
     var thirdpart = guid.slice(6, 9);
     var hid = firstpart + "-" + secondpart + "-" + thirdpart;
-    res.render('household', { guid: hid });
+    res.render('household', {guid: hid});
 });
 app.get('/form2', (req, res) => {
     res.render('form2');
@@ -215,7 +215,7 @@ app.post('/register.location', (req, res) => {
 let max_hid = 0; // TODO: update max_hid on startup with largest PK in DB.
 
 const cors = require('cors'); // TODO: Consider removing for production
-app.use(cors({ origin: '*' })); // TODO: Consider removing for production
+app.use(cors({origin: '*'})); // TODO: Consider removing for production
 app.use(express.json({
     inflate: true,
     limit: '100kb',
@@ -230,9 +230,11 @@ function logFmt(url, payload) {
 };
 
 // HANDLE API REQUESTS
-app.post('/api/commcheck/?', (req, res) => {
+const {userValidationRules, validate} = require('./validator.js')
+app.post('/api/commcheck/?', userValidationRules(), validate, (req, res) => {
     res.json(req.body);
 }); // TODO: Delete for production
+
 app.post('/api/get_profile/?', (req, res) => {
     logFmt(req.url, req.body);
     // TODO: validate received data
@@ -279,10 +281,10 @@ app.post('/api/generate_id/?', (req, res) => {
     res.send(max_hid.toString());
 });
 app.post('/api/create_profile/?', (req, res) => {
+    var response = '';
     try {
         var identity = req.body.identity;
         var location = req.body.location;
-        var response = '';
         var uid = identity['unique_identifier'];
         var pass = identity['passcode'];
         var country = location['country'];
@@ -290,89 +292,30 @@ app.post('/api/create_profile/?', (req, res) => {
         var region = location['region'];
         var postal_code = location['postal_code'];
         var street_name = location['street_name'];
-
     } catch (error) {
         response += "Invalid Profile Request";
-        res.json({ 'response': response });
+        res.json({'response': response});
         return;
     }
 
-
     if (uid == '' || uid == null) {
         response += "Empty household id";
-    }
-    else if (pass == '' || pass == null) {
+    } else if (pass == '' || pass == null) {
         response += "Empty passcode";
-    }
-    else if (country == '' || country == null) {
+    } else if (country == '' || country == null) {
         response += "Empty country";
-    }
-    else if (city == '' || city == null) {
+    } else if (city == '' || city == null) {
         response += "Empty city";
-    }
-    else if (postal_code == '' || postal_code == null) {
+    } else if (postal_code == '' || postal_code == null) {
         response += "Empty postal_code";
-    }
-    else if (street_name == '' || street_name == null) {
+    } else if (street_name == '' || street_name == null) {
         response += "Empty postal code";
-    }
-    else {
+    } else {
         response += "ok";
-
     }
-
-
-    // if (identity != undefined && location != undefined) {
-    //     var response = '';
-    //     var uid = identity['unique_identifier'];
-    //     var pass = identity['passcode'];
-    //     var country = location['country'];
-    //     var city = location['city'];
-    //     var region = location['region'];
-    //     var postal_code = location['postal_code'];
-    //     var street_name = location['street_name'];
-    //     if(country!=undefined && city!=undefined && region!=undefined && postal_code!=undefined && street_name!=undefined)
-    //     {
-    //         if (uid == '' || uid == null) {
-    //             response += "Empty household id";
-    //         }
-    //         else if (pass == '' || pass == null) {
-    //             response += "Empty passcode";
-    //         }
-    //         else if (country == '' || country == null) {
-    //             response += "Empty country";
-    //         }
-    //         else if (city == '' || city == null) {
-    //             response += "Empty city";
-    //         }
-    //         else if (postal_code == '' || postal_code == null) {
-    //             response += "Empty postal_code";
-    //         }
-    //         else if (street_name == '' || street_name == null) {
-    //             response += "Empty postal code";
-    //         }
-    //         else
-    //         {
-    //             response += "ok";
-
-    //         }
-
-    //     }
-    //     else
-    //     {
-    //         response+="Invalid Profile creation request";
-    //     }
-
-    // }
-    // else
-    // {
-    //     response+="Invalid Profile creation request";
-
-
-    // }
 
     console.log(response);
-    res.json({ 'response': response });
+    res.json({'response': response});
     // logFmt(req.url, req.body);
     // TODO: validate data received
 
