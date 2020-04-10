@@ -202,6 +202,14 @@ form_data = {
 };
 
 $(document).ready(function () {
+    $('#h_id_uid').focusout(()=>{
+        var huid    = $('#h_id_uid').val();
+        if(huid==''|| huid==null)
+        {
+            $('#h_id_uid').css("border-color","red");
+            $('#h_id_uid').tooltip("show");
+        }
+    })
 
     // Make all fieldsets and H2 titled elements collapsible
     for (let header of document.querySelectorAll("h2, section > fieldset > legend")) {
