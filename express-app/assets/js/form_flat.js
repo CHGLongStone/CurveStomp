@@ -187,6 +187,10 @@ function formatHouseholdId(hhid) {
     return ''
 }
 
+function getLabelFor(elem) {
+    return $('label[for="' + $(elem).prop('id') + '"]')
+}
+
 form_data = {
     "household": {
         "identity": {
@@ -205,11 +209,10 @@ form_data = {
 };
 
 $(document).ready(function () {
-    $('#h_id_uid').focusout(()=>{
-        var huid    = $('#h_id_uid').val();
-        if(huid==''|| huid==null)
-        {
-            $('#h_id_uid').css("border-color","red");
+    $('#h_id_uid').focusout(() => {
+        var huid = $('#h_id_uid').val();
+        if (huid == '' || huid == null) {
+            $('#h_id_uid').css("border-color", "red");
             $('#h_id_uid').tooltip("show");
         }
     })
@@ -446,13 +449,15 @@ $(document).ready(function () {
 
             // Hijack the location save button
             let btn = $('#h_loc_save');
+            let pass = $('#h_id_pass');
+            let label = getLabelFor(pass);
+            label.html(label.html().slice(0, -1) + ' (6+ chars):');
             btn.clone().insertAfter(btn).val("Create Profile").click((e) => {
 
                 // TODO: Validate inputs
                 // TODO: inform user of failure reasons
 
                 // Validate user's passcode:
-                let pass = $('#h_id_pass');
                 let cnfrm = $('#h_id_pass_confirm');
                 if (pass.val().length < 6 || pass.val() != cnfrm.val()) {
                     // TODO: warn user about password requirements
