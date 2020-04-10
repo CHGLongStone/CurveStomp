@@ -229,10 +229,14 @@ function logFmt(url, payload) {
     console.log('[' + Date.now() + '] Rx @ ' + url + ': ' + JSON.stringify(payload))
 };
 
+const {check, validationResult} = require('express-validator');
+
 app.post('/api/commcheck/?', (req, res) => {
     res.json(req.body);
-});
-app.post('/api/get_profile/?', (req, res) => {
+}); // TODO: Delete for production
+app.post('/api/get_profile/?', [
+    check()
+], (req, res) => {
     logFmt(req.url, req.body);
     // TODO: validate received data
     res.json({

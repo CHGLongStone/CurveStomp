@@ -161,6 +161,9 @@ function displayState(state_string) {
         $('#member').hide();
         $('section > fieldset#h_location').show();
         $('section > fieldset#h_members').show();
+        $('#h_id_uid').prop('disabled', true);
+        $('#h_id_load').hide();
+        $('#h_id_create').hide();
         collapseOn($('section > fieldset#h_identity > legend'));
         collapseOn($('section > fieldset#h_location > legend'))
     } else {
@@ -215,7 +218,7 @@ $(document).ready(function () {
 
     displayState('login');
 
-    // Load existing profile TODO: UN-STUB.
+    // Load existing profile
     $('#h_id_load').click(() => {
         // Validate user's passcode:
         let pass = $('#h_id_pass');
@@ -236,11 +239,9 @@ $(document).ready(function () {
         asyncPostJSON(SERVERURL + '/api/get_profile', form_data['household']['identity']).then(res => {
             form_data = res;
 
-            // Organize UI
-            displayState('profile');
-
             // Load Identity information from data obj
             $('#h_id').html(": " + formatHouseholdId(form_data['household']['identity']['unique_identifier']));
+            hid.val(formatHouseholdId(form_data['household']['identity']['unique_identifier']));
             $('#h_loc_country').val(form_data['household']['location']['country']);
             $('#h_loc_region').val(form_data['household']['location']['region']);
             $('#h_loc_city').val(form_data['household']['location']['city']);
@@ -277,6 +278,9 @@ $(document).ready(function () {
                     m_row.remove();
                 }
             }
+
+            // Organize UI
+            displayState('profile');
         })
     });
 
@@ -323,6 +327,7 @@ $(document).ready(function () {
         delMember(e.target.parentNode.parentNode.parentNode)
     });
 
+    // Submit a member report
     $('#btnSubmit').click(() => {
         let memb_id = $('#m_cur_memcode').html();
 
