@@ -237,9 +237,8 @@ app.post('/api/get_profile/?', (req, res) => {
     res.json({
         "household": {
             "identity": {
-                "unique_identifier": formatHouseholdId(123456789),
-                "passcode": null,
-                "confirm_passcode": null
+                "unique_identifier": 123456789,
+                "passcode": 'hellogoodbye'
             },
             "location": {
                 "country": 'Canada',
