@@ -69,22 +69,18 @@ app.get('/homepage/?', (req, res) => {
 });
 
 // CONFIGURE API ROUTING
-app.get('/gethouseholdid', (req, res) => {
-    var hid = Math.floor(Math.random() * 900000000) + 100000000;
-    dbconn.query('select household_guid from household where household_guid=?', [hid], (error, results) => {
-        if (error) throw error;
-        if (results.lenght == 0) {
-            res.send(hid.toString());
-
-
-        } else {
-            var hid = Math.floor(Math.random() * 900000000) + 100000000;
-            res.send(hid.toString());
-
-        }
-    });
-
-});
+// app.get('/gethouseholdid', (req, res) => {
+//     var hid = Math.floor(Math.random() * 900000000) + 100000000;
+//     dbconn.query('select household_guid from household where household_guid=?', [hid], (error, results) => {
+//         if (error) throw error;
+//         if (results.lenght == 0) {
+//             res.send(hid.toString());
+//         } else {
+//             var hid = Math.floor(Math.random() * 900000000) + 100000000;
+//             res.send(hid.toString());
+//         }
+//     });
+// });
 app.get('/countrylist', (req, res) => {
     res.send(countryjson);
 });
@@ -215,6 +211,9 @@ app.post('/register.location', (req, res) => {
 
 
 // TODO: REMOVE FROM PRODUCTION SERVER....
+
+let max_hid = 0; // TODO: update max_hid on startup with largest PK in DB.
+
 const cors = require('cors');
 app.use(cors({origin: '*'}));
 app.use(express.json({
@@ -226,15 +225,29 @@ app.use(express.json({
     verify: undefined
 }));
 
+function logFmt(url, payload) {
+    console.log('[' + Date.now() + '] Rx @ ' + url + ': ' + JSON.stringify(payload))
+};
+
 app.post('/api/commcheck/?', (req, res) => {
     res.json(req.body);
 });
+app.post('/api/get_profile/?', (req, res) => {
+    //
+});
 app.post('/api/submit_report/?', (req, res) => {
-    console.log('[' + Date.now() + '] Rx @ ' + req.url + ': ' + JSON.stringify(req.body));
+    logFmt(req.url, req.body);
     res.json(req.body);
 });
-app.post('/api/generate_id', (req, res) => {
-    //
+app.post('/api/generate_id/?', (req, res) => {
+    max_hid++;
+    res.send(max_hid.toString());
+    // var hid = Math.floor(Math.random() * (999999999999 + 1));
+});
+app.post('/api/create_profile/?', (req, res) => {
+    logFmt(req.url, req.body);
+    // validate data received
+    res.send("OK")
 });
 
 

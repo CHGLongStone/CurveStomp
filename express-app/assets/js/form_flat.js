@@ -169,11 +169,23 @@ function displayState(state_string) {
     console.log('Display mode: ' + displayState.cur_display);
 }
 
+function formatHouseholdId(hhid) {
+    // hhid is an integer between 0 and 999999999999
+    let str = hhid.toString();
+    str = (hhid.length > 9) ? str.padStart(9, '0') : str.padStart(12, '0');
+    const numChunks = Math.ceil(str.length / 3);
+    let chunks = new Array(numChunks);
+    for (let i = 0, o = 0; i < numChunks; ++i, o += 3) {
+        chunks[i] = str.substr(o, 3)
+    }
+    return chunks.join('-')
+}
+
 // TODO: unstub
 let form_data = {
     "household": {
         "identity": {
-            "unique_identifier": '123-456-789',
+            "unique_identifier": formatHouseholdId(123456789),
             "passcode": null,
             "confirm_passcode": null
         },
@@ -215,13 +227,6 @@ $(document).ready(function () {
                 .forEach(n => n.classList.toggle("hidden"))
         });
     }
-
-    asyncPostJSON(SERVERURL + '/api/commcheck', {
-        'id': 'me',
-        'msg': 'hello world'
-    }).then(res => {
-        console.log(res);
-    });
 
     displayState('login');
 
@@ -418,27 +423,27 @@ $(document).ready(function () {
             },
             "members": {}
         };
+        asyncPostJSON(SERVERURL + '/api/generate_id', {}).then(res => {
+            form_data['household']['identity']['unique_identifier'] = formatHouseholdId(res);
+            // Stub a new identity:
+            $('#h_id_uid').val(form_data['household']['identity']['unique_identifier']);
 
-        // Stub a new identity:
-        $('#h_id_uid').val("987-654-321");
+            // Hijack the location save button
+            let btn = $('#h_loc_save');
+            btn.clone().insertAfter(btn).val("Create Profile").click((e) => {
+                // TODO: Validate inputs
+                form_data['household']['identity']['unique_identifier'] = $('#h_id_uid').val();
+                form_data['household']['identity']['passcode'] = $('#h_id_pass').val();
+                form_data['household']['identity']['confirmed'] = $('#h_id_pass_confirm').val();
+                $('#h_loc_save').click();
+                $(e.target).hide();
+                btn.show();
+                $('#h_id_load').click();
+            });
+            btn.hide();
 
-        // Hijack the location save button
-        let btn = $('#h_loc_save');
-        btn.clone().insertAfter(btn).val("Create Profile").click((e) => {
-            // TODO: Validate inputs
-            form_data['household']['identity']['unique_identifier'] = $('#h_id_uid').val();
-            form_data['household']['identity']['passcode'] = $('#h_id_pass').val();
-            form_data['household']['identity']['confirmed'] = $('#h_id_pass_confirm').val();
-            $('#h_loc_save').click();
-            $(e.target).hide();
-            btn.show();
-            $('#h_id_load').click();
+            // Sort UI
+            displayState('createProfile')
         });
-        btn.hide();
-
-        // Sort UI
-        displayState('createProfile')
     });
-
-})
-;
+});
