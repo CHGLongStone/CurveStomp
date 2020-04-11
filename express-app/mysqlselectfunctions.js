@@ -31,7 +31,7 @@ module.exports = {
             dbconn.query('select ID from household where identifier=?',huid,(err,results)=>{
                 if(err) throw err;
                 resolve(results[0]['ID']);
-            }))
+            });
         })
     }
 }
