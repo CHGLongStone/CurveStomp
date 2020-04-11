@@ -28,7 +28,7 @@ module.exports = {
     householdid: function(huid)
     {
         return new Promise((resolve,reject)=>{
-            dbconn.query('select ID from household where identifier=?',huid,(err,results0=>{
+            dbconn.query('select ID from household where identifier=?',huid,(err,results)=>{
                 if(err) throw err;
                 resolve(results[0]['ID']);
             }))
