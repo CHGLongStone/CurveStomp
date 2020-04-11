@@ -1,5 +1,6 @@
 // const SERVERURL = 'http://127.0.0.1:37248';
-const SERVERURL = 'http://d0001.symptometer.io';
+// const SERVERURL = 'http://d0001.symptometer.io';
+const SERVERURL = '';
 
 // const SERVERURL = 'http://localhost:37248';
 
