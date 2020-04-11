@@ -1,4 +1,10 @@
-const SERVERURL = '';
+/*
+Minify-Obfuscate-Minify:
+Minify: https://www.minifier.org/
+Obfuscate: https://obfuscator.io/
+ */
+
+const SERVERURL = ''; // Change this to accommodate CORS
 
 function saveMemberRow(memb_row) {
 
@@ -96,10 +102,8 @@ function delMember(memb_row) {
 
 function asyncPostJSON(url, obj) {
     return fetch(url, {
-        // credentials: 'same-origin',
-        // mode: 'same-origin',
-        // mode: 'no-cors',
-        // crossOrigin: null,
+        credentials: 'same-origin',
+        mode: 'same-origin',
         method: "post",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(obj)
@@ -208,13 +212,6 @@ form_data = {
 };
 
 $(document).ready(function () {
-    $('#h_id_uid').focusout(() => {
-        var huid = $('#h_id_uid').val();
-        if (huid == '' || huid == null) {
-            $('#h_id_uid').css("border-color", "red");
-            $('#h_id_uid').tooltip("show");
-        }
-    })
 
     // Make all fieldsets and H2 titled elements collapsible
     for (let header of document.querySelectorAll("h2, section > fieldset > legend")) {
@@ -295,13 +292,40 @@ $(document).ready(function () {
 
     // Save location data to form data
     $('#h_loc_save').click(() => {
-        form_data['household']['location'] = {
-            'country': $('#h_loc_country').val(),
-            'region': $('#h_loc_region').val(),
-            'city': $('#h_loc_city').val(),
-            'street_name': $('#h_loc_street').val(),
-            'postal_code': $('#h_loc_pcode').val()
-        };
+        let isValid = true;
+        // Validate Country:
+        let inspected = $('#h_loc_country');
+        if (inspected.val() == '' || inspected.val() == null) {
+            inspected.val("").css('border-color', 'var(--invalid_data');
+            isValid = false;
+        } else {
+            inspected.css('border-color', 'var(--validated_data');
+            form_data.household.location.country = inspected.val();
+        }
+
+        // Validate City:
+        inspected = $('#h_loc_city');
+        if (inspected.val() == '' || inspected.val() == null) {
+            inspected.val("").css('border-color', 'var(--invalid_data');
+            isValid = false;
+        } else {
+            inspected.css('border-color', 'var(--validated_data');
+            form_data.household.location.city = inspected.val();
+        }
+
+        // Validate Street Name:
+        inspected = $('#h_loc_street');
+        if (inspected.val() == '' || inspected.val() == null) {
+            inspected.val("").css('border-color', 'var(--invalid_data');
+            isValid = false;
+        } else {
+            inspected.css('border-color', 'var(--validated_data');
+            form_data.household.location.street_name = inspected.val();
+        }
+        form_data.household.location.region = $('#h_loc_region').val();
+        form_data.household.location.postal_code = $('#h_loc_pcode').val();
+
+        return isValid;
     });
 
     // Add a new member row when 'add new member' is clicked
@@ -431,82 +455,53 @@ $(document).ready(function () {
         form_data = {
             "household": {
                 "identity": {
-                    "unique_identifier": null,
-                    "passcode": null
+                    "unique_identifier": '',
+                    "passcode": ''
                 },
                 "location": {
-                    "country": null,
-                    "region": null,
-                    "city": null,
-                    "street_name": null,
-                    "postal_code": null
+                    "country": '',
+                    "region": '',
+                    "city": '',
+                    "street_name": '',
+                    "postal_code": ''
                 }
             },
             "members": {}
         };
         asyncPostJSON(SERVERURL + '/api/generate_id', {}).then(res => {
             console.log("Got Household ID: " + res.toString());
-            form_data['household']['identity']['unique_identifier'] = res;
+            form_data.household.identity.unique_identifier = res;
             $('#h_id_uid').val(formatHouseholdId(res)).prop('disabled', true);
 
             // Hijack the location save button
-            let btn = $('#h_loc_save');
+            let locSaveBtn = $('#h_loc_save');
             let pass = $('#h_id_pass');
             let label = getLabelFor(pass);
             label.html(label.html().slice(0, -1) + ' (6+ chars):');
-            btn.clone().insertAfter(btn).val("Create Profile").click((e) => {
 
-                // TODO: inform user of failure reasons
-
-                // Validate user's passcode:
+            locSaveBtn.clone().insertAfter(locSaveBtn).val("Create Profile").click((e) => {
+                // Validate & store user's passcode:
                 let cnfrm = $('#h_id_pass_confirm');
                 if (pass.val().length < 6 || pass.val() != cnfrm.val()) {
                     pass.val("").css('border-color', 'var(--invalid_data');
                     cnfrm.val("").css('border-color', 'var(--invalid_data');
                     return;
-                } else {
-                    pass.css('border-color', 'var(--validated_data');
-                    cnfrm.css('border-color', 'var(--validated_data');
                 }
-                // Validate Country:
-                let inspected = $('#h_loc_country');
-                if (inspected.val() == '') {
-                    inspected.val("").css('border-color', 'var(--invalid_data');
-                    return;
-                } else {
-                    inspected.css('border-color', 'var(--validated_data');
-                }
-                // Validate City:
-                inspected = $('#h_loc_city');
-                if (inspected.val() == '') {
-                    inspected.val("").css('border-color', 'var(--invalid_data');
-                    return;
-                } else {
-                    inspected.css('border-color', 'var(--validated_data');
-                }
-                // Validate Street Name:
-                inspected = $('#h_loc_street');
-                if (inspected.val() == '') {
-                    inspected.val("").css('border-color', 'var(--invalid_data');
-                    return;
-                } else {
-                    inspected.css('border-color', 'var(--validated_data');
-                }
+                pass.css('border-color', 'var(--validated_data');
+                cnfrm.css('border-color', 'var(--validated_data');
+                form_data.household.identity.passcode = pass.val();
 
-                // Save data locally.
-                form_data['household']['identity']['passcode'] = pass.val();
-                btn.click(); // trigger location saving
+                // Validate & store location data
+                if (!locSaveBtn.click()) return;
 
                 asyncPostJSON(SERVERURL + '/api/create_profile', form_data['household']).then(res => {
                     console.log(res);
                     $(e.target).hide(); // hide the 'create profile' button
-                    btn.show(); // show the 'save location' button to allow location changes
+                    locSaveBtn.show(); // show the 'save location' button to allow location changes
                     displayState('profile');
                 });
             });
-            btn.hide(); // Hide the 'save location' button
-
-            // Sort UI
+            locSaveBtn.hide();
             displayState('createProfile')
         });
     });

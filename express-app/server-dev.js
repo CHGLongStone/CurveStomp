@@ -21,7 +21,7 @@ var http = require("http").Server(app);
 app.engine('html', require('ejs').renderFile);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use('/assets', express.static(__dirname + '/assets'));
 
@@ -56,6 +56,7 @@ function logFmt(url, payload) {
 
 // HANDLE API REQUESTS
 const { ValidationRules, validate } = require('./validator.js');
+
 app.post('/api/get_profile/?', ValidationRules.get_profile(), validate, (req, res) => {
     logFmt(req.url, req.body);
     res.json({
@@ -142,7 +143,7 @@ app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, asyn
         {
             res.json({ 'response': "Report submission failed"});
         }
-   
+
 });
 app.post('/api/generate_id/?', (req, res) => {
     max_hid++;

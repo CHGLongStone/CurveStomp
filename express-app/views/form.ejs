@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="assets/css/form.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script type="text/javascript" src="../assets/js/form.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="assets/css/form.css"/>
+    <script type="text/javascript" src="assets/js/form.js"></script>
     <meta charset="UTF-8">
     <title>COVID-19 Symptometer</title>
 </head>
+
 <body>
-
-
 <form>
     <h1>COVID-19 Symptom Tracking Survey</h1>
     <div class="explainer">
@@ -101,12 +101,12 @@
 
                 <div class="field_container">
                     <label for="h_loc_region">Region:</label>
-                    <input list="region" id="h_loc_region" maxlength="60">
+                    <input id="h_loc_region" maxlength="60">
                 </div>
 
                 <div class="field_container">
                     <label for="h_loc_city">City:</label>
-                    <input list="city" id="h_loc_city" maxlength="60" required>
+                    <input id="h_loc_city" maxlength="60" required>
                 </div>
 
                 <div class="field_container">
@@ -399,19 +399,8 @@
 
 <!--TODO: Remove in production -->
 <pre id="error_info" style="display: none; background-color: var(--invalid_data);"></pre>
-
 </body>
-
 <!--  SUPPORTING DATA  -->
-<datalist id="bio_gender">
-    <option value="M">Male</option>
-    <option value="F">Female</option>
-</datalist>
-<datalist id="lab_results">
-    <option value="positive">Positive</option>
-    <option value="negative">Negative</option>
-    <option value="unknown">Unknown</option>
-</datalist>
 <datalist id="country">
     <option value="AFG">Afghanistan</option>
     <option value="ALA">Åland Islands</option>
@@ -662,7 +651,4 @@
     <option value="ZMB">Zambia</option>
     <option value="ZWE">Zimbabwe</option>
 </datalist>
-<datalist id="region"></datalist>
-<datalist id="city"></datalist>
-
 </html>
