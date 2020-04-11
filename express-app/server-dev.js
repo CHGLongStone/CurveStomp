@@ -280,11 +280,7 @@ app.post('/api/generate_id/?', (req, res) => {
     max_hid++;
     res.send(max_hid.toString());
 });
-<<<<<<< HEAD
-app.post('/api/create_profile/?', async function (req, res) {
-=======
-app.post('/api/create_profile/?', ValidationRules.create_profile(), validate, (req, res) => {
->>>>>>> 432b676f3fe5b976f18d975c8a7746786f30a3b0
+app.post('/api/create_profile/?', ValidationRules.create_profile(), validate,async function(req,res) {
     console.log(req.body);
     var response = '';
     try {
@@ -315,7 +311,6 @@ app.post('/api/create_profile/?', ValidationRules.create_profile(), validate, (r
         response += "Empty postal_code";
     } else if (street_name == '' || street_name == null) {
         response += "Empty postal code";
-<<<<<<< HEAD
     } else 
     {
        var countryid    = await(mysqlinsert.country(country));
@@ -325,74 +320,6 @@ app.post('/api/create_profile/?', ValidationRules.create_profile(), validate, (r
        var household_insert_id  = await(mysqlinsert.household(uid,pass));
        if(household_insert_id)
        {
-=======
-    } else {
-        if (/^([A-Za-z]{3})$/.test(country)) {
-            dbconn.query("select ID from country where iso_code=?", country, (err, results) => {
-                if (err) throw err;
-                if (results.length > 0) {
-                    countryid = results[0]['ID'];
-
-                } else {
-                    dbconn.query('insert into country(iso_code)values("' + country + '")', (err, results) => {
-                        if (err) throw err;
-                        countryid = results.insertId;
-                    });
-
-                }
-            });
-
-        } else {
-            dbconn.query("select ID from country where name=?", country, (err, results) => {
-                if (err) throw err;
-                if (results.length > 0) {
-                    countryid = results[0]['ID'];
-
-                } else {
-                    dbconn.query('insert into country(name)values("' + country + '")', (err, results) => {
-                        if (err) throw err;
-                        countryid = results.insertId;
-                    });
-
-                }
-            });
-        }
-
-        dbconn.query("select ID from city where name=?", city, (err, results) => {
-            if (err) throw err;
-            if (results.length > 0) {
-                cityyid = results[0]['ID'];
-
-            } else {
-                dbconn.query('insert into city(name)values("' + city + '")', (err, results) => {
-                    if (err) throw err;
-                    cityid = results.insertId;
-                });
-
-            }
-        });
-
-        dbconn.query("select ID from region where name=?", region, (err, results) => {
-            if (err) throw err;
-            if (results.length > 0) {
-                regionid = results[0]['ID'];
-
-            } else {
-                dbconn.query('insert into region(name)values("' + region + '")', (err, results) => {
-                    if (err) throw err;
-                    regionid = results.insertId;
-                });
-
-            }
-        });
-
-        // dbconn.query('insert into location(country,region,city)values("' + countryid + '", "' + regionid + '", "' + cityid + '")',(err,results)=>{
-        //     if(err) throw err;
-        //     locationid  = results.insertId;
-        //     console.log("Location inserted:"+locationid);            
-        // });
-
->>>>>>> 432b676f3fe5b976f18d975c8a7746786f30a3b0
         response += "ok";
        }
        else
@@ -408,16 +335,6 @@ app.post('/api/create_profile/?', ValidationRules.create_profile(), validate, (r
     // TODO: validate data received
 
 });
-
-
-
-function addlocationdata(country,region,city)
-{
-    var country = addcountrydata
-
-}
-
-
 // FIRE UP SERVER
 const PORT = 37248;
 http.listen(PORT, function () {
