@@ -82,134 +82,134 @@ app.get('/homepage/?', (req, res) => {
 //         }
 //     });
 // });
-app.get('/countrylist', (req, res) => {
-    res.send(countryjson);
-});
-app.post('/login', (req, res) => {
-    var exidn = req.body.identity;
-    var expass = req.body.pass;
-    console.log(exidn);
-    console.log(expass);
-});
-app.post('/report.symptom', (req, res) => {
-    var user_guid = req.body.user_guid;
-    var member_id = req.body.member_id;
-    var dry_cough = req.body.dry_cough;
-    var pneumonia = req.body.pneumonia;
-    var difficulty_breathing = req.body.difficulty_breathing;
-    var difficulty_walking = req.body.difficulty_walking;
-    var appetite = req.body.appetite;
-    var diarrhea = req.body.diarrhea;
-    var muscle_ache = req.body.muscle_ache;
-    var fatigue = req.body.fatigue;
-    var runny_nose = req.body.runny_nose;
-    var congestion = req.body.congestion;
-    var sore_throat = req.body.sore_throat;
-    var fever_c = req.body.fever_c;
-    var headache = req.body.headache;
-    var confusion_dizziness = req.body.confusion_dizziness;
-    var nausea = req.body.nausea;
-    var chills = req.body.chills;
-    var other_pain = req.body.other_pain;
-});
-app.post(['/createhouseholdprofile', '/homepage/createhouseholdprofile'], (req, res) => {
-    var huid = req.body.huid;
-    console.log(req.body);
-    var pass = req.body.pass;
-    var country = req.body.country;
-    var region = req.body.region;
-    var city = req.body.city;
-    var street = req.body.street_name;
-    var postal_code = req.body.postal_code;
-    req.session.loggedin = true;
-    req.session.uid = huid;
-    // request.session.username = username;
-    res.redirect('/household');
-
-});
-app.post('/report.testing', (req, res) => {
-    var user_guid = req.body.user_guid;
-    var tested = req.body.tested;
-    var recovered = req.body.recovered;
-    var hospitalized = req.body.hospitalized;
-    var ventilation = req.body.ventilation;
-    var oxygen = req.body.oxygen;
-    var other_symptoms = req.body.other_symptoms;
-
-});
-app.post('/report.transmission', (req, res) => {
-    var user_guid = req.body.user_guid;
-    var travel_amount = req.body.travel_amount;
-    var travel_distance = req.body.travel_distance;
-    var hospitalized = req.body.hospitalized;
-    var surface_touch = req.body.surface_touch;
-    var number_of_regular_contacts = req.body.number_of_regular_contacts;
-
-});
-app.post('/register.user', (req, res) => {
-    var user_guid = req.body.user_guid;
-    var passcode = req.body.passcode;
-    var user_guid_value = req.body.user_guid_value;
-    var passcode_value = req.body.passcode_value;
-
-});
-app.post('/authenticate.user', (req, res) => {
-    var user_guid = req.body.user_guid;
-    var user_guid_value = req.body.user_guid_value;
-    var passcode = req.body.passcode;
-    var passcode_value = req.body.passcode_value;
-
-});
-app.post('/createuserprofile', (req, res) => {
-    var usremail = req.body.usremail;
-    var usridn = req.body.usridn;
-    var usrpass = req.body.usrpass;
-    var usr_total_mem = req.body.usr_total_mem;
-    var usr_country = req.body.usr_country;
-    var usr_region = req.body.usr_region;
-    var usr_city = req.body.usr_city;
-    var usr_street = req.body.usr_street;
-    var usr_pcode = req.body.usr_pcode;
-    var usr_age = req.body.usr_age;
-    var usr_gender = req.body.usr_gender;
-    var usr_cough = req.body.usr_cough;
-    var usr_cough_prod = req.body.usr_cough_prod;
-    var usr_pneumonia = req.body.usr_pneumonia;
-    var usr_breathing = req.body.usr_breathing;
-    var usr_walking = req.body.usr_walking;
-    var usr_appetite = req.body.usr_appetite;
-    var usr_diarrhea = req.body.usr_diarrhea;
-    var usr_musclepain = req.body.usr_musclepain;
-    var usr_fatigue = req.body.usr_fatigue;
-    var usr_nose = req.body.usr_nose;
-    var usr_fever = req.body.usr_fever;
-    var usr_headache = req.body.usr_headache;
-    var usr_dizziness = req.body.usr_dizziness;
-    var usr_nausea = req.body.usr_nausea;
-    var usr_chills = req.body.usr_chills;
-    var usr_gpain = req.body.usr_gpain;
-    var usr_trans_isolation = req.body.usr_trans_isolation;
-    var usr_trans_distance = req.body.usr_trans_distance;
-    var usr_trans_surface = req.body.usr_trans_surface;
-    var usr_trans_human = req.body.trans_human;
-
-    console.log(req.body);
-    dbconn.query('insert into household(household_guid) values(?)', [usridn], (err, res) => {
-        if (err) throw err;
-        var rowid = res.insertId;
-    });
-
-
-    res.send("Record Submitted");
-});
-app.post('/register.location', (req, res) => {
-    var user_guid = req.body.user_guid;
-    var user_guid_value = req.body.user_guid_value;
-    var passcode = req.body.passcode;
-    var passcode_value = req.body.passcode_value;
-
-});
-
+// app.get('/countrylist', (req, res) => {
+//     res.send(countryjson);
+// });
+// app.post('/login', (req, res) => {
+//     var exidn = req.body.identity;
+//     var expass = req.body.pass;
+//     console.log(exidn);
+//     console.log(expass);
+// });
+// app.post('/report.symptom', (req, res) => {
+//     var user_guid = req.body.user_guid;
+//     var member_id = req.body.member_id;
+//     var dry_cough = req.body.dry_cough;
+//     var pneumonia = req.body.pneumonia;
+//     var difficulty_breathing = req.body.difficulty_breathing;
+//     var difficulty_walking = req.body.difficulty_walking;
+//     var appetite = req.body.appetite;
+//     var diarrhea = req.body.diarrhea;
+//     var muscle_ache = req.body.muscle_ache;
+//     var fatigue = req.body.fatigue;
+//     var runny_nose = req.body.runny_nose;
+//     var congestion = req.body.congestion;
+//     var sore_throat = req.body.sore_throat;
+//     var fever_c = req.body.fever_c;
+//     var headache = req.body.headache;
+//     var confusion_dizziness = req.body.confusion_dizziness;
+//     var nausea = req.body.nausea;
+//     var chills = req.body.chills;
+//     var other_pain = req.body.other_pain;
+// });
+// app.post(['/createhouseholdprofile', '/homepage/createhouseholdprofile'], (req, res) => {
+//     var huid = req.body.huid;
+//     console.log(req.body);
+//     var pass = req.body.pass;
+//     var country = req.body.country;
+//     var region = req.body.region;
+//     var city = req.body.city;
+//     var street = req.body.street_name;
+//     var postal_code = req.body.postal_code;
+//     req.session.loggedin = true;
+//     req.session.uid = huid;
+//     // request.session.username = username;
+//     res.redirect('/household');
+//
+// });
+// app.post('/report.testing', (req, res) => {
+//     var user_guid = req.body.user_guid;
+//     var tested = req.body.tested;
+//     var recovered = req.body.recovered;
+//     var hospitalized = req.body.hospitalized;
+//     var ventilation = req.body.ventilation;
+//     var oxygen = req.body.oxygen;
+//     var other_symptoms = req.body.other_symptoms;
+//
+// });
+// app.post('/report.transmission', (req, res) => {
+//     var user_guid = req.body.user_guid;
+//     var travel_amount = req.body.travel_amount;
+//     var travel_distance = req.body.travel_distance;
+//     var hospitalized = req.body.hospitalized;
+//     var surface_touch = req.body.surface_touch;
+//     var number_of_regular_contacts = req.body.number_of_regular_contacts;
+//
+// });
+// app.post('/register.user', (req, res) => {
+//     var user_guid = req.body.user_guid;
+//     var passcode = req.body.passcode;
+//     var user_guid_value = req.body.user_guid_value;
+//     var passcode_value = req.body.passcode_value;
+//
+// });
+// app.post('/authenticate.user', (req, res) => {
+//     var user_guid = req.body.user_guid;
+//     var user_guid_value = req.body.user_guid_value;
+//     var passcode = req.body.passcode;
+//     var passcode_value = req.body.passcode_value;
+//
+// });
+// app.post('/createuserprofile', (req, res) => {
+//     var usremail = req.body.usremail;
+//     var usridn = req.body.usridn;
+//     var usrpass = req.body.usrpass;
+//     var usr_total_mem = req.body.usr_total_mem;
+//     var usr_country = req.body.usr_country;
+//     var usr_region = req.body.usr_region;
+//     var usr_city = req.body.usr_city;
+//     var usr_street = req.body.usr_street;
+//     var usr_pcode = req.body.usr_pcode;
+//     var usr_age = req.body.usr_age;
+//     var usr_gender = req.body.usr_gender;
+//     var usr_cough = req.body.usr_cough;
+//     var usr_cough_prod = req.body.usr_cough_prod;
+//     var usr_pneumonia = req.body.usr_pneumonia;
+//     var usr_breathing = req.body.usr_breathing;
+//     var usr_walking = req.body.usr_walking;
+//     var usr_appetite = req.body.usr_appetite;
+//     var usr_diarrhea = req.body.usr_diarrhea;
+//     var usr_musclepain = req.body.usr_musclepain;
+//     var usr_fatigue = req.body.usr_fatigue;
+//     var usr_nose = req.body.usr_nose;
+//     var usr_fever = req.body.usr_fever;
+//     var usr_headache = req.body.usr_headache;
+//     var usr_dizziness = req.body.usr_dizziness;
+//     var usr_nausea = req.body.usr_nausea;
+//     var usr_chills = req.body.usr_chills;
+//     var usr_gpain = req.body.usr_gpain;
+//     var usr_trans_isolation = req.body.usr_trans_isolation;
+//     var usr_trans_distance = req.body.usr_trans_distance;
+//     var usr_trans_surface = req.body.usr_trans_surface;
+//     var usr_trans_human = req.body.trans_human;
+//
+//     console.log(req.body);
+//     dbconn.query('insert into household(household_guid) values(?)', [usridn], (err, res) => {
+//         if (err) throw err;
+//         var rowid = res.insertId;
+//     });
+//
+//
+//     res.send("Record Submitted");
+// });
+// app.post('/register.location', (req, res) => {
+//     var user_guid = req.body.user_guid;
+//     var user_guid_value = req.body.user_guid_value;
+//     var passcode = req.body.passcode;
+//     var passcode_value = req.body.passcode_value;
+//
+// });
+//
 
 // TODO: REMOVE FROM PRODUCTION SERVER....
 
@@ -231,12 +231,11 @@ function logFmt(url, payload) {
 };
 
 // HANDLE API REQUESTS
-const {userValidationRules, validate} = require('./validator.js')
-app.post('/api/commcheck/?', userValidationRules(), validate, (req, res) => {
+const {ValidationRules, validate} = require('./validator.js');
+app.post('/api/commcheck/?', ValidationRules.commcheck(), validate, (req, res) => {
     res.json(req.body);
 }); // TODO: Delete for production
-
-app.post('/api/get_profile/?', (req, res) => {
+app.post('/api/get_profile/?', ValidationRules.get_profile(), validate, (req, res) => {
     logFmt(req.url, req.body);
     // TODO: validate received data
     res.json({
@@ -272,7 +271,7 @@ app.post('/api/get_profile/?', (req, res) => {
         }
     });
 });
-app.post('/api/submit_report/?', (req, res) => {
+app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, (req, res) => {
     logFmt(req.url, req.body);
     // TODO: Validate received data
     res.json(req.body);
@@ -281,7 +280,11 @@ app.post('/api/generate_id/?', (req, res) => {
     max_hid++;
     res.send(max_hid.toString());
 });
+<<<<<<< HEAD
 app.post('/api/create_profile/?', async function (req, res) {
+=======
+app.post('/api/create_profile/?', ValidationRules.create_profile(), validate, (req, res) => {
+>>>>>>> 432b676f3fe5b976f18d975c8a7746786f30a3b0
     console.log(req.body);
     var response = '';
     try {
@@ -312,6 +315,7 @@ app.post('/api/create_profile/?', async function (req, res) {
         response += "Empty postal_code";
     } else if (street_name == '' || street_name == null) {
         response += "Empty postal code";
+<<<<<<< HEAD
     } else 
     {
        var countryid    = await(mysqlinsert.country(country));
@@ -321,6 +325,74 @@ app.post('/api/create_profile/?', async function (req, res) {
        var household_insert_id  = await(mysqlinsert.household(uid,pass));
        if(household_insert_id)
        {
+=======
+    } else {
+        if (/^([A-Za-z]{3})$/.test(country)) {
+            dbconn.query("select ID from country where iso_code=?", country, (err, results) => {
+                if (err) throw err;
+                if (results.length > 0) {
+                    countryid = results[0]['ID'];
+
+                } else {
+                    dbconn.query('insert into country(iso_code)values("' + country + '")', (err, results) => {
+                        if (err) throw err;
+                        countryid = results.insertId;
+                    });
+
+                }
+            });
+
+        } else {
+            dbconn.query("select ID from country where name=?", country, (err, results) => {
+                if (err) throw err;
+                if (results.length > 0) {
+                    countryid = results[0]['ID'];
+
+                } else {
+                    dbconn.query('insert into country(name)values("' + country + '")', (err, results) => {
+                        if (err) throw err;
+                        countryid = results.insertId;
+                    });
+
+                }
+            });
+        }
+
+        dbconn.query("select ID from city where name=?", city, (err, results) => {
+            if (err) throw err;
+            if (results.length > 0) {
+                cityyid = results[0]['ID'];
+
+            } else {
+                dbconn.query('insert into city(name)values("' + city + '")', (err, results) => {
+                    if (err) throw err;
+                    cityid = results.insertId;
+                });
+
+            }
+        });
+
+        dbconn.query("select ID from region where name=?", region, (err, results) => {
+            if (err) throw err;
+            if (results.length > 0) {
+                regionid = results[0]['ID'];
+
+            } else {
+                dbconn.query('insert into region(name)values("' + region + '")', (err, results) => {
+                    if (err) throw err;
+                    regionid = results.insertId;
+                });
+
+            }
+        });
+
+        // dbconn.query('insert into location(country,region,city)values("' + countryid + '", "' + regionid + '", "' + cityid + '")',(err,results)=>{
+        //     if(err) throw err;
+        //     locationid  = results.insertId;
+        //     console.log("Location inserted:"+locationid);            
+        // });
+
+>>>>>>> 432b676f3fe5b976f18d975c8a7746786f30a3b0
         response += "ok";
        }
        else

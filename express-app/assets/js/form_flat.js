@@ -1,5 +1,7 @@
-// const SERVERURL = 'http://d0001.symptometer.io';
-const SERVERURL = 'http://127.0.0.1:37248';
+// const SERVERURL = 'http://127.0.0.1:37248';
+const SERVERURL = 'http://d0001.symptometer.io';
+
+// const SERVERURL = 'http://localhost:37248';
 
 function saveMemberRow(memb_row) {
 
@@ -346,21 +348,21 @@ $(document).ready(function () {
         // store data into data store TODO: Validate data
         form_data['members'][memb_id]['symptoms'] = {
             'm_symp_cough': $('#m_symp_cough').val(),
-            'm_symp_pneumonia': $('#m_symp_pneumonia').val(),
-            'm_symp_breathing': $('#m_symp_breathing').val(),
-            'm_symp_walking': $('#m_symp_walking').val(),
-            'm_symp_appetite': $('#m_symp_appetite').val(),
-            'm_symp_diarrhea': $('#m_symp_diarrhea').val(),
-            'm_symp_muscle_pain': $('#m_symp_muscle_pain').val(),
-            'm_symp_fatigue': $('#m_symp_fatigue').val(),
-            'm_symp_nose': $('#m_symp_nose').val(),
-            'm_symp_throat': $('#m_symp_throat').val(),
             'm_symp_fever': $('#m_symp_fever').val(),
-            'm_symp_headache': $('#m_symp_headache').val(),
-            'm_symp_dizziness': $('#m_symp_dizziness').val(),
-            'm_symp_nausea': $('#m_symp_nausea').val(),
-            'm_symp_chills': $('#m_symp_chills').val(),
-            'm_symp_general_pain': $('#m_symp_general_pain').val()
+            'm_symp_fatigue': $('#m_symp_fatigue').prop('checked'),
+            'm_symp_nose': $('#m_symp_nose').prop('checked'),
+            'm_symp_breathing': $('#m_symp_breathing').prop('checked'),
+            'm_symp_throat': $('#m_symp_throat').prop('checked'),
+            'm_symp_headache': $('#m_symp_headache').prop('checked'),
+            'm_symp_walking': $('#m_symp_walking').prop('checked'),
+            'm_symp_appetite': $('#m_symp_appetite').prop('checked'),
+            'm_symp_diarrhea': $('#m_symp_diarrhea').prop('checked'),
+            'm_symp_muscle_pain': $('#m_symp_muscle_pain').prop('checked'),
+            'm_symp_dizziness': $('#m_symp_dizziness').prop('checked'),
+            'm_symp_nausea': $('#m_symp_nausea').prop('checked'),
+            'm_symp_chills': $('#m_symp_chills').prop('checked'),
+            'm_symp_general_pain': $('#m_symp_general_pain').prop('checked'),
+            'm_symp_smell_loss': $('#m_symp_smell_loss').prop('checked')
         };
         form_data['members'][memb_id]['transmission'] = {
             'm_trans_distance': $('#m_trans_distance').val(),
@@ -369,13 +371,15 @@ $(document).ready(function () {
         };
         form_data['members'][memb_id]['lab_results'] = {
             'm_lab_tested': $('#m_lab_tested').val(),
-            'm_lab_hospitalized': $('#m_lab_hospitalized').val(),
+            'm_lab_hospitalized': $('#m_lab_hospitalized').prop('checked'),
             'm_lab_hosp_days': $('#m_lab_hosp_days').val(),
-            'm_lab_hosp_icu': $('#m_lab_hosp_icu').val(),
-            'm_lab_recovered': $('#m_lab_recovered').val(),
-            'm_lab_ventilation': $('#m_lab_ventilation').val(),
-            'm_lab_oxygen': $('#m_lab_oxygen').val(),
-            'm_lab_symptoms': $('#m_lab_symptoms').val()
+            'm_lab_hosp_icu': $('#m_lab_hosp_icu').prop('checked'),
+            'm_lab_recovered': $('#m_lab_recovered').prop('checked'),
+            'm_lab_ventilation': $('#m_lab_ventilation').prop('checked'),
+            'm_lab_oxygen': $('#m_lab_oxygen').prop('checked'),
+            'm_lab_symptoms': $('#m_lab_symptoms').val(),
+            'm_lab_antibodies': $('#m_lab_antibodies').val(),
+            'm_lab_pneumonia': $('#m_lab_pneumonia').prop('checked')
         };
 
         // Reset all report fields to their defaults...
@@ -503,7 +507,8 @@ $(document).ready(function () {
                     console.log(res);
                     $(e.target).hide(); // hide the 'create profile' button
                     btn.show(); // show the 'save location' button to allow location changes
-                    $('#h_id_load').click(); // trigger a profile data load. Needed?
+                    // $('#h_id_load').click(); // trigger a profile data load. Needed?
+                    displayState('profile');
                 });
             });
             btn.hide(); // Hide the 'save location' button

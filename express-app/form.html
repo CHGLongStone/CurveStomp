@@ -292,29 +292,29 @@
                 <div class="field_container">
                     <label for="m_trans_distance">Travelled Since Last Report:</label>
                     <select id="m_trans_distance">
-                        <option selected>< 1km</option>
-                        <option>1-5km</option>
-                        <option>5-10km</option>
-                        <option>10-100km</option>
-                        <option>100km+</option>
+                        <option value="0" selected>< 1km</option>
+                        <option value="1">1-5km</option>
+                        <option value="2">5-10km</option>
+                        <option value="3">10-100km</option>
+                        <option value="4">100km+</option>
                     </select>
                 </div>
                 <div class="field_container">
                     <label for="m_trans_surface">Surface Exposure:</label>
                     <select id="m_trans_surface">
-                        <option selected>Household Only</option>
-                        <option>0-5 Surfaces</option>
-                        <option>5-20 Surfaces</option>
-                        <option>20+ Surfaces</option>
+                        <option value="0" selected>Household Only</option>
+                        <option value="1">0-5 Surfaces</option>
+                        <option value="2">5-20 Surfaces</option>
+                        <option value="3">20+ Surfaces</option>
                     </select>
                 </div>
                 <div class="field_container">
                     <label for="m_trans_human">Human Exposure:</label>
                     <select id="m_trans_human">
-                        <option selected>Household Only</option>
-                        <option>0-5 People</option>
-                        <option>5-20 People</option>
-                        <option>20+ People</option>
+                        <option value="0" selected>Household Only</option>
+                        <option value="1">0-5 People</option>
+                        <option value="2">5-20 People</option>
+                        <option value="3">20+ People</option>
                     </select>
                 </div>
             </div>
@@ -348,7 +348,7 @@
 
                 <div class="field_container">
                     <label for="m_lab_hosp_days">Days in Hospital:</label>
-                    <input id="m_lab_hosp_days" type="number" step="1">
+                    <input id="m_lab_hosp_days" type="number" step="1" value="0">
                 </div>
 
                 <div class="field_container">
@@ -362,8 +362,8 @@
                 </div>
 
                 <div class="field_container">
-                    <label for="m_symp_pneumonia">Pneumonia (Diagnosed):</label>
-                    <input id="m_symp_pneumonia" type="checkbox">
+                    <label for="m_lab_pneumonia">Pneumonia:</label>
+                    <input id="m_lab_pneumonia" type="checkbox">
                 </div>
 
                 <div class="field_container">
@@ -387,7 +387,8 @@
 
                 <div class="field_container">
                     <label for="m_lab_symptoms">Other Symptoms:</label>
-                    <input id="m_lab_symptoms" type="text" placeholder="Comma-Separated List">
+                    <input id="m_lab_symptoms" type="text" placeholder="Comma-Separated List"
+                           maxlength="200">
                 </div>
             </div>
         </fieldset>
