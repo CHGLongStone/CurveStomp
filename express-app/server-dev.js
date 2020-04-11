@@ -56,6 +56,7 @@ function logFmt(url, payload) {
 
 // HANDLE API REQUESTS
 const {ValidationRules, validate} = require('./validator.js');
+
 app.post('/api/get_profile/?', ValidationRules.get_profile(), validate, (req, res) => {
     logFmt(req.url, req.body);
     res.json({

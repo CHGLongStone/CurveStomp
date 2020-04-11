@@ -5,3 +5,4 @@ slush/*
 /express-app/package-lock.json
 /sysadmin_notes/
 /sensitive_details
+/express-app/config.json
