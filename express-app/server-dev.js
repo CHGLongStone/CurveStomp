@@ -214,7 +214,12 @@ app.get('/homepage/?', (req, res) => {
 
 // TODO: REMOVE FROM PRODUCTION SERVER....
 
-let max_hid = await(mysqlselect.maxid()); // TODO: update max_hid on startup with largest PK in DB-DONE.
+let max_hid=0;
+async function maxid()
+{
+    max_hid=await(mysqlselect.maxid());
+}
+maxid(); // TODO: update max_hid on startup with largest PK in DB-DONE.
 const cors = require('cors'); // TODO: Consider removing for production
 app.use(cors({origin: '*'})); // TODO: Consider removing for production
 app.use(express.json({
