@@ -5,7 +5,7 @@ const mysql = require('mysql');
 const path = require('path');
 
 const config = require('./config');
-const mysqlinsert   = require('./mysqlinsertfunctions');
+const mysqlinsert = require('./mysqlinsertfunctions');
 const countryjson = require('../countries');
 
 var user_guid_value;
@@ -35,7 +35,7 @@ var http = require("http").Server(app);
 app.engine('html', require('ejs').renderFile);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/assets', express.static(__dirname + '/assets'));
 
@@ -60,7 +60,7 @@ app.get('/household', isAuthenticated, (req, res) => {
     var secondpart = guid.slice(3, 6);
     var thirdpart = guid.slice(6, 9);
     var hid = firstpart + "-" + secondpart + "-" + thirdpart;
-    res.render('household', {guid: hid});
+    res.render('household', { guid: hid });
 });
 app.get('/form2', (req, res) => {
     res.render('form2');
@@ -216,7 +216,7 @@ app.get('/homepage/?', (req, res) => {
 let max_hid = 0; // TODO: update max_hid on startup with largest PK in DB.
 
 const cors = require('cors'); // TODO: Consider removing for production
-app.use(cors({origin: '*'})); // TODO: Consider removing for production
+app.use(cors({ origin: '*' })); // TODO: Consider removing for production
 app.use(express.json({
     inflate: true,
     limit: '100kb',
@@ -231,7 +231,7 @@ function logFmt(url, payload) {
 };
 
 // HANDLE API REQUESTS
-const {ValidationRules, validate} = require('./validator.js');
+const { ValidationRules, validate } = require('./validator.js');
 app.post('/api/commcheck/?', ValidationRules.commcheck(), validate, (req, res) => {
     res.json(req.body);
 }); // TODO: Delete for production
@@ -280,57 +280,36 @@ app.post('/api/generate_id/?', (req, res) => {
     max_hid++;
     res.send(max_hid.toString());
 });
-app.post('/api/create_profile/?', ValidationRules.create_profile(), validate,async function(req,res) {
+app.post('/api/create_profile/?', ValidationRules.create_profile(), validate, async function (req, res) {
     console.log(req.body);
     var response = '';
-    try {
-        var identity = req.body.identity;
-        var location = req.body.location;
-        var uid = identity['unique_identifier'];
-        var pass = identity['passcode'];
-        var country = location['country'];
-        var city = location['city'];
-        var region = location['region'];
-        var postal_code = location['postal_code'];
-        var street_name = location['street_name'];
-    } catch (error) {
-        response += "Invalid Profile Request";
-        res.json({'response': response});
-        return;
+    var identity = req.body.identity;
+    var location = req.body.location;
+    var uid = identity['unique_identifier'];
+    var pass = identity['passcode'];
+    var country = location['country'];
+    var city = location['city'];
+    var region = location['region'];
+    var postal_code = location['postal_code'];
+    var street_name = location['street_name'];
+    var countryid = await (mysqlinsert.country(country));
+    var regionid = await (mysqlinsert.region(region));
+    var cityid = await (mysqlinsert.city(city));
+    var locationid = await (mysqlinsert.location(countryid, regionid, cityid, street_name, postal_code));
+    var household_insert_id = await (mysqlinsert.household(uid, pass));
+    var h_location = await (mysqlinsert.household_location(household_insert_id, locationid));
+    console.log(h_location);
+    if (household_insert_id) {
+        response += "ok";
+    }
+    else {
+        response += "Profile Creation failed";
     }
 
-    if (uid == '' || uid == null) {
-        response += "Empty household id";
-    } else if (pass == '' || pass == null) {
-        response += "Empty passcode";
-    } else if (country == '' || country == null) {
-        response += "Empty country";
-    } else if (city == '' || city == null) {
-        response += "Empty city";
-    } else if (postal_code == '' || postal_code == null) {
-        response += "Empty postal_code";
-    } else if (street_name == '' || street_name == null) {
-        response += "Empty postal code";
-    } else 
-    {
-       var countryid    = await(mysqlinsert.country(country));
-       var regionid     = await (mysqlinsert.region(region));
-       var cityid       = await(mysqlinsert.city(city));
-       var locationid   = await(mysqlinsert.location(countryid,regionid,cityid));
-       var household_insert_id  = await(mysqlinsert.household(uid,pass));
-       if(household_insert_id)
-       {
-        response += "ok";
-       }
-       else
-       {
-           response+="Profile Creation failed";
-       }
-       
-    }
+
 
     console.log(response);
-    res.json({'response': response});
+    res.json({ 'response': response });
     // logFmt(req.url, req.body);
     // TODO: validate data received
 

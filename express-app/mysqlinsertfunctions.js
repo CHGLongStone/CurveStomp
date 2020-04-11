@@ -102,10 +102,10 @@ module.exports = {
 
 
     },
-    location: function(country,region,city)
+    location: function(country,region,city,street_name,postal_code)
     {
         return new Promise((resolve,reject)=>{
-             dbconn.query('insert into location(country,region,city)values("' + country + '", "' + region + '", "' + city + '")',(err,results)=>{
+             dbconn.query('insert into location(country,region,city,street_name,postal_code)values("' + country + '", "' + region + '", "' + city + '", "' + street_name + '", "' + postal_code + '")',(err,results)=>{
             if(err) throw err;
             resolve(results.insertId);        
         });
@@ -119,9 +119,18 @@ module.exports = {
                 resolve(results.insertId);
             })
         })
+    },
+    household_location: function(household,location)
+    {
+        return new Promise((resolve,reject)=>{
+            dbconn.query('insert into household_location(household_id,location_id)values("' + household + '", "' + location + '")',(err,results)=>{
+                if(err) throw err;
+                resolve(results);
+            })
+        })
     }
+    
 
 }
 
 
-// Add location Data
