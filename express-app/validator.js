@@ -1,11 +1,29 @@
+//https://dev.to/nedsoft/a-clean-approach-to-using-express-validator-8go
 const {body, validationResult} = require('express-validator');
-const userValidationRules = () => {
+const ValidationRules = {};
+ValidationRules.commcheck = () => {
     return [
-        // username must be an email
         body('identity').exists(),
-        body('identity.unique_identifier').exists(),
-        // password must be at least 5 chars long
-        body('location').exists(),
+    ]
+};
+
+ValidationRules.get_profile = () => {
+    return [
+        // body('identity').exists(),
+        body('identity.unique_identifier')
+            .exists()
+            .not().isEmpty()
+            .isInt({min: 0, max: 999999999999}),
+        body('identity.passcode')
+            .exists()
+            .not().isEmpty()
+            .isLength({min: 6, max: 25}),
+        // body('location').exists(),
+        body('location.country').exists().not().isEmpty(),
+        body('location.region').exists(),
+        body('location.city').exists().not().isEmpty(),
+        body('location.street_name').exists().not().isEmpty(),
+        body('location.postal_code').exists(),
     ]
 };
 
@@ -22,6 +40,6 @@ const validate = (req, res, next) => {
 };
 
 module.exports = {
-    userValidationRules,
+    ValidationRules,
     validate,
 };

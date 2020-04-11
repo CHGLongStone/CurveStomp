@@ -230,12 +230,12 @@ function logFmt(url, payload) {
 };
 
 // HANDLE API REQUESTS
-const {userValidationRules, validate} = require('./validator.js')
-app.post('/api/commcheck/?', userValidationRules(), validate, (req, res) => {
+const {ValidationRules, validate} = require('./validator.js');
+app.post('/api/commcheck/?', ValidationRules.commcheck(), validate, (req, res) => {
     res.json(req.body);
 }); // TODO: Delete for production
 
-app.post('/api/get_profile/?', (req, res) => {
+app.post('/api/get_profile/?', ValidationRules.get_profile(), validate, (req, res) => {
     logFmt(req.url, req.body);
     // TODO: validate received data
     res.json({
