@@ -281,6 +281,7 @@ app.post('/api/generate_id/?', (req, res) => {
     res.send(max_hid.toString());
 });
 app.post('/api/create_profile/?', (req, res) => {
+    console.log(req.body);
     var response = '';
     try {
         var identity = req.body.identity;
@@ -292,6 +293,11 @@ app.post('/api/create_profile/?', (req, res) => {
         var region = location['region'];
         var postal_code = location['postal_code'];
         var street_name = location['street_name'];
+        var countryid;
+        var regionid;
+        var cityid;
+        var locationid;
+
     } catch (error) {
         response += "Invalid Profile Request";
         res.json({'response': response});
@@ -311,6 +317,86 @@ app.post('/api/create_profile/?', (req, res) => {
     } else if (street_name == '' || street_name == null) {
         response += "Empty postal code";
     } else {
+        if(/^([A-Za-z]{3})$/.test(country))
+        {
+            dbconn.query("select ID from country where iso_code=?",country,(err,results)=>{
+                if(err) throw err;
+                if(results.length>0)
+                {
+                    countryid=results[0]['ID'];
+    
+                }
+                else
+                {
+                    dbconn.query('insert into country(iso_code)values("' + country + '")',(err,results)=>{
+                        if(err) throw err;
+                        countryid= results.insertId;
+                    });
+    
+                }
+            });
+
+        }
+        else
+        {
+            dbconn.query("select ID from country where name=?",country,(err,results)=>{
+                if(err) throw err;
+                if(results.length>0)
+                {
+                    countryid=results[0]['ID'];
+    
+                }
+                else
+                {
+                    dbconn.query('insert into country(name)values("' + country + '")',(err,results)=>{
+                        if(err) throw err;
+                        countryid= results.insertId;
+                    });
+    
+                }
+            });
+        }
+
+        dbconn.query("select ID from city where name=?",city,(err,results)=>{
+            if(err) throw err;
+            if(results.length>0)
+            {
+                cityyid=results[0]['ID'];
+
+            }
+            else
+            {
+                dbconn.query('insert into city(name)values("' + city + '")',(err,results)=>{
+                    if(err) throw err;
+                    cityid= results.insertId;
+                });
+
+            }
+        });
+
+        dbconn.query("select ID from region where name=?",region,(err,results)=>{
+            if(err) throw err;
+            if(results.length>0)
+            {
+                regionid=results[0]['ID'];
+
+            }
+            else
+            {
+                dbconn.query('insert into region(name)values("' + region + '")',(err,results)=>{
+                    if(err) throw err;
+                    regionid= results.insertId;
+                });
+
+            }
+        });
+
+        // dbconn.query('insert into location(country,region,city)values("' + countryid + '", "' + regionid + '", "' + cityid + '")',(err,results)=>{
+        //     if(err) throw err;
+        //     locationid  = results.insertId;
+        //     console.log("Location inserted:"+locationid);            
+        // });
+        
         response += "ok";
     }
 
