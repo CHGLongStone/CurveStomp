@@ -6,7 +6,7 @@ const path = require('path');
 
 const config = require('./config');
 const mysqlinsert = require('./mysqlinsertfunctions');
-const mysqlselect   = require('./mysqlselectfunctions');
+const mysqlselect = require('./mysqlselectfunctions');
 const countryjson = require('../countries');
 
 var user_guid_value;
@@ -36,7 +36,7 @@ var http = require("http").Server(app);
 app.engine('html', require('ejs').renderFile);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use('/assets', express.static(__dirname + '/assets'));
 
@@ -61,7 +61,7 @@ app.get('/household', isAuthenticated, (req, res) => {
     var secondpart = guid.slice(3, 6);
     var thirdpart = guid.slice(6, 9);
     var hid = firstpart + "-" + secondpart + "-" + thirdpart;
-    res.render('household', { guid: hid });
+    res.render('household', {guid: hid});
 });
 app.get('/form2', (req, res) => {
     res.render('form2');
@@ -236,7 +236,7 @@ function logFmt(url, payload) {
 };
 
 // HANDLE API REQUESTS
-const { ValidationRules, validate } = require('./validator.js');
+const {ValidationRules, validate} = require('./validator.js');
 app.post('/api/commcheck/?', ValidationRules.commcheck(), validate, (req, res) => {
     res.json(req.body);
 }); // TODO: Delete for production
@@ -281,7 +281,7 @@ app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, (req
     // TODO: Validate received data
     res.json(req.body);
 });
-app.post('/api/generate_id/?', async function(req,res) {
+app.post('/api/generate_id/?', (req, res) => {
     max_hid++;
     console.log(max_hid);
     res.send(max_hid.toString());
@@ -307,15 +307,13 @@ app.post('/api/create_profile/?', ValidationRules.create_profile(), validate, as
     console.log(h_location);
     if (household_insert_id) {
         response += "ok";
-    }
-    else {
+    } else {
         response += "Profile Creation failed";
     }
 
 
-
     console.log(response);
-    res.json({ 'response': response });
+    res.json({'response': response});
     // logFmt(req.url, req.body);
     // TODO: validate data received
 
