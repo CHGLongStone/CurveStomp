@@ -30,7 +30,7 @@ create table if not exists report
 	results_lab_recovered tinyint(1) null,
 	results_lab_ventilation int null,
 	results_lab_oxygen int null,
-	results_lab_symptoms int null,
+	results_lab_symptoms varchar(200) default '  ' null,
 	results_lab_pneumonia tinyint(1) null,
 	results_lab_antibodies int null,
 	constraint report___fk_member

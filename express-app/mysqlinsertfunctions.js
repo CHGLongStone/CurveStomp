@@ -122,6 +122,47 @@ module.exports = {
                     resolve("Profile Created");
                 })
         })
+    },
+    member: function (household, age, sex, alias, designator) {
+        return new Promise((resolve, reject) => {
+            dbconn.query(
+                'insert into member(household_id,age,sex,alias,designator)values(?,?,?,?,?)',
+                [household, age, sex, alias, designator], (err, results) => {
+                    if (err) throw err;
+                    resolve(results.insertId);
+                })
+        })
+    },
+
+    report: function (member, symp_cough, symp_breathing, symp_walking, symp_appetite,
+        symp_diarrhea, symp_muscle_pain, symp_fatigue, symp_nose, symp_throat, symp_fever,
+        symp_headache, symp_dizziness, symp_nausea, symp_chills, symp_general_pain,
+        symp_smell_loss, trans_distance, trans_surface, trans_human,
+        lab_tested, lab_hospitalized, lab_hosp_days, lab_hosp_icu, lab_recovered,
+        lab_ventilation, lab_oxygen, lab_symptoms, lab_pneumonia, lab_antibodies) {
+        return new Promise((resolve, reject) => {
+            dbconn.query(
+                'insert into report(member_id,symptom_cough,symptom_breathing,' +
+                'symptom_walking,symptom_appetite,symptom_diarrhea,symptom_muscle_pain,symptom_fatigue,' +
+                'symptom_nose,symptom_throat,symptom_fever,symptom_headache,' +
+                'symptom_dizziness,symptom_nausea,' +
+                'symptom_chills,symptoms_general_pain,symptom_smell_loss,' +
+                'transmission_trans_distance,transmission_trans_surface,' +
+                'transmission_trans_human,results_lab_tested,results_lab_hospitalized,' +
+                'results_lab_hospital_days,results_lab_hospital_icu,results_lab_recovered,' +
+                'results_lab_ventilation,results_lab_oxygen,results_lab_symptoms,' +
+                'results_lab_pneumonia,results_lab_antibodies)' +
+                'values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                [member, symp_cough, symp_breathing, symp_walking, symp_appetite,
+                    symp_diarrhea, symp_muscle_pain, symp_fatigue, symp_nose, symp_throat, symp_fever,
+                    symp_headache, symp_dizziness, symp_nausea, symp_chills, symp_general_pain,
+                    symp_smell_loss, trans_distance, trans_surface, trans_human,
+                    lab_tested, lab_hospitalized, lab_hosp_days, lab_hosp_icu, lab_recovered,
+                    lab_ventilation, lab_oxygen, lab_symptoms, lab_pneumonia, lab_antibodies], (err, results) => {
+                        if (err) throw err;
+                        resolve(results.insertId);
+                    })
+        })
     }
 };
 

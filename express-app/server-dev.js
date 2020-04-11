@@ -55,7 +55,7 @@ function logFmt(url, payload) {
 };
 
 // HANDLE API REQUESTS
-const {ValidationRules, validate} = require('./validator.js');
+const { ValidationRules, validate } = require('./validator.js');
 
 app.post('/api/get_profile/?', ValidationRules.get_profile(), validate, (req, res) => {
     logFmt(req.url, req.body);
@@ -92,10 +92,58 @@ app.post('/api/get_profile/?', ValidationRules.get_profile(), validate, (req, re
         }
     });
 });
-app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, (req, res) => {
+app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, async function (req, res) {
     // logFmt(req.url, req.body);
     var huid = req.body.household.identity.unique_identifier;
-    res.json(req.body);
+    var age = req.body.report.age;
+    var alias = req.body.report.alias;
+    var sex = req.body.report.sex;
+    var designator = (age + sex + alias).toString();
+    var symp_cough = req.body.report.symptoms.m_symp_cough;
+    var symp_fever = req.body.report.symptoms.m_symp_fever;
+    var symp_nose = req.body.report.symptoms.m_symp_nose;
+    var symp_fatigue = req.body.report.symptoms.m_symp_fatigue;
+    var symp_breathing = req.body.report.symptoms.m_symp_breathing;
+    var symp_throat = req.body.report.symptoms.m_symp_throat;
+    var symp_headache = req.body.report.symptoms.m_symp_headache;
+    var symp_walking = req.body.report.symptoms.m_symp_walking;
+    var symp_appetite = req.body.report.symptoms.m_symp_appetite;
+    var symp_diarrhea = req.body.report.symptoms.m_symp_diarrhea;
+    var symp_muscle_pain = req.body.report.symptoms.m_symp_muscle_pain;
+    var symp_dizziness = req.body.report.symptoms.m_symp_dizziness;
+    var symp_nausea = req.body.report.symptoms.m_symp_nausea;
+    var symp_chills = req.body.report.symptoms.m_symp_chills;
+    var symp_general_pain = req.body.report.symptoms.m_symp_general_pain;
+    var symp_smell_loss = req.body.report.symptoms.m_symp_smell_loss;
+    var trans_distance = req.body.report.transmission.m_trans_distance;
+    var trans_surface = req.body.report.transmission.m_trans_surface;
+    var trans_human = req.body.report.transmission.m_trans_human;
+    var lab_tested = req.body.report.lab_results.m_lab_tested;
+    var lab_hospitalized = req.body.report.lab_results.m_lab_hospitalized;
+    var lab_hosp_days = req.body.report.lab_results.m_lab_hosp_days;
+    var lab_hosp_icu = req.body.report.lab_results.m_lab_hosp_icu;
+    var lab_recovered = req.body.report.lab_results.m_lab_recovered;
+    var lab_ventilation = req.body.report.lab_results.m_lab_ventilation;
+    var lab_oxygen = req.body.report.lab_results.m_lab_oxygen;
+    var lab_symptoms = req.body.report.lab_results.m_lab_symptoms;
+    var lab_antibodies = req.body.report.lab_results.m_lab_antibodies;
+    var lab_pneumonia = req.body.report.lab_results.m_lab_pneumonia;
+    var member = await (mysqlinsert.member(huid, age, sex, alias, designator));
+    var report = await (mysqlinsert.report(member, symp_cough, symp_breathing, symp_walking, symp_appetite,
+        symp_diarrhea, symp_muscle_pain, symp_fatigue, symp_nose, symp_throat, symp_fever,
+        symp_headache, symp_dizziness, symp_nausea, symp_chills, symp_general_pain,
+        symp_smell_loss, trans_distance, trans_surface, trans_human,
+        lab_tested, lab_hospitalized, lab_hosp_days, lab_hosp_icu, lab_recovered,
+        lab_ventilation, lab_oxygen, lab_symptoms, lab_pneumonia, lab_antibodies));
+        if(report!=null)
+        {
+            res.json(req.body);
+        }
+        else
+        {
+            res.json({ 'response': "Report submission failed"});
+        }
+
 });
 app.post('/api/generate_id/?', (req, res) => {
     max_hid++;
@@ -131,7 +179,7 @@ app.post('/api/create_profile/?', ValidationRules.create_profile(), validate, as
     }
 
     console.log(response);
-    res.json({'response': response});
+    res.json({ 'response': response });
     // logFmt(req.url, req.body);
 });
 
