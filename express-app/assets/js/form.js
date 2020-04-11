@@ -22,7 +22,7 @@ function saveMemberRow(memb_row) {
 
     let memb_id = m_age + m_sex + '-' + m_alias;
 
-    if (memb_id in form_data['members']) {
+    if (memb_id in form_data.members) {
         console.log("DUPLICATE MEMBER EXISTS: " + memb_id);
         return false;
     }
@@ -32,14 +32,14 @@ function saveMemberRow(memb_row) {
     if (prev_memb_id != "AAAS-NN") {
         console.log("Swapping: " + prev_memb_id);
         // We are altering a member. Preserve all data, then remove.
-        form_data['members'][memb_id] = form_data['members'][prev_memb_id];
-        delete form_data['members'][prev_memb_id];
+        form_data.members[memb_id] = form_data.members[prev_memb_id];
+        delete form_data.members[prev_memb_id];
     } else {
-        form_data['members'][memb_id] = {};
+        form_data.members[memb_id] = {};
     }
 
     // Save data.
-    form_data['members'][memb_id] = {
+    form_data.members[memb_id] = {
         'age': m_age,
         'sex': m_sex,
         'alias': m_alias
@@ -82,11 +82,11 @@ function delMember(memb_row) {
         let m_sex = memb_row.find('#h_mem_bio_gender').val();
         let m_alias = memb_row.find('#h_mem_alias').val().toUpperCase();
         let memb_id = m_age + m_sex + '-' + m_alias;
-        if (memb_id in form_data['members']) {
-            delete form_data['members'][memb_id];
+        if (memb_id in form_data.members) {
+            delete form_data.members[memb_id];
         }
         // Make sure not to remove the last slot, so that users can enter new members
-        if (jQuery.isEmptyObject(form_data['members'])) {
+        if (jQuery.isEmptyObject(form_data.members)) {
             memb_row.attr({"id": 'AAAS-NN'});
             memb_row.find('#h_mem_age').val(null);
             memb_row.find('#h_mem_sex').val(null);
@@ -237,30 +237,30 @@ $(document).ready(function () {
             hid.css('border-color', 'var(--invalid_data');
             return;
         }
-        form_data['household']['identity'] = {
+        form_data.household.identity = {
             'unique_identifier': parseInt(raw_hid),
             'passcode': pass.val()
         };
 
-        asyncPostJSON(SERVERURL + '/api/get_profile', form_data['household']['identity']).then(res => {
+        asyncPostJSON(SERVERURL + '/api/get_profile', form_data.household.identity).then(res => {
             form_data = res;
 
             // Load Identity information from data obj
-            $('#h_id').html(": " + formatHouseholdId(form_data['household']['identity']['unique_identifier']));
-            hid.val(formatHouseholdId(form_data['household']['identity']['unique_identifier']));
-            $('#h_loc_country').val(form_data['household']['location']['country']);
-            $('#h_loc_region').val(form_data['household']['location']['region']);
-            $('#h_loc_city').val(form_data['household']['location']['city']);
-            $('#h_loc_street').val(form_data['household']['location']['street_name']);
-            $('#h_loc_pcode').val(form_data['household']['location']['postal_code']);
+            $('#h_id').html(": " + formatHouseholdId(form_data.household.identity.unique_identifier));
+            hid.val(formatHouseholdId(form_data.household.identity.unique_identifier));
+            $('#h_loc_country').val(form_data.household.location.country);
+            $('#h_loc_region').val(form_data.household.location.region);
+            $('#h_loc_city').val(form_data.household.location.city);
+            $('#h_loc_street').val(form_data.household.location.street_name);
+            $('#h_loc_pcode').val(form_data.household.location.postal_code);
 
             // Load Member information from data obj
-            for (let member of Object.keys(form_data['members'])) {
+            for (let member of Object.keys(form_data.members)) {
                 let m_row = $('fieldset.h_member_row:nth-last-of-type(1)');
                 let new_m_row = m_row.clone();
-                m_row.find("#h_mem_age").val(form_data['members'][member]['age']);
-                m_row.find("#h_mem_bio_gender").val(form_data['members'][member]['sex']);
-                m_row.find("#h_mem_alias").val(form_data['members'][member]['alias']);
+                m_row.find("#h_mem_age").val(form_data.members[member].age);
+                m_row.find("#h_mem_bio_gender").val(form_data.members[member].sex);
+                m_row.find("#h_mem_alias").val(form_data.members[member].alias);
                 m_row.find('legend').html(member);
                 m_row.attr('id', member);
                 let btn = m_row.find('#h_mem_save');
@@ -278,7 +278,7 @@ $(document).ready(function () {
             }
 
             // Remove unneccessary member rows:
-            if (!jQuery.isEmptyObject(form_data['members'])) {
+            if (!jQuery.isEmptyObject(form_data.members)) {
                 let m_row = $('fieldset.h_member_row:nth-last-of-type(1)');
                 if (m_row.find('legend').html() == 'AAAS-NN') {
                     m_row.remove();
@@ -366,7 +366,7 @@ $(document).ready(function () {
 
         // store data into data store TODO: Validate data
         // TODO: Consider automating this process in a loop...
-        form_data['members'][memb_id]['symptoms'] = {
+        form_data.members[memb_id].symptoms = {
             'm_symp_cough': $('#m_symp_cough').val(),
             'm_symp_fever': $('#m_symp_fever').val(),
             'm_symp_fatigue': $('#m_symp_fatigue').prop('checked'),
@@ -384,12 +384,12 @@ $(document).ready(function () {
             'm_symp_general_pain': $('#m_symp_general_pain').prop('checked'),
             'm_symp_smell_loss': $('#m_symp_smell_loss').prop('checked')
         };
-        form_data['members'][memb_id]['transmission'] = {
+        form_data.members[memb_id].transmission = {
             'm_trans_distance': $('#m_trans_distance').val(),
             'm_trans_surface': $('#m_trans_surface').val(),
             'm_trans_human': $('#m_trans_human').val()
         };
-        form_data['members'][memb_id]['lab_results'] = {
+        form_data.members[memb_id].lab_results = {
             'm_lab_tested': $('#m_lab_tested').val(),
             'm_lab_hospitalized': $('#m_lab_hospitalized').prop('checked'),
             'm_lab_hosp_days': $('#m_lab_hosp_days').val(),
@@ -435,8 +435,8 @@ $(document).ready(function () {
 
         // Send the member's report to the server
         let report = {
-            'household': form_data['household'],
-            'report': form_data['members'][memb_id]
+            'household': form_data.household,
+            'report': form_data.members[memb_id]
         };
         asyncPostJSON(SERVERURL + '/api/submit_report', report).then(res => {
             console.log(res);
@@ -494,7 +494,7 @@ $(document).ready(function () {
                 // Validate & store location data
                 if (!locSaveBtn.click()) return;
 
-                asyncPostJSON(SERVERURL + '/api/create_profile', form_data['household']).then(res => {
+                asyncPostJSON(SERVERURL + '/api/create_profile', form_data.household).then(res => {
                     console.log(res);
                     $(e.target).hide(); // hide the 'create profile' button
                     locSaveBtn.show(); // show the 'save location' button to allow location changes
