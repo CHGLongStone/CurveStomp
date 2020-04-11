@@ -2,3 +2,4 @@ slush/*
 *.bak
 *.mwb
 /express-app/node_modules/
+/express-app/package-lock.json

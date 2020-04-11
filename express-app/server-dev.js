@@ -109,7 +109,9 @@ app.post('/api/generate_id/?', (req, res) => {
     res.send(max_hid.toString());
 });
 app.post('/api/create_profile/?', ValidationRules.create_profile(), validate, async function (req, res) {
+
     console.log(req.body);
+
     var response = '';
     var identity = req.body.identity;
     var location = req.body.location;
@@ -127,12 +129,12 @@ app.post('/api/create_profile/?', ValidationRules.create_profile(), validate, as
     var household_insert_id = await (mysqlinsert.household(uid, pass));
     var h_location = await (mysqlinsert.household_location(household_insert_id, locationid));
     console.log(h_location);
+
     if (household_insert_id) {
         response += "ok";
     } else {
         response += "Profile Creation failed";
     }
-
 
     console.log(response);
     res.json({'response': response});

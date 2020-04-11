@@ -1,8 +1,4 @@
-// const SERVERURL = 'http://127.0.0.1:37248';
-// const SERVERURL = 'http://d0001.symptometer.io';
 const SERVERURL = '';
-
-// const SERVERURL = 'http://localhost:37248';
 
 function saveMemberRow(memb_row) {
 
@@ -508,7 +504,6 @@ $(document).ready(function () {
                     console.log(res);
                     $(e.target).hide(); // hide the 'create profile' button
                     btn.show(); // show the 'save location' button to allow location changes
-                    // $('#h_id_load').click(); // trigger a profile data load. Needed?
                     displayState('profile');
                 });
             });
