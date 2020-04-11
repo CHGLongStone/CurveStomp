@@ -6,7 +6,6 @@ const path = require('path');
 const config = require('./config');
 const mysqlinsert = require('./mysqlinsertfunctions');
 const mysqlselect = require('./mysqlselectfunctions');
-const countryjson = require('../countries');
 
 var user_guid_value;
 var app = express();
