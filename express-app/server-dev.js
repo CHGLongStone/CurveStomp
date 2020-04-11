@@ -275,7 +275,7 @@ app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, (req
     // TODO: Validate received data
     res.json(req.body);
 });
-app.post('/api/generate_id/?', ValidationRules.generate_id(), validate, (req, res) => {
+app.post('/api/generate_id/?', (req, res) => {
     max_hid++;
     res.send(max_hid.toString());
 });
