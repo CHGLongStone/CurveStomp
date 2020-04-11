@@ -6,6 +6,7 @@ const path = require('path');
 
 const config = require('./config');
 const mysqlinsert = require('./mysqlinsertfunctions');
+const mysqlselect   = require('./mysqlselectfunctions');
 const countryjson = require('../countries');
 
 var user_guid_value;
@@ -17,18 +18,18 @@ app.use(session({
     saveUninitialized: true
 }));
 
-// ESTABLISH DATABASE CONNECTION
-const dbconn = mysql.createConnection({
-    host: "localhost",
-    user: config.CurveStomp.user,
-    password: config.CurveStomp.pass,
-    database: config.CurveStomp.database,
-    debug: false
-});
-dbconn.connect((err) => {
-    if (err) throw err;
-    console.log(" Db Connected!");
-});
+// // ESTABLISH DATABASE CONNECTION
+// const dbconn = mysql.createConnection({
+//     host: "localhost",
+//     user: config.CurveStomp.user,
+//     password: config.CurveStomp.pass,
+//     database: config.CurveStomp.database,
+//     debug: false
+// });
+// dbconn.connect((err) => {
+//     if (err) throw err;
+//     console.log(" Db Connected!");
+// });
 
 // CONFIGURE WEB SERVER
 var http = require("http").Server(app);
@@ -213,8 +214,7 @@ app.get('/homepage/?', (req, res) => {
 
 // TODO: REMOVE FROM PRODUCTION SERVER....
 
-let max_hid = 0; // TODO: update max_hid on startup with largest PK in DB.
-
+// let max_hid = await(get_max_id()); // TODO: update max_hid on startup with largest PK in DB-DONE.
 const cors = require('cors'); // TODO: Consider removing for production
 app.use(cors({ origin: '*' })); // TODO: Consider removing for production
 app.use(express.json({
@@ -276,8 +276,11 @@ app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, (req
     // TODO: Validate received data
     res.json(req.body);
 });
-app.post('/api/generate_id/?', (req, res) => {
+app.post('/api/generate_id/?', async function(req,res) {
+    var max_hid   = await(mysqlselect.maxid());
+    console.log(max_hid);
     max_hid++;
+    console.log(max_hid);
     res.send(max_hid.toString());
 });
 app.post('/api/create_profile/?', ValidationRules.create_profile(), validate, async function (req, res) {
