@@ -136,6 +136,10 @@ app.post('/api/create_profile/?', ValidationRules.create_profile(), validate, as
 });
 
 // FIRE UP SERVER
+// Catch-all route
+app.all('*', (req, res) => {
+    res.render('form')
+});
 const PORT = 37248;
 http.listen(PORT, function () {
     console.log('listening on port: ', PORT);
