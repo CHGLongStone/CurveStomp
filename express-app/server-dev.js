@@ -129,7 +129,7 @@ app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, asyn
     var lab_antibodies = req.body.report.lab_results.m_lab_antibodies;
     var lab_pneumonia = req.body.report.lab_results.m_lab_pneumonia;
     var household_id    = await(mysqlselect.householdid(huid));
-    var member = await (mysqlinsert.member(householdid, age, sex, alias, designator));
+    var member = await (mysqlinsert.member(household_id, age, sex, alias, designator));
     var report = await (mysqlinsert.report(member, symp_cough, symp_breathing, symp_walking, symp_appetite,
         symp_diarrhea, symp_muscle_pain, symp_fatigue, symp_nose, symp_throat, symp_fever,
         symp_headache, symp_dizziness, symp_nausea, symp_chills, symp_general_pain,
