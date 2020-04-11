@@ -17,9 +17,9 @@ module.exports = {
     maxid: function()
     {
         return new Promise((resolve,reject)=>{
-            dbconn.query('select ID from household order by ID desc limit 1',(err,results)=>{
+            dbconn.query('select max(identifier) from household',(err,results)=>{
                 if(err) throw err;
-                resolve(results[0]['ID']);
+                resolve(results[0]['max(identifier)']);
             })
 
         })
