@@ -4,6 +4,14 @@ Minify: https://www.minifier.org/
 Obfuscate: https://obfuscator.io/
  */
 
+
+// TODO: BUG: If report submission fails (either validation or submission), UI shows as though
+//  the report succeeded.
+// TODO: BUG: If location Change submission fails (either validation or submission), UI shows as
+//  though the  report succeeded.
+// TODO: BUG: If "add member" after reported for last member, new member row inherits UI
+//  elements indicating that it had been reported for (background color). Reset.
+
 const SERVERURL = ''; // Change this to accommodate CORS
 
 function saveMemberRow(memb_row) {
@@ -353,6 +361,7 @@ $(document).ready(function () {
         prv.find('#h_mem_sex').prop('selectedIndex', 0);
         prv.find('#h_mem_alias').val(null);
         prv.find('legend').html("AAAS-NN");
+        prv.css('background-color', '')
     });
 
     // Delete Member row when 'Delete' is clicked
