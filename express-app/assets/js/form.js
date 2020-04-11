@@ -9,7 +9,6 @@ function saveMemberRow(memb_row) {
     let m_sex = memb_row.find('#h_mem_bio_gender').val();
     let m_alias = memb_row.find('#h_mem_alias').val().toUpperCase();
 
-    // TODO: Validate input values
     if (([m_age, m_sex].includes(null) || [m_age, m_sex].includes(''))) {
         console.log("INVALID MEMBER ROW: " + m_age + ',' + m_sex + ',' + m_alias);
         return false;
@@ -237,7 +236,6 @@ $(document).ready(function () {
         let raw_hid = hid.val().replace(/[^\d]/g, '');
         hid.val(formatHouseholdId(raw_hid));
         if (hid.val() == '' || pass.val().length < 6) {
-            // TODO: inform user about passcode requirements
             pass.val("").css('border-color', 'var(--invalid_data');
             hid.css('border-color', 'var(--invalid_data');
             return;
@@ -343,6 +341,7 @@ $(document).ready(function () {
         let memb_id = $('#m_cur_memcode').html();
 
         // store data into data store TODO: Validate data
+        // TODO: Consider automating this process in a loop...
         form_data['members'][memb_id]['symptoms'] = {
             'm_symp_cough': $('#m_symp_cough').val(),
             'm_symp_fever': $('#m_symp_fever').val(),
@@ -457,13 +456,11 @@ $(document).ready(function () {
             label.html(label.html().slice(0, -1) + ' (6+ chars):');
             btn.clone().insertAfter(btn).val("Create Profile").click((e) => {
 
-                // TODO: Validate inputs
                 // TODO: inform user of failure reasons
 
                 // Validate user's passcode:
                 let cnfrm = $('#h_id_pass_confirm');
                 if (pass.val().length < 6 || pass.val() != cnfrm.val()) {
-                    // TODO: warn user about password requirements
                     pass.val("").css('border-color', 'var(--invalid_data');
                     cnfrm.val("").css('border-color', 'var(--invalid_data');
                     return;

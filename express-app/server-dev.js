@@ -39,7 +39,7 @@ async function maxid() {
     max_hid = await (mysqlselect.maxid());
 }
 
-maxid(); // TODO: update max_hid on startup with largest PK in DB-DONE.
+maxid();
 // const cors = require('cors'); // TODO: Consider removing for production
 // app.use(cors({origin: '*'})); // TODO: Consider removing for production
 app.use(express.json({
@@ -57,12 +57,8 @@ function logFmt(url, payload) {
 
 // HANDLE API REQUESTS
 const {ValidationRules, validate} = require('./validator.js');
-app.post('/api/commcheck/?', ValidationRules.commcheck(), validate, (req, res) => {
-    res.json(req.body);
-}); // TODO: Delete for production
 app.post('/api/get_profile/?', ValidationRules.get_profile(), validate, (req, res) => {
     logFmt(req.url, req.body);
-    // TODO: validate received data
     res.json({
         "household": {
             "identity": {
@@ -99,8 +95,6 @@ app.post('/api/get_profile/?', ValidationRules.get_profile(), validate, (req, re
 app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, (req, res) => {
     // logFmt(req.url, req.body);
     var huid = req.body.household.identity.unique_identifier;
-
-    // TODO: Validate received data
     res.json(req.body);
 });
 app.post('/api/generate_id/?', (req, res) => {
@@ -139,8 +133,6 @@ app.post('/api/create_profile/?', ValidationRules.create_profile(), validate, as
     console.log(response);
     res.json({'response': response});
     // logFmt(req.url, req.body);
-    // TODO: validate data received
-
 });
 
 // FIRE UP SERVER
