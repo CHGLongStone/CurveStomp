@@ -26,35 +26,12 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use('/assets', express.static(__dirname + '/assets'));
 
-function isAuthenticated(req, res, next) {
-    if (req.session.loggedin == true) {
-        return next();
-    } else {
-        res.redirect('/homepage');
-    }
-}
-
 // CONFIGURE UI ROUTING
-app.get('/', (req, res) => {
+// TODO: How to support 'back' button?
+app.get('/?', (req, res) => {
     res.render('form');
 });
-app.get('/form', (req, res) => {
-    res.render('index');
-});
-// app.get('/household', isAuthenticated, (req, res) => {
-//     var guid = req.session.uid;
-//     var firstpart = guid.slice(0, 3);
-//     var secondpart = guid.slice(3, 6);
-//     var thirdpart = guid.slice(6, 9);
-//     var hid = firstpart + "-" + secondpart + "-" + thirdpart;
-//     res.render('household', {guid: hid});
-// });
-// app.get('/form2', (req, res) => {
-//     res.render('form2');
-// });
-// app.get('/homepage/?', (req, res) => {
-//     res.render('homepage');
-// });
+
 
 let max_hid = 0;
 
@@ -63,8 +40,8 @@ async function maxid() {
 }
 
 maxid(); // TODO: update max_hid on startup with largest PK in DB-DONE.
-const cors = require('cors'); // TODO: Consider removing for production
-app.use(cors({origin: '*'})); // TODO: Consider removing for production
+// const cors = require('cors'); // TODO: Consider removing for production
+// app.use(cors({origin: '*'})); // TODO: Consider removing for production
 app.use(express.json({
     inflate: true,
     limit: '100kb',
@@ -121,8 +98,8 @@ app.post('/api/get_profile/?', ValidationRules.get_profile(), validate, (req, re
 });
 app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, (req, res) => {
     // logFmt(req.url, req.body);
-    var huid    = req.body.household.identity.unique_identifier;
-    
+    var huid = req.body.household.identity.unique_identifier;
+
     // TODO: Validate received data
     res.json(req.body);
 });
