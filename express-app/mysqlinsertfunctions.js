@@ -125,7 +125,7 @@ module.exports = {
         return new Promise((resolve,reject)=>{
             dbconn.query('insert into household_location(household_id,location_id)values("' + household + '", "' + location + '")',(err,results)=>{
                 if(err) throw err;
-                resolve(results);
+                resolve("Profile Created");
             })
         })
     }

@@ -277,7 +277,9 @@ app.post('/api/get_profile/?', ValidationRules.get_profile(), validate, (req, re
     });
 });
 app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, (req, res) => {
-    logFmt(req.url, req.body);
+    // logFmt(req.url, req.body);
+    var huid    = req.body.household.identity.unique_identifier;
+    
     // TODO: Validate received data
     res.json(req.body);
 });
