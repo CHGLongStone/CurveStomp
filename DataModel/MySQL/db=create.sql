@@ -1,4 +1,6 @@
-create schema if not exists curvestompdev collate utf8mb4_0900_ai_ci;
+create schema if not exists curvestompdev;
+
+use curvestompdev;
 
 create table if not exists city
 (
