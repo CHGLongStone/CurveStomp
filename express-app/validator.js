@@ -12,11 +12,11 @@ ValidationRules.commcheck = () => {
 
 ValidationRules.get_profile = () => {
     return [
-        body('identity.unique_identifier')
+        body('unique_identifier')
             .exists()
             .not().isEmpty()
             .isInt({min: 0, max: 999999999999}),
-        body('identity.passcode')
+        body('passcode')
             .exists()
             .not().isEmpty()
             .isLength({min: 6, max: 25}),
