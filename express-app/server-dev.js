@@ -214,9 +214,9 @@ app.get('/homepage/?', (req, res) => {
 
 // TODO: REMOVE FROM PRODUCTION SERVER....
 
-// let max_hid = await(get_max_id()); // TODO: update max_hid on startup with largest PK in DB-DONE.
+let max_hid = await(mysqlselect.maxid()); // TODO: update max_hid on startup with largest PK in DB-DONE.
 const cors = require('cors'); // TODO: Consider removing for production
-app.use(cors({ origin: '*' })); // TODO: Consider removing for production
+app.use(cors({origin: '*'})); // TODO: Consider removing for production
 app.use(express.json({
     inflate: true,
     limit: '100kb',
@@ -277,8 +277,6 @@ app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, (req
     res.json(req.body);
 });
 app.post('/api/generate_id/?', async function(req,res) {
-    var max_hid   = await(mysqlselect.maxid());
-    console.log(max_hid);
     max_hid++;
     console.log(max_hid);
     res.send(max_hid.toString());

@@ -331,7 +331,7 @@ $(document).ready(function () {
         prv.find('#h_mem_delete').remove();
         prv.find('#h_mem_report').remove();
         prv.find('#h_mem_age').val(null);
-        prv.find('#h_mem_sex').val(null);
+        prv.find('#h_mem_sex').prop('selectedIndex', 0);
         prv.find('#h_mem_alias').val(null);
         prv.find('legend').html("AAAS-NN");
     });
