@@ -175,7 +175,6 @@ ValidationRules.submit_report = () => {
             .not().isEmpty()
             .isBoolean(),
         body('report.lab_results.m_lab_symptoms').exists()
-            .not().isEmpty()
             .isLength({max: 200}),
         body('report.lab_results.m_lab_pneumonia').exists()
             .not().isEmpty()
