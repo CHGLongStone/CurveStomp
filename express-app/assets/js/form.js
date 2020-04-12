@@ -109,13 +109,13 @@ function asyncPostJSON(url, obj) {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(obj)
     }).then(resp => {
-        let error_container = $('#error_info');
+        // let error_container = $('#error_info');
         if (!resp.ok) {
             console.log("[" + Date.now() + "]: " + "POST Status: " + resp.status);
-            error_container.html("NETWORK ERROR: " + resp.status + ". Please try again.").show();
+            // error_container.html("NETWORK ERROR: " + resp.status + ". Please try again.").show();
             return Promise.reject("server")
         }
-        error_container.html('').hide();
+        // error_container.html('').hide();
         return resp.json()
     })
 }
