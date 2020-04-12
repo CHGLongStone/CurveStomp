@@ -351,9 +351,9 @@ $(document).ready(function () {
             btn.clone().attr('id', 'h_mem_save').val("Save").insertAfter(btn).click((e) => {
                 saveMemberRow(e.target.parentNode.parentNode.parentNode);
             });
-            prv = nxt;
+            prv = nxt; // swap back to selected.
         }
-
+        prv.css('background-color', '');
         prv.attr({"id": 'AAAS-NN'});
         prv.find('#h_mem_delete').remove();
         prv.find('#h_mem_report').remove();
@@ -361,7 +361,6 @@ $(document).ready(function () {
         prv.find('#h_mem_sex').prop('selectedIndex', 0);
         prv.find('#h_mem_alias').val(null);
         prv.find('legend').html("AAAS-NN");
-        prv.css('background-color', '')
     });
 
     // Delete Member row when 'Delete' is clicked
