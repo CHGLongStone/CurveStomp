@@ -149,7 +149,7 @@ app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, asyn
     var lab_pneumonia = req.body.report.lab_results.m_lab_pneumonia;
 
     // TODO: Check if HHID matches passcode on every report. Halt if not-DONEEE
-    // TODO: If an _authenticated_ report's location is different than stored, update stored.
+    // TODO: If an _authenticated_ report's location is different than stored, update stored.-DONEEEE
 
     var household_id = await (mysqlselect.householdid(huid, passcode));
     if (household_id == null) {
