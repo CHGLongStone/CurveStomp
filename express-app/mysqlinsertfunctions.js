@@ -164,16 +164,12 @@ module.exports = {
                     })
         })
     },
-    location_update: function (identifier, country, city, region, pcode, street) {
+    location_check: function (identifier, country, city, region, pcode, street) {
         return new Promise((resolve, reject) => {
-            dbconn.query('select identifier,c.iso_code,c2.name,r.name,household.ID from household ' +
-                'join household_location hl on household.ID = hl.household_id ' +
-                'join location l on hl.location_id = l.ID ' +
-                'join country c on l.country = c.ID ' +
-                'join city c2 on l.city = c2.ID ' +
-                'join region r on l.region = r.ID ' +
-                'where identifier=? and c.iso_code=?' +
-                'and c2.name=? and r.name=?',
+            dbconn.query('select  identifier,country,city,region,street_name,postal_code,household.ID from household '+
+            'join household_location hl on household.ID = hl.household_id '+
+            'join location l on hl.location_id = l.ID'+
+            ' where identifier=? and country=? and city=? and region=?',
                 [identifier, country, city, region, street, pcode], async function(err,results) {
                     if (err) throw err;
                     console.log(results);
@@ -181,95 +177,36 @@ module.exports = {
 
                     }
                     else {
-                        console.log(region);
-                        var countryid = await(addcountry(country));
-                        var cityid      = await(addcity(city));
-                        var regionid    = await(addregion(region));
-                        var locationid;
-                        var householdid;
-                        dbconn.query('insert into location(country,region,city,street_name,postal_code)values(?,?,?,?,?)',
-                            [countryid, regionid, cityid, street, pcode], (err, results) => {
-                                if (err) throw err;
-                                locationid = results.insertId;
-                            })
-                        dbconn.query('select ID from household where identifier=?', identifier, (err, results) => {
-                            if (err) throw err;
-                            householdid = results[0]['ID'];
-                            dbconn.query('update household_location set location_id=? where household_id=?',
-                                [locationid, householdid], (err, results) => {
-                                    if (err) throw err;
-                                    resolve("Location Updated");
-                                })
-                        })
+                       resolve(null);
 
                     }
                 })
         })
 
-        function addcountry(country)
-        {
-            return new Promise((resolve,reject)=>{
-                dbconn.query('select ID from country where iso_code=? or name=?',[country,country],(err,results)=>{
-                    if(err) throw err;
-                    if(results.lenght>0)
-                    {
-                        resolve(results[0]['ID']);
-                    }
-                    else
-                    {
-                        dbconn.query('insert into country(iso_code)values(?)', country, (err, results) => {
-                            if (err) throw err;
-                            resolve(results.insertId);
-                        })
-
-                    }
+        
+    },
+    location_update: function(identifier,country,city,region,pcode,street)
+    {
+        return new Promise((resolve,reject)=>{
+            var locationid;
+            var householdid;
+            console.log(street);
+            console.log(pcode);
+            dbconn.query('insert into location(country,region,city,street_name,postal_code)values(?,?,?,?,?)',
+                [country, region, city, street, pcode], (err, results) => {
+                    if (err) throw err;
+                    locationid = results.insertId;
                 })
-                
+            dbconn.query('select ID from household where identifier=?', identifier, (err, results) => {
+                if (err) throw err;
+                householdid = results[0]['ID'];
+                dbconn.query('insert into household_location(household_id,location_id)values(?,?)',
+                    [householdid,locationid], (err, results) => {
+                        if (err) throw err;
+                        resolve("Location Updated");
+                    })
             })
-           
-
-        }
-        function addcity(city)
-        {
-            return new Promise((resolve,reject)=>{
-                dbconn.query('select ID from city where name=?',city,(err,results)=>{
-                    if(err) throw err;
-                    if(results.lenght>0)
-                    {
-                        resolve(results[0]['ID']);
-                    }
-                    else
-                    {
-                        dbconn.query('insert into city(name)values(?)', city, (err, results) => {
-                            if (err) throw err;
-                            resolve(results.insertId);
-                        })
-
-                    }
-                })
-            })
-        }
-
-        function addregion(region)
-        {
-            return new Promise((resolve,reject)=>{
-                dbconn.query('select ID from region where name=?',region,(err,results)=>{
-                    if(err) throw err;
-                    if(results.lenght>0)
-                    {
-                        resolve(results[0]['ID']);
-                    }
-                    else
-                    {
-                        dbconn.query('insert into region(name)values(?)', region, (err, results) => {
-                            if (err) throw err;
-                            resolve(results.insertId);
-                        })
-
-                    }
-                })
-            })
-        }
+        })
     }
 };
 
