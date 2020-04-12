@@ -57,43 +57,55 @@ function logFmt(url, payload) {
 // HANDLE API REQUESTS
 const {ValidationRules, validate} = require('./validator.js');
 
-app.post('/api/get_profile/?', ValidationRules.get_profile(), validate, (req, res) => {
+app.post('/api/get_profile/?', ValidationRules.get_profile(), validate, async function(req,res) {
     logFmt(req.url, req.body);
-
+    var uid = req.body.unique_identifier;
+    var passcode    = req.body.passcode;
+    var datajson    = await(mysqlselect.login(uid,passcode));
+    if(datajson=="No data Found")
+    {
+        res.status(404).json({'response': 'profile not found'});
+    }
+    else
+    {
+        console.log(datajson);
+        res.json(datajson);
+    }
+   
     // TODO: Verify HHID:Pass match.
 
-    res.json({
-        "household": {
-            "identity": {
-                "unique_identifier": 123456789,
-                "passcode": 'hellogoodbye'
-            },
-            "location": {
-                "country": 'Canada',
-                "region": "Ontario",
-                "city": "Ottawa",
-                "street_name": "Triangle St.",
-                "postal_code": "M8C 7J9"
-            }
-        },
-        "members": {
-            "38M-JG": {
-                "age": 38,
-                "sex": "M",
-                "alias": "JG"
-            },
-            "32F-VG": {
-                "age": 32,
-                "sex": "F",
-                "alias": "VG"
-            },
-            "1M-UG": {
-                "age": 1,
-                "sex": "M",
-                "alias": "UG"
-            },
-        }
-    });
+    // res.json({
+    //     "household": {
+    //         "identity": {
+    //             "unique_identifier": 123456789,
+    //             "passcode": 'hellogoodbye'
+    //         },
+    //         "location": {
+    //             "country": 'Canada',
+    //             "region": "Ontario",
+    //             "city": "Ottawa",
+    //             "street_name": "Triangle St.",
+    //             "postal_code": "M8C 7J9"
+    //         }
+    //     },
+    //     "members": {
+    //         "38M-JG": {
+    //             "age": 38,
+    //             "sex": "M",
+    //             "alias": "JG"
+    //         },
+    //         "32F-VG": {
+    //             "age": 32,
+    //             "sex": "F",
+    //             "alias": "VG"
+    //         },
+    //         "1M-UG": {
+    //             "age": 1,
+    //             "sex": "M",
+    //             "alias": "UG"
+    //         },
+    //     }
+    // });
 });
 app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, async function (req, res) {
     // logFmt(req.url, req.body);
