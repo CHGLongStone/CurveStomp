@@ -71,7 +71,7 @@ h1, h2, h3 {
     font-family: "Roboto Slab", "Times New Roman", serif;
 }
 
-form {
+form, pre#error_info {
     width: 80%;
     max-width: 960px;
     margin: auto;
@@ -184,6 +184,13 @@ fieldset#h_identity div.fieldset_container {
     justify-self: center;
 }
 
+
+#error_info {
+    display: none;
+    background-color: var(--invalid_data);
+    position: absolute;
+    bottom: 0;
+}
 
 /* DESIGN */
 
