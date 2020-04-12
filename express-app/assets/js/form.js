@@ -474,18 +474,24 @@ $(document).ready(function () {
             },
             "members": {}
         };
+
+        // Grab a unique household ID.
         asyncPostJSON(SERVERURL + '/api/generate_id', {}).then(res => {
-            console.log("[" + Date.now() + "]: " + "Got Household ID: " + res.toString());
-            form_data.household.identity.unique_identifier = res;
-            $('#h_id_uid').val(formatHouseholdId(res)).prop('disabled', true);
 
             let pass = $('#h_id_pass');
             let label = getLabelFor(pass);
+            let locSaveBtn = $('#h_loc_save');
+            form_data.household.identity.unique_identifier = parseInt(res);
+
+            // Update and disable the 'Household ID' field:
+            $('#h_id_uid').val(formatHouseholdId(res)).prop('disabled', true);
+
+            // Inform the user of password requirements:
             label.html(label.html().slice(0, -1) + ' (6+ chars):');
 
-            // Hijack the location save button
-            let locSaveBtn = $('#h_loc_save');
-            locSaveBtn.clone().insertAfter(locSaveBtn).val("Create Profile").click((e) => {
+            // Hijack the 'location save' button to create the 'Create Profile' button:
+            let create_profile_btn = locSaveBtn.clone().prop('id', 'h_prof_create').val("Create Profile");
+            create_profile_btn.insertAfter(locSaveBtn).click((e) => {
                 // Validate & store user's passcode:
                 let cnfrm = $('#h_id_pass_confirm');
                 if (pass.val().length < 6 || pass.val() != cnfrm.val()) {
@@ -500,21 +506,22 @@ $(document).ready(function () {
                 // Validate & store location data
                 if (!locSaveBtn.click()) return;
 
+                // Attempt to create a new user profile on the server:
                 asyncPostJSON(SERVERURL + '/api/create_profile', form_data.household).then(res => {
-                    console.log("[" + Date.now() + "]: " + res);
-                    $(e.target).hide(); // hide the 'create profile' button
-                    locSaveBtn.show(); // show the 'save location' button to allow location changes
+                    $(e.target).remove(); // destroy the 'create profile' button
+                    locSaveBtn.show(); // reveal 'save location' button to allow location changes
                     displayState('profile');
                 }).catch(err => {
-                    if (err == "server") return;
+                    if (err == "server") return; // A network error occurred in POST
                     throw err
                 });
             });
-            locSaveBtn.hide();
 
+            locSaveBtn.hide(); // hide the location save button to avoid UX confusion
             displayState('createProfile')
+
         }).catch(err => {
-            if (err == "server") return;
+            if (err == "server") return; // A network error occurred in POST
             throw err
         });
     });
