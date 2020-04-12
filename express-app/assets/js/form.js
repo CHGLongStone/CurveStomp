@@ -5,11 +5,6 @@ Obfuscate: https://obfuscator.io/
  */
 
 
-// TODO: BUG: If report submission fails (either validation or submission), UI shows as though
-//  the report succeeded.
-// TODO: BUG: If location Change submission fails (either validation or submission), UI shows as
-//  though the  report succeeded.
-
 const SERVERURL = ''; // Change this to accommodate CORS
 
 function saveMemberRow(memb_row) {
@@ -115,14 +110,11 @@ function asyncPostJSON(url, obj) {
         body: JSON.stringify(obj)
     }).then(resp => {
         if (!resp.ok) {
-            console.log("Status: " + resp.status);
+            console.log("POST Status: " + resp.status);
             return Promise.reject("server")
         }
-        return resp.json()
-    }).catch(err => {
-        if (err == "server") return;
-        throw err
-    });
+        return Promise.resolve(resp.json())
+    })
 }
 
 function collapseOn(anchor) {
@@ -292,7 +284,10 @@ $(document).ready(function () {
 
             // Organize UI
             displayState('profile');
-        })
+        }).catch(err => {
+            if (err == "server") return;
+            throw err
+        });
     });
 
     // Save location data to form data
@@ -445,6 +440,9 @@ $(document).ready(function () {
         };
         asyncPostJSON(SERVERURL + '/api/submit_report', report).then(res => {
             console.log(res);
+        }).catch(err => {
+            if (err == "server") return;
+            throw err
         });
 
         // mark the member row as complete.
@@ -478,12 +476,12 @@ $(document).ready(function () {
             form_data.household.identity.unique_identifier = res;
             $('#h_id_uid').val(formatHouseholdId(res)).prop('disabled', true);
 
-            // Hijack the location save button
-            let locSaveBtn = $('#h_loc_save');
             let pass = $('#h_id_pass');
             let label = getLabelFor(pass);
             label.html(label.html().slice(0, -1) + ' (6+ chars):');
 
+            // Hijack the location save button
+            let locSaveBtn = $('#h_loc_save');
             locSaveBtn.clone().insertAfter(locSaveBtn).val("Create Profile").click((e) => {
                 // Validate & store user's passcode:
                 let cnfrm = $('#h_id_pass_confirm');
@@ -504,10 +502,17 @@ $(document).ready(function () {
                     $(e.target).hide(); // hide the 'create profile' button
                     locSaveBtn.show(); // show the 'save location' button to allow location changes
                     displayState('profile');
+                }).catch(err => {
+                    if (err == "server") return;
+                    throw err
                 });
             });
             locSaveBtn.hide();
+
             displayState('createProfile')
+        }).catch(err => {
+            if (err == "server") return;
+            throw err
         });
     });
 });
