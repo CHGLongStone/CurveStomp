@@ -9,8 +9,6 @@ Obfuscate: https://obfuscator.io/
 //  the report succeeded.
 // TODO: BUG: If location Change submission fails (either validation or submission), UI shows as
 //  though the  report succeeded.
-// TODO: BUG: If "add member" after reported for last member, new member row inherits UI
-//  elements indicating that it had been reported for (background color). Reset.
 
 const SERVERURL = ''; // Change this to accommodate CORS
 
