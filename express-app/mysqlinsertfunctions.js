@@ -163,6 +163,61 @@ module.exports = {
                         resolve(results.insertId);
                     })
         })
+    },
+    location_update: function(identifier,country,city,region,pcode,street)
+    {
+        return new Promise((resolve,reject)=>{
+            var countryid;
+            var cityid;
+            var regionid;
+            var locationid;
+            var householdid;
+            dbconn.query('select identifier,c.iso_code,c2.name,r.name,household.ID from household '+
+             'join household_location hl on household.ID = hl.household_id '+
+            'join location l on hl.location_id = l.ID '+
+            'join country c on l.country = c.ID '+
+            'join city c2 on l.city = c2.ID '+
+            'join region r on l.region = r.ID '+
+             'where identifier=? and c.iso_code=?'+
+            'and c2.name=? and r.name=?',
+            [identifier,country,city,region,street,pcode],(err,results)=>{
+                if(err) throw err;
+                if(results.lenght!=0)
+                {
+                    
+                }
+                else
+                {
+                    dbconn.query('insert into country(iso_code)values(?)',country,(err,results)=>{
+                        if(err) throw err;
+                        countryid   = results.insertId;
+                    })
+                    dbconn.query('insert into city(name)values(?)',city,(err,results)=>{
+                        if(err) throw err;
+                        cityid  = results.insertId;
+                    })
+                    dbconn.query('insrt into region(name)values(?)',region,(err,results)=>{
+                        if(err) throw err;
+                        regionid    = results.insertId;
+                    })
+                    dbconn.query('insert into location(country,region,city,street_name,postal_code)values(?,?,?,?,?',
+                    [countryid,regionid,cityid,street,pcode],(err,results)=>{
+                        if(err) throw err;
+                        locationid  = results.insertId;
+                    })
+                    dbconn.query('select ID from household where identifier=?',identifier,(err,results)=>{
+                        if(err) throw err;
+                        householdid = results[0]['ID'];
+                        dbconn.query('update household_location set location_id=? where household_id=?',
+                        [locationid,householdid],(err,results)=>{
+                            if(err) throw err;
+                            resolve("Location Updated");
+                        })
+                    })
+
+                }
+            })
+        })
     }
 };
 

@@ -48,7 +48,7 @@ module.exports = {
         var identity = {};
         return new Promise((resolve, reject) => {
             dbconn.query('select household.identifier HHID,sha2(household.passcode, 256) PASS_sha2_256,' +
-                'country.name country,region.name region,city.name city,' +
+                'country.iso_code country,region.name region,city.name city,' +
                 'location.street_name street,location.postal_code p_code,' +
                 'member.age age,member.sex sex,member.alias alias,' +
                 'report.* from city,country,household,' +

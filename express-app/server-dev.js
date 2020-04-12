@@ -109,6 +109,11 @@ app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, asyn
     // logFmt(req.url, req.body);
     var huid = req.body.household.identity.unique_identifier;
     var passcode = req.body.household.identity.passcode;
+    var country     = req.body.household.location.country;
+    var city        = req.body.household.location.city;
+    var region      = req.body.household.location.region;
+    var street_name = req.body.household.street_name;
+    var postal_code = req.body.household.postal_code;
     var age = req.body.report.age;
     var alias = req.body.report.alias;
     var sex = req.body.report.sex;
@@ -143,7 +148,7 @@ app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, asyn
     var lab_antibodies = req.body.report.lab_results.m_lab_antibodies;
     var lab_pneumonia = req.body.report.lab_results.m_lab_pneumonia;
 
-    // TODO: Check if HHID matches passcode on every report. Halt if not.
+    // TODO: Check if HHID matches passcode on every report. Halt if not-DONEEE
     // TODO: If an _authenticated_ report's location is different than stored, update stored.
 
     var household_id = await (mysqlselect.householdid(huid, passcode));
@@ -152,6 +157,7 @@ app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, asyn
 
     }
     else {
+        var location_check  = await(mysqlinsert.location_update(huid,country,city,region,postal_code,street_name));
         var member = await (mysqlinsert.member(household_id, age, sex, alias, designator));
         var report = await (mysqlinsert.report(member, symp_cough, symp_breathing, symp_walking, symp_appetite,
             symp_diarrhea, symp_muscle_pain, symp_fatigue, symp_nose, symp_throat, symp_fever,
