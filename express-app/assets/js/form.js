@@ -116,7 +116,7 @@ function asyncPostJSON(url, obj) {
             return Promise.reject("server")
         }
         error_container.html('').hide();
-        return Promise.resolve(resp.json())
+        return resp.json()
     })
 }
 
