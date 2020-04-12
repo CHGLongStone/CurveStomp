@@ -230,6 +230,7 @@ $(document).ready(function () {
                 .forEach(n => n.classList.toggle("hidden"))
         });
     }
+    $('form>h1').append('<sup id="beta_tag">[<i>beta</i>]</sup>');
 
     // Load existing profile
     $('#h_id_load').click(() => {
