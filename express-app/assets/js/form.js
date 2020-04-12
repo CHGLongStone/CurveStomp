@@ -121,7 +121,6 @@ function asyncPostJSON(url, obj) {
         return resp.json()
     }).catch(err => {
         if (err == "server") return;
-        $('#error_info').html(err).show();
         throw err
     });
 }
