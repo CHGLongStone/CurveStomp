@@ -153,6 +153,7 @@ app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, asyn
 app.post('/api/generate_id/?', (req, res) => {
     max_hid++;
     console.log("[" + Date.now() + "]: " + max_hid);
+    // TODO: Store last created HHID somewhere, to avoid conflicts on restart?
     res.send(max_hid.toString());
 });
 app.post('/api/create_profile/?', ValidationRules.create_profile(), validate, async function (req, res) {
