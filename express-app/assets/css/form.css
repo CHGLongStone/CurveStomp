@@ -184,7 +184,6 @@ fieldset#h_identity div.fieldset_container {
     justify-self: center;
 }
 
-
 #error_info {
     display: none;
     background-color: var(--invalid_data);
