@@ -10,7 +10,7 @@ const dbconn = mysql.createConnection({
 });
 dbconn.connect((err) => {
     if (err) throw err;
-    console.log(" Db Connected!");
+    console.log("[" + Date(Date.now()) + "]: " + " Db Connected!");
 });
 
 module.exports = {

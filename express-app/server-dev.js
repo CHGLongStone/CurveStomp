@@ -51,7 +51,7 @@ app.use(express.json({
 }));
 
 function logFmt(url, payload) {
-    console.log('[' + Date.now() + '] Rx @ ' + url + ': ' + JSON.stringify(payload))
+    console.log("[" + Date(Date.now()) + "]: " + url + ': ' + JSON.stringify(payload))
 };
 
 // HANDLE API REQUESTS
@@ -145,12 +145,12 @@ app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, asyn
 });
 app.post('/api/generate_id/?', (req, res) => {
     max_hid++;
-    console.log(max_hid);
+    console.log("[" + Date(Date.now()) + "]: " + max_hid);
     res.send(max_hid.toString());
 });
 app.post('/api/create_profile/?', ValidationRules.create_profile(), validate, async function (req, res) {
 
-    console.log(req.body);
+    console.log("[" + Date(Date.now()) + "]: " + req.body);
 
     var response = '';
     var identity = req.body.identity;
@@ -168,7 +168,7 @@ app.post('/api/create_profile/?', ValidationRules.create_profile(), validate, as
     var locationid = await (mysqlinsert.location(countryid, regionid, cityid, street_name, postal_code));
     var household_insert_id = await (mysqlinsert.household(uid, pass));
     var h_location = await (mysqlinsert.household_location(household_insert_id, locationid));
-    console.log(h_location);
+    console.log("[" + Date(Date.now()) + "]: " + h_location);
 
     if (household_insert_id) {
         response += "ok";
@@ -176,7 +176,7 @@ app.post('/api/create_profile/?', ValidationRules.create_profile(), validate, as
         response += "Profile Creation failed";
     }
 
-    console.log(response);
+    console.log("[" + Date(Date.now()) + "]: " + response);
     res.json({'response': response});
     // logFmt(req.url, req.body);
 });
@@ -193,5 +193,5 @@ app.all('*', (req, res) => {
 });
 const PORT = 37248;
 http.listen(PORT, function () {
-    console.log('listening on port: ', PORT);
+    console.log("[" + Date(Date.now()) + "]: " + 'listening on port: ', PORT);
 });

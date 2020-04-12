@@ -17,21 +17,21 @@ function saveMemberRow(memb_row) {
     let m_alias = memb_row.find('#h_mem_alias').val().toUpperCase();
 
     if (([m_age, m_sex].includes(null) || [m_age, m_sex].includes(''))) {
-        console.log("INVALID MEMBER ROW: " + m_age + ',' + m_sex + ',' + m_alias);
+        console.log("[" + Date(Date.now()) + "]: " + "INVALID MEMBER ROW: " + m_age + ',' + m_sex + ',' + m_alias);
         return false;
     }
 
     let memb_id = m_age + m_sex + '-' + m_alias;
 
     if (memb_id in form_data.members) {
-        console.log("DUPLICATE MEMBER EXISTS: " + memb_id);
+        console.log("[" + Date(Date.now()) + "]: " + "DUPLICATE MEMBER EXISTS: " + memb_id);
         return false;
     }
 
     let prev_memb_id = memb_row.find('legend').html();
 
     if (prev_memb_id != "AAAS-NN") {
-        console.log("Swapping: " + prev_memb_id);
+        console.log("[" + Date(Date.now()) + "]: " + "Swapping: " + prev_memb_id);
         // We are altering a member. Preserve all data, then remove.
         form_data.members[memb_id] = form_data.members[prev_memb_id];
         delete form_data.members[prev_memb_id];
@@ -110,7 +110,7 @@ function asyncPostJSON(url, obj) {
         body: JSON.stringify(obj)
     }).then(resp => {
         if (!resp.ok) {
-            console.log("POST Status: " + resp.status);
+            console.log("[" + Date(Date.now()) + "]: " + "POST Status: " + resp.status);
             return Promise.reject("server")
         }
         return Promise.resolve(resp.json())
@@ -169,7 +169,7 @@ function displayState(state_string) {
     } else {
         displayState.cur_display = null;
     }
-    console.log('Display mode: ' + displayState.cur_display);
+    console.log("[" + Date(Date.now()) + "]: " + 'Display mode: ' + displayState.cur_display);
 }
 
 function formatHouseholdId(hhid) {
@@ -439,7 +439,7 @@ $(document).ready(function () {
             'report': form_data.members[memb_id]
         };
         asyncPostJSON(SERVERURL + '/api/submit_report', report).then(res => {
-            console.log(res);
+            console.log("[" + Date(Date.now()) + "]: " + res);
         }).catch(err => {
             if (err == "server") return;
             throw err
@@ -472,7 +472,7 @@ $(document).ready(function () {
             "members": {}
         };
         asyncPostJSON(SERVERURL + '/api/generate_id', {}).then(res => {
-            console.log("Got Household ID: " + res.toString());
+            console.log("[" + Date(Date.now()) + "]: " + "Got Household ID: " + res.toString());
             form_data.household.identity.unique_identifier = res;
             $('#h_id_uid').val(formatHouseholdId(res)).prop('disabled', true);
 
@@ -498,7 +498,7 @@ $(document).ready(function () {
                 if (!locSaveBtn.click()) return;
 
                 asyncPostJSON(SERVERURL + '/api/create_profile', form_data.household).then(res => {
-                    console.log(res);
+                    console.log("[" + Date(Date.now()) + "]: " + res);
                     $(e.target).hide(); // hide the 'create profile' button
                     locSaveBtn.show(); // show the 'save location' button to allow location changes
                     displayState('profile');
