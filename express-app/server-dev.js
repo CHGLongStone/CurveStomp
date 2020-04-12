@@ -98,7 +98,7 @@ app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, asyn
     var age = req.body.report.age;
     var alias = req.body.report.alias;
     var sex = req.body.report.sex;
-    var designator = (age + sex + alias).toString();
+    var designator = (age + sex + '-' + alias).toString();
     var symp_cough = req.body.report.symptoms.m_symp_cough;
     var symp_fever = req.body.report.symptoms.m_symp_fever;
     var symp_nose = req.body.report.symptoms.m_symp_nose;
@@ -128,6 +128,10 @@ app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, asyn
     var lab_symptoms = req.body.report.lab_results.m_lab_symptoms;
     var lab_antibodies = req.body.report.lab_results.m_lab_antibodies;
     var lab_pneumonia = req.body.report.lab_results.m_lab_pneumonia;
+
+    // TODO: Check if HHID matches passcode on every report. Halt if not.
+    // TODO: If an _authenticated_ report's location is different than stored, update stored.
+
     var household_id = await (mysqlselect.householdid(huid));
     var member = await (mysqlinsert.member(household_id, age, sex, alias, designator));
     var report = await (mysqlinsert.report(member, symp_cough, symp_breathing, symp_walking, symp_appetite,
@@ -162,6 +166,9 @@ app.post('/api/create_profile/?', ValidationRules.create_profile(), validate, as
     var region = location['region'];
     var postal_code = location['postal_code'];
     var street_name = location['street_name'];
+
+    // TODO: Ensure that the household identifier didn't already exist. A UNQ constraint in DB?
+
     var countryid = await (mysqlinsert.country(country));
     var regionid = await (mysqlinsert.region(region));
     var cityid = await (mysqlinsert.city(city));
@@ -189,6 +196,8 @@ app.post('/api/comm_fail/?', (req, res) => {
 // FIRE UP SERVER
 // Catch-all route
 app.all('*', (req, res) => {
+    // TODO: This returns HTML to calls which may be expecting JSON, causing client-side
+    //  failures. Can this be handled?
     res.render('form')
 });
 const PORT = 37248;
