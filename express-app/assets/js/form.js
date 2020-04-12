@@ -137,47 +137,54 @@ function expandOn(anchor) {
 }
 
 function displayState(state_string) {
-    displayState.cur_display = state_string;
-    if (state_string == 'login') {
-        $('#member').hide();
-        $('fieldset#h_location').hide();
-        $('fieldset#h_members').hide();
-        $('#h_id_pass_confirm').parent().hide();
-    } else if (state_string == 'createProfile') {
-        $('section#member').hide();
-        $('section#household').show();
-        $('form > .explainer').hide();
-        $('section > fieldset#identity').show();
-        $('section > fieldset#h_location').show();
-        $('section > fieldset#h_members').hide();
-        $('#h_id_pass_confirm').parent().show();
-        $('#h_id_load').hide();
-        $('#h_id_create').hide();
-    } else if (state_string == 'memberReport') {
-        $('form > .explainer').hide();
-        $('#household').hide();
-        $('#member').show();
-        $('#m_labresults > legend').click();
-    } else if (state_string == 'profile') {
-        $('form > .explainer').hide();
-        $('#household').show();
-        $('#member').hide();
-        $('section > fieldset#h_location').show();
-        $('section > fieldset#h_members').show();
-        $('#h_id_uid').prop('disabled', true);
-        $('#h_id_load').hide();
-        $('#h_id_create').hide();
-        collapseOn($('section > fieldset#h_identity > legend'));
-        collapseOn($('section > fieldset#h_location > legend'))
-    } else {
-        displayState.cur_display = null;
+    // Utility function to encapsulate UI transition logic
+    switch (state_string) {
+        case 'login':
+            $('section#member').hide();
+            $('fieldset#h_location').hide();
+            $('fieldset#h_members').hide();
+            $('#h_id_pass_confirm').parent().hide();
+            break;
+        case 'createProfile':
+            $('section#member').hide();
+            $('section#household').show();
+            $('form > .explainer').hide();
+            $('section > fieldset#identity').show();
+            $('section > fieldset#h_location').show();
+            $('section > fieldset#h_members').hide();
+            $('#h_id_pass_confirm').parent().show();
+            $('#h_id_load').hide();
+            $('#h_id_create').hide();
+            break;
+        case 'memberReport':
+            $('form > .explainer').hide();
+            $('section#household').hide();
+            $('section#member').show();
+            $('#m_labresults > legend').click();
+            break;
+        case 'profile':
+            $('form > .explainer').hide();
+            $('section#household').show();
+            $('section#member').hide();
+            $('section > fieldset#h_location').show();
+            $('section > fieldset#h_members').show();
+            $('#h_id_uid').prop('disabled', true);
+            $('#h_id_pass').prop('disabled', true);
+            $('#h_id_load').hide();
+            $('#h_id_create').hide();
+            collapseOn($('section > fieldset#h_identity > legend'));
+            collapseOn($('section > fieldset#h_location > legend'))
+            break;
+        default:
+            displayState.cur_display = null;
     }
+    displayState.cur_display = state_string;
     console.log("[" + Date.now() + "]: " + 'Display mode: ' + displayState.cur_display);
 }
 
 function formatHouseholdId(hhid) {
-    // hhid is an integer between 0 and 999999999999
-    if (hhid != NaN && hhid != '') {
+    // hhid must be an integer between 0 and 999999999999
+    if (!isNaN(hhid) && hhid != '') {
         let str = hhid.toString();
         str = str.padStart(str.length > 9 ? 12 : 9, "0");
         const numChunks = Math.ceil(str.length / 3);
@@ -213,7 +220,8 @@ form_data = {
 
 $(document).ready(function () {
 
-    // Make all fieldsets and H2 titled elements collapsible
+    // Set initial display state:
+    displayState('login');
     for (let header of document.querySelectorAll("h2, section > fieldset > legend")) {
         header.classList.add("collapsible");
         header.addEventListener("click", () => {
@@ -223,29 +231,36 @@ $(document).ready(function () {
         });
     }
 
-    displayState('login');
-
     // Load existing profile
     $('#h_id_load').click(() => {
-        // Validate user's passcode:
         let pass = $('#h_id_pass');
         let hid = $('#h_id_uid');
-        let raw_hid = hid.val().replace(/[^\d]/g, '');
-        hid.val(formatHouseholdId(raw_hid));
-        if (hid.val() == '' || pass.val().length < 6) {
+
+        // Validate user's passcode and Household ID:
+        let raw_hid = parseInt(hid.val().replace(/[^\d]/g, ''));
+        if (isNaN(raw_hid) || pass.val().length < 6) {
             pass.val("").css('border-color', 'var(--invalid_data');
             hid.css('border-color', 'var(--invalid_data');
             return;
         }
-        form_data.household.identity = {
-            'unique_identifier': parseInt(raw_hid),
-            'passcode': pass.val()
-        };
+
+        // Display a formatted HHID to the user:
+        hid.val(formatHouseholdId(raw_hid));
+
+        form_data.household.identity.unique_identifier = raw_hid; // is not NaN
+        form_data.household.identity.passcode = pass.val(); // string, length >= 6
+
 
         asyncPostJSON(SERVERURL + '/api/get_profile', form_data.household.identity).then(res => {
-            form_data = res;
 
-            // Load Identity information from data obj
+            // TODO: Verify assumptions on returned object...
+
+            // Store returned data into local object.
+            form_data.household.identity.unique_identifier = res.household.identity.unique_identifier;
+            form_data.household.location = res.household.location;
+            form_data.members = res.members;
+
+            // Update UI with retrieved household information
             $('#h_id').html(": " + formatHouseholdId(form_data.household.identity.unique_identifier));
             hid.val(formatHouseholdId(form_data.household.identity.unique_identifier));
             $('#h_loc_country').val(form_data.household.location.country);
@@ -254,17 +269,26 @@ $(document).ready(function () {
             $('#h_loc_street').val(form_data.household.location.street_name);
             $('#h_loc_pcode').val(form_data.household.location.postal_code);
 
-            // Load Member information from data obj
+            // Load Member information from data obj into member rows
             for (let member of Object.keys(form_data.members)) {
+
+                // Grab the last member row (which, at first, is assumed empty).
                 let m_row = $('fieldset.h_member_row:nth-last-of-type(1)');
-                let new_m_row = m_row.clone();
+
+                // Set aside an empty member clone.
+                let new_m_row = m_row.clone(); // TODO: does this need to be done every iteration?
+
+                // Insert data into existing row
                 m_row.find("#h_mem_age").val(form_data.members[member].age);
                 m_row.find("#h_mem_bio_gender").val(form_data.members[member].sex);
                 m_row.find("#h_mem_alias").val(form_data.members[member].alias);
                 m_row.find('legend').html(member);
                 m_row.attr('id', member);
+
+                // Adjust the UI controls to match our state
                 let btn = m_row.find('#h_mem_save');
                 btn.clone().attr('id', 'h_mem_delete').val('Delete').insertAfter(btn).click((e) => {
+                    // TODO: consider implementing logic to flag member as disabled in DB?
                     delMember(e.target.parentNode.parentNode.parentNode);
                 });
                 btn.clone().attr('id', 'h_mem_report').val('Report').insertAfter(btn).click(() => {
@@ -272,8 +296,9 @@ $(document).ready(function () {
                     $('#m_cur_memcode').html(member);
                     displayState("memberReport");
                 });
-                // Remove the "save" button from the member row
                 btn.remove();
+
+                // plug our template empty row in at the end.
                 new_m_row.insertAfter(m_row);
             }
 
@@ -287,6 +312,7 @@ $(document).ready(function () {
 
             // Organize UI
             displayState('profile');
+
         }).catch(err => {
             if (err == "server") return;
             throw err
@@ -296,35 +322,21 @@ $(document).ready(function () {
     // Save location data to form data
     $('#h_loc_save').click(() => {
         let isValid = true;
-        // Validate Country:
-        let inspected = $('#h_loc_country');
-        if (inspected.val() == '' || inspected.val() == null) {
-            inspected.val("").css('border-color', 'var(--invalid_data');
-            isValid = false;
-        } else {
-            inspected.css('border-color', 'var(--validated_data');
-            form_data.household.location.country = inspected.val();
-        }
+        let validate = (inspected) => {
+            if (jQuery.isEmptyObject(inspected.val())) {
+                inspected.val("").css('border-color', 'var(--invalid_data');
+                isValid = false;
+                return ''
+            } else {
+                inspected.css('border-color', 'var(--validated_data');
+                return inspected.val();
+            }
+        };
 
-        // Validate City:
-        inspected = $('#h_loc_city');
-        if (inspected.val() == '' || inspected.val() == null) {
-            inspected.val("").css('border-color', 'var(--invalid_data');
-            isValid = false;
-        } else {
-            inspected.css('border-color', 'var(--validated_data');
-            form_data.household.location.city = inspected.val();
-        }
-
-        // Validate Street Name:
-        inspected = $('#h_loc_street');
-        if (inspected.val() == '' || inspected.val() == null) {
-            inspected.val("").css('border-color', 'var(--invalid_data');
-            isValid = false;
-        } else {
-            inspected.css('border-color', 'var(--validated_data');
-            form_data.household.location.street_name = inspected.val();
-        }
+        // Store data to local object, valid or not.
+        form_data.household.location.country = validate($('#h_loc_country'));
+        form_data.household.location.city = validate($('#h_loc_city'));
+        form_data.household.location.street_name = validate($('#h_loc_street'));
         form_data.household.location.region = $('#h_loc_region').val();
         form_data.household.location.postal_code = $('#h_loc_pcode').val();
 
