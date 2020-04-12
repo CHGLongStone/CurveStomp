@@ -195,6 +195,7 @@ fieldset#h_identity div.fieldset_container {
     left: 5%;
     border: 1px solid var(--dark_accents);
     font-weight: bold;
+    text-align: center;
 }
 
 /* DESIGN */
