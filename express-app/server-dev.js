@@ -21,7 +21,7 @@ var http = require("http").Server(app);
 app.engine('html', require('ejs').renderFile);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/assets', express.static(__dirname + '/assets'));
 
@@ -55,23 +55,21 @@ function logFmt(url, payload) {
 };
 
 // HANDLE API REQUESTS
-const {ValidationRules, validate} = require('./validator.js');
+const { ValidationRules, validate } = require('./validator.js');
 
-app.post('/api/get_profile/?', ValidationRules.get_profile(), validate, async function(req,res) {
+app.post('/api/get_profile/?', ValidationRules.get_profile(), validate, async function (req, res) {
     logFmt(req.url, req.body);
     var uid = req.body.unique_identifier;
-    var passcode    = req.body.passcode;
-    var datajson    = await(mysqlselect.login(uid,passcode));
-    if(datajson=="No data Found")
-    {
-        res.status(404).json({'response': 'profile not found'});
+    var passcode = req.body.passcode;
+    var datajson = await (mysqlselect.login(uid, passcode));
+    if (datajson == "No data Found") {
+        res.status(404).json({ 'response': 'profile not found' });
     }
-    else
-    {
+    else {
         console.log(datajson);
         res.json(datajson);
     }
-   
+
     // TODO: Verify HHID:Pass match.
 
     // res.json({
@@ -110,6 +108,7 @@ app.post('/api/get_profile/?', ValidationRules.get_profile(), validate, async fu
 app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, async function (req, res) {
     // logFmt(req.url, req.body);
     var huid = req.body.household.identity.unique_identifier;
+    var passcode = req.body.household.identity.passcode;
     var age = req.body.report.age;
     var alias = req.body.report.alias;
     var sex = req.body.report.sex;
@@ -147,18 +146,26 @@ app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, asyn
     // TODO: Check if HHID matches passcode on every report. Halt if not.
     // TODO: If an _authenticated_ report's location is different than stored, update stored.
 
-    var household_id = await (mysqlselect.householdid(huid));
-    var member = await (mysqlinsert.member(household_id, age, sex, alias, designator));
-    var report = await (mysqlinsert.report(member, symp_cough, symp_breathing, symp_walking, symp_appetite,
-        symp_diarrhea, symp_muscle_pain, symp_fatigue, symp_nose, symp_throat, symp_fever,
-        symp_headache, symp_dizziness, symp_nausea, symp_chills, symp_general_pain,
-        symp_smell_loss, trans_distance, trans_surface, trans_human,
-        lab_tested, lab_hospitalized, lab_hosp_days, lab_hosp_icu, lab_recovered,
-        lab_ventilation, lab_oxygen, lab_symptoms, lab_pneumonia, lab_antibodies));
-    if (report != null) {
-        res.json(req.body);
-    } else {
-        res.json({'response': "Report submission failed"});
+    var household_id = await (mysqlselect.householdid(huid, passcode));
+    if (household_id == null) {
+        res.status(404).json({ 'response': 'profile not found' });
+
+    }
+    else {
+        var member = await (mysqlinsert.member(household_id, age, sex, alias, designator));
+        var report = await (mysqlinsert.report(member, symp_cough, symp_breathing, symp_walking, symp_appetite,
+            symp_diarrhea, symp_muscle_pain, symp_fatigue, symp_nose, symp_throat, symp_fever,
+            symp_headache, symp_dizziness, symp_nausea, symp_chills, symp_general_pain,
+            symp_smell_loss, trans_distance, trans_surface, trans_human,
+            lab_tested, lab_hospitalized, lab_hosp_days, lab_hosp_icu, lab_recovered,
+            lab_ventilation, lab_oxygen, lab_symptoms, lab_pneumonia, lab_antibodies));
+        if (report != null) {
+            res.json(req.body);
+        } else {
+            res.json({ 'response': "Report submission failed" });
+        }
+
+
     }
 
 });
@@ -200,13 +207,13 @@ app.post('/api/create_profile/?', ValidationRules.create_profile(), validate, as
     }
 
     console.log("[" + Date.now() + "]: " + response);
-    res.json({'response': response});
+    res.json({ 'response': response });
     // logFmt(req.url, req.body);
 });
 
 app.post('/api/comm_fail/?', (req, res) => {
     logFmt(req.url, req.body);
-    res.status(parseInt(req.body.ecode)).json({resp: 'here you go... '})
+    res.status(parseInt(req.body.ecode)).json({ resp: 'here you go... ' })
 });
 
 // FIRE UP SERVER

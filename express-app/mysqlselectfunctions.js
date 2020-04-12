@@ -24,11 +24,19 @@ module.exports = {
         })
 
     },
-    householdid: function (huid) {
+    householdid: function (huid,passcode) {
         return new Promise((resolve, reject) => {
-            dbconn.query('select ID from household where identifier=?', huid, (err, results) => {
+            dbconn.query('select ID from household where identifier=? and passcode=?', [huid,passcode],(err, results) => {
                 if (err) throw err;
-                resolve(results[0]['ID']);
+                if(results.length>0)
+                {
+                    resolve(results[0]['ID']);
+                }
+                else
+                {
+                    resolve("null");
+                }
+               
             });
         })
     },
