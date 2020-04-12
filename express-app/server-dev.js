@@ -63,6 +63,7 @@ app.post('/api/get_profile/?', ValidationRules.get_profile(), validate, async fu
     var passcode = req.body.passcode;
     var datajson = await (mysqlselect.login(uid, passcode));
     if (datajson == "No data Found") {
+        console.log(datajson);
         res.status(404).json({ 'response': 'profile not found' });
     }
     else {
