@@ -497,8 +497,7 @@ $(document).ready(function () {
                 // Validate & store location data
                 if (!locSaveBtn.click()) return;
 
-                // asyncPostJSON(SERVERURL + '/api/create_profile', form_data.household).then(res => {
-                asyncPostJSON(SERVERURL + '/api/comm_fail', {ecode: 426}).then(res => {
+                asyncPostJSON(SERVERURL + '/api/create_profile', form_data.household).then(res => {
                     console.log("[" + Date.now() + "]: " + res);
                     $(e.target).hide(); // hide the 'create profile' button
                     locSaveBtn.show(); // show the 'save location' button to allow location changes
