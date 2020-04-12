@@ -21,5 +21,5 @@ const PORT = process.env.PORT || 10000;
 
 // port to listen
 http.listen(PORT, function(){
-  console.log("[" + Date(Date.now()) + "]: " + 'listening on port: ', PORT);
+  console.log("[" + Date.now() + "]: " + 'listening on port: ', PORT);
 });
