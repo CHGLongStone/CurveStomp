@@ -55,7 +55,7 @@ function logFmt(url, payload) {
 };
 
 // HANDLE API REQUESTS
-const { ValidationRules, validate } = require('./validator.js');
+const {ValidationRules, validate} = require('./validator.js');
 
 app.post('/api/get_profile/?', ValidationRules.get_profile(), validate, (req, res) => {
     logFmt(req.url, req.body);
@@ -128,7 +128,7 @@ app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, asyn
     var lab_symptoms = req.body.report.lab_results.m_lab_symptoms;
     var lab_antibodies = req.body.report.lab_results.m_lab_antibodies;
     var lab_pneumonia = req.body.report.lab_results.m_lab_pneumonia;
-    var household_id    = await(mysqlselect.householdid(huid));
+    var household_id = await (mysqlselect.householdid(huid));
     var member = await (mysqlinsert.member(household_id, age, sex, alias, designator));
     var report = await (mysqlinsert.report(member, symp_cough, symp_breathing, symp_walking, symp_appetite,
         symp_diarrhea, symp_muscle_pain, symp_fatigue, symp_nose, symp_throat, symp_fever,
@@ -136,14 +136,11 @@ app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, asyn
         symp_smell_loss, trans_distance, trans_surface, trans_human,
         lab_tested, lab_hospitalized, lab_hosp_days, lab_hosp_icu, lab_recovered,
         lab_ventilation, lab_oxygen, lab_symptoms, lab_pneumonia, lab_antibodies));
-        if(report!=null)
-        {
-            res.json(req.body);
-        }
-        else
-        {
-            res.json({ 'response': "Report submission failed"});
-        }
+    if (report != null) {
+        res.json(req.body);
+    } else {
+        res.json({'response': "Report submission failed"});
+    }
 
 });
 app.post('/api/generate_id/?', (req, res) => {
@@ -180,8 +177,13 @@ app.post('/api/create_profile/?', ValidationRules.create_profile(), validate, as
     }
 
     console.log(response);
-    res.json({ 'response': response });
+    res.json({'response': response});
     // logFmt(req.url, req.body);
+});
+
+app.post('/api/comm_fail/?', (req, res) => {
+    logFmt(req.url, req.body);
+    res.status(parseInt(req.body.ecode)).json({resp: 'here you go... '})
 });
 
 // FIRE UP SERVER
