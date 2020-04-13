@@ -169,15 +169,17 @@ module.exports = {
             dbconn.query('select  identifier,country,city,region,street_name,postal_code,household.ID from household '+
             'join household_location hl on household.ID = hl.household_id '+
             'join location l on hl.location_id = l.ID'+
-            ' where identifier=? and country=? and city=? and region=?',
-                [identifier, country, city, region, street, pcode], async function(err,results) {
+            ' where identifier=? and country=? and city=? and region=? and street_name=? and postal_code=?',
+                [identifier, country, city, region, street, pcode],function(err,results) {
                     if (err) throw err;
-                    console.log(results);
-                    if (results.lenght > 0) {
+                    if (!results.length) {
+                        resolve(1);
+                       
 
                     }
                     else {
-                       resolve(null);
+                        console.log("Old Data");
+                        console.log(results);
 
                     }
                 })

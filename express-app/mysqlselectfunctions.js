@@ -34,7 +34,7 @@ module.exports = {
                 }
                 else
                 {
-                    resolve("null");
+                    resolve(1);
                 }
                
             });

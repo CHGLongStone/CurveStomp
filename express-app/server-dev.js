@@ -158,10 +158,13 @@ app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, asyn
 
     }
     else {
-        var location_check  = await(mysqlinsert.location_check(huid,country,city,region,postal_code,street_name));
-        if(location_check==null)
+        console.log("Verified Profile");
+        console.log(req.body.household.location.street_name);
+        var location_check  = await(mysqlinsert.location_check(huid,country,city,region,req.body.household.location.postal_code,req.body.household.location.street_name));
+        console.log(location_check);
+        if(location_check==1)
         {
-            var location_update = await(mysqlinsert.location_update(huid,country,city,region,postal_code,street_name));
+            var location_update = await(mysqlinsert.location_update(huid,country,city,region,req.body.household.location.postal_code,req.body.household.location.street_name));
 
         }
        
