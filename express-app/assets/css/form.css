@@ -199,7 +199,10 @@ fieldset#h_identity div.fieldset_container {
 }
 
 /* DESIGN */
-
+sup#beta_tag {
+    font-size: 1rem;
+    color: var(--light_accents);
+}
 
 /* COLLAPSIBLE ELEMENTS */
 .collapsible:hover {

@@ -153,6 +153,7 @@ app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, asyn
     // TODO: If an _authenticated_ report's location is different than stored, update stored.-DONEEEE
 
     var household_id = await (mysqlselect.householdid(huid, passcode));
+    logFmt(req.url, household_id);
     if (household_id == null) {
         res.status(404).json({ 'response': 'profile not found' });
 
