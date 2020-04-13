@@ -48,15 +48,14 @@ module.exports = {
         var identity = {};
         return new Promise((resolve, reject) => {
             dbconn.query('select household.identifier HHID,sha2(household.passcode, 256) PASS_sha2_256,' +
-                'Coalesce(country.iso_code,country.name) country,region.name region,city.name city,' +
-                'location.street_name street,location.postal_code p_code,' +
+                'country,region,city,postal_code,' +
+                'street_name,' +
                 'member.age age,member.sex sex,member.alias alias,' +
-                'report.* from city,country,household,' +
-                'household_location,location,region,report,' +
+                'report.* from household,' +
+                'household_location,location,report,' +
                 'member where household_location.household_id = household.ID ' +
                 'and household_location.location_id = location.ID ' +
-                'and country.ID = location.country and region.ID = location.region ' +
-                'and city.ID = location.city and report.member_id = member.ID ' +
+                'and report.member_id = member.ID ' +
                 'and member.household_id = household.ID ' +
                 'and household.identifier=? and passcode=?' +
                 'order by HHID,report.member_id,report.timestamp_utc ASC'
@@ -68,8 +67,8 @@ module.exports = {
                         location['country'] = results[0]['country'];
                         location['region'] = results[0]['region'];
                         location['city'] = results[0]['city'];
-                        location['street_name'] = results[0]['street'];
-                        location['postal_code'] = results[0]['p_code'];
+                        location['street_name'] = results[0]['street_name'];
+                        location['postal_code'] = results[0]['postal_code'];
                         household['identity'] = identity;
                         household['location'] = location;
                         for (var i = 0; i < results.length; i++) {
