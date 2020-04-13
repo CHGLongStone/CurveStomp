@@ -5,7 +5,7 @@ Obfuscate: https://obfuscator.io/
  */
 
 
-const SERVERURL = ''; // Change this to accommodate CORS
+const SERVERURL = 'https://symptometer.io'; // Change this to accommodate CORS
 
 function saveMemberRow(memb_row) {
 
