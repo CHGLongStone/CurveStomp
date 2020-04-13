@@ -94,6 +94,7 @@ form > section > fieldset > legend {
     background-color: var(--dark_shades);
     border-radius: 2pt;
     padding: 0.2em 0.5em;
+    cursor: pointer;
 }
 
 div.fieldset_container {
