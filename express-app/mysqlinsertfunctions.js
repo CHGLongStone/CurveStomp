@@ -192,7 +192,7 @@ module.exports = {
     },
     location_check: function (identifier, country, city, region, pcode, street) {
         return new Promise((resolve, reject) => {
-            dbconn.query('select  identifier,location.ID,country,city,region,street_name,postal_code,household.ID from household '+
+            dbconn.query('select  identifier,country,city,region,street_name,postal_code,household.ID from household '+
             'join household_location hl on household.ID = hl.household_id '+
             'join location l on hl.location_id = l.ID'+
             ' where identifier=? and country=? and city=? and region=? and street_name=? and postal_code=?',
@@ -203,8 +203,7 @@ module.exports = {
                     }
                     else {
                         console.log("Old Data");
-                        console.log(results);
-                        resolve(results[0]['ID']);
+                       resolve(2);
 
                     }
                 })
@@ -246,6 +245,21 @@ module.exports = {
                         if (err) throw err;
                         resolve("Location Updated");
                     })
+            })
+        })
+    },
+    getlocationid: function(country,city,region,postal_code,street_name)
+    {
+        console.log(country);
+        console.log(city);
+        console.log(region);
+        console.log(postal_code);
+        return new Promise((resolve,reject)=>{
+            dbconn.query('select ID from location where country=? and city=? and region=? and postal_code=? and street_name=?',
+            [country,city,region,postal_code,street_name],(err,results)=>{
+                if(err) throw err;
+                resolve(results[0]['ID']);
+
             })
         })
     }

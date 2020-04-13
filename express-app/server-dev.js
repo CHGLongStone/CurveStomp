@@ -165,12 +165,14 @@ app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, asyn
         console.log(location_check);
         if(location_check==1)
         {
+            console.log("")
             var location_update = await(mysqlinsert.location_update(huid,country,city,region,req.body.household.location.postal_code,req.body.household.location.street_name));
 
         }
         else
         {
-            var location_household  = await(mysqlinsert.household_location_insert(huid,location_check));
+           var lid  = await(mysqlinsert.getlocationid(req.body.household.location.country,req.body.household.location.city,req.body.household.location.region,req.body.household.location.postal_code,req.body.household.location.street_name));
+            var location_household  = await(mysqlinsert.household_location_insert(huid,lid));
         }
        
         var member = await (mysqlinsert.member(household_id, age, sex, alias, designator));
