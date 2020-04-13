@@ -1,0 +1,215 @@
+html {
+    box-sizing: border-box;
+    overflow-y: scroll;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+:root {
+    /* Color Palette 1 */
+    --light_shades: #F2F5F6;
+    --light_accents: #DCAD8C;
+    --main_brand_color: #9B9C9E;
+    --dark_accents: #C5416A;
+    --dark_shades: #29213C;
+
+    /* Color Palette 2 */
+    --light_shades: #FAF8F9;
+    --light_accents: #729D95;
+    --main_brand_color: #9FA8B8;
+    --dark_accents: #818AA3;
+    --dark_shades: #6C7B82;
+
+    /* Color Palette 3 */
+    --light_shades: #F2F6F6;
+    --light_accents: #747375;
+    --main_brand_color: #A1A8BA;
+    --dark_accents: #82738D;
+    --dark_shades: #4A598E;
+
+    /* Color Palette 4 */
+    --light_shades: #FEFEFD;
+    --light_accents: #8E8482;
+    --main_brand_color: #989696;
+    --dark_accents: #D84F75;
+    --dark_shades: #231A31;
+
+    /* Color Palette 5 */
+    --light_shades: #F1F2F3;
+    --light_accents: #8E806B;
+    --main_brand_color: #838694;
+    --dark_accents: #6C5D69;
+    --dark_shades: #231D24;
+
+    /* Color Palette 7 */
+    --light_shades: #E2E4E8;
+    --light_accents: #879D88;
+    --main_brand_color: #1EB4AD;
+    --dark_accents: #736861;
+    --dark_shades: #292625;
+
+    /*!* Color Palette 6 *!*/
+    /*--light_shades: #F7F8F6;*/
+    /*--light_accents: #888C94;*/
+    /*--main_brand_color: #6F6F78;*/
+    /*--dark_accents: #7E8290;*/
+    /*--dark_shades: #1D2033;*/
+
+    --validated_data: rgba(178, 241, 184, 0.45);
+    --invalid_data: rgba(241, 54, 45, 0.45);
+}
+
+/* LAYOUT */
+
+body {
+    font-family: "Calibri", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+h1, h2, h3 {
+    font-family: "Roboto Slab", "Times New Roman", serif;
+}
+
+form {
+    width: 80%;
+    max-width: 960px;
+    margin: auto;
+    padding: 20pt;
+    border: 1px solid var(--dark_accents);
+}
+
+form > section {
+    padding: 10pt;
+    margin: 0 0 10pt 0;
+    border: 1px solid var(--dark_accents);
+}
+
+form > section fieldset {
+    margin: 10pt 0;
+}
+
+form > section > fieldset > legend {
+    color: var(--light_shades);
+    background-color: var(--dark_shades);
+    border-radius: 2pt;
+    padding: 0.2em 0.5em;
+}
+
+div.fieldset_container {
+    display: grid;
+    column-gap: 15pt;
+    row-gap: 1em;
+    margin-top: 1em;
+}
+
+div.fieldset_container div.field_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+div.field_container > label {
+    width: 50%;
+}
+
+div.field_container > input, div.field_container select {
+    max-width: 50% !important;
+}
+
+div.field_container > input[type="range"] {
+    width: 50%;
+}
+
+fieldset.h_member_row {
+    border: 1px solid var(--light_accents);
+}
+
+fieldset#h_identity div.fieldset_container {
+    max-width: 300px;
+    margin: auto;
+}
+
+#h_mem_add {
+    margin: auto;
+}
+
+@media only screen and (max-width: 900px) {
+    div.fieldset_container {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    div.fieldset_container > div.explainer {
+        grid-area: span 1 / span 1;
+    }
+
+    fieldset.h_member_row input[type="button"] {
+        width: 100%;
+        justify-self: end;
+    }
+}
+
+@media only screen and (min-width: 900px) {
+    div.fieldset_container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    div.fieldset_container > div.explainer {
+        grid-area: span 1 / span 2;
+    }
+
+    fieldset.h_member_row > div.fieldset_container {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    fieldset#h_identity > div.fieldset_container {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    fieldset.h_member_row div.controls {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-evenly;
+    }
+}
+
+#m_controls {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+#h_id_create {
+    justify-self: center;
+}
+
+#error_info {
+    display: none;
+    background-color: var(--invalid_data);
+    position: absolute;
+    padding: 10pt;
+    margin: auto;
+    bottom: 25pt;
+    width: 90%;
+    left: 5%;
+    border: 1px solid var(--dark_accents);
+    font-weight: bold;
+    text-align: center;
+}
+
+/* DESIGN */
+sup#beta_tag {
+    font-size: 1rem;
+    color: var(--light_accents);
+}
+
+/* COLLAPSIBLE ELEMENTS */
+.collapsible:hover {
+    background-color: #ccc;
+}
+
+.hidden {
+    display: none !important;
+    overflow: hidden;
+}

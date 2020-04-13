@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="assets/css/form.css"/>
+    <script type="text/javascript" src="assets/js/form.js"></script>
+    <meta charset="UTF-8">
+    <title>COVID-19 Symptometer</title>
+</head>
+
+<body>
+<form>
+    <h1>COVID-19 Symptom Tracking Survey</h1>
+    <div class="explainer">
+
+        <p>This survey tracks COVID-19 related symptoms. Households provide anonymous daily reports,
+            and collected information is published freely to aid on-going research efforts. Periodic
+            reporting enables researchers to track symptom progression over time. This information
+            complements laboratory testing. This is discussed in greater detail in the following
+            resources:</p>
+
+        <ul>
+            <li><a href="https://www.medrxiv.org/content/10.1101/2020.04.02.20051284v1.full.pdf">
+                Coronavirus Consensus Collective (PDF)</a></li>
+            <li><a href="https://smelltracker.org/">
+                SmellTracker - chart smell perception using 5 household items</a></li>
+        </ul>
+
+        <p>We are taking every measure to safeguard the privacy and anonymity of participants. This
+            was not a simple task, as some form of token is needed to correlate a given household's
+            reports over time. <b>All information submitted via this form is surrendered to public
+                domain.</b></p>
+
+        <p>Please fill out the questionnaire regularly whether you experience symptoms or not.
+            Reports of ‘no symptoms’ are critically important as baseline information.</p>
+
+        <p>Thank you for your participation. Please help us spread the word!</p>
+
+        <p><i>--- <a href="https://symptometrics.org">Symptometrics.org</a></i></p>
+
+    </div>
+
+    <section id="household">
+        <h2>Household Profile<span id="h_id"></span></h2>
+
+        <div class="explainer">
+            <p>In order to track the spread and progression of COVID-19 symptoms, the following
+                questions will establish an anonymous identity for your household and its members.
+                Your future reports will be associated to this identity.</p>
+        </div>
+
+        <fieldset id="h_identity">
+            <legend>Identity</legend>
+
+            <div class="explainer">
+                <p>If this is your first report, <b>please keep a record of your household’s Unique
+                    Identifier and chosen Passcode</b> in a safe location, for future reports.
+                    These cannot be recovered.</p>
+            </div>
+
+            <div class="fieldset_container">
+
+                <div class="field_container">
+                    <label for="h_id_uid">Household ID:</label>
+                    <input id="h_id_uid" type="text" maxlength="15" required>
+                </div>
+
+                <div class="field_container">
+                    <label for="h_id_pass">Passcode:</label>
+                    <input id="h_id_pass" type="password" maxlength="25" required>
+                </div>
+
+                <div class="field_container">
+                    <label for="h_id_pass_confirm">Confirm Passcode:</label>
+                    <input id="h_id_pass_confirm" type="password" maxlength="25" required>
+                </div>
+
+                <div style="justify-self:center">
+                    <input id="h_id_load" type="button" value="Load Profile">
+                </div>
+                <a id="h_id_create" href="#"><i>Create New Profile</i></a>
+            </div>
+
+        </fieldset>
+
+        <fieldset id="h_location">
+            <legend>Location</legend>
+            <div class="explainer">
+                <p>Please provide the following information about your household’s location. This
+                    information is critical to understanding the spread of COVID-19 symptoms and
+                    identifying areas which may be overlooked by authorities. Please <b>do
+                        not</b> provide
+                    your house number or apartment number, as this will undermine anonymity.</p>
+            </div>
+            <div class="fieldset_container">
+                <div class="field_container">
+                    <label for="h_loc_country">Country:</label>
+                    <input list="country" id="h_loc_country" maxlength="60" required>
+                </div>
+
+                <div class="field_container">
+                    <label for="h_loc_region">Region:</label>
+                    <input id="h_loc_region" maxlength="60">
+                </div>
+
+                <div class="field_container">
+                    <label for="h_loc_city">City:</label>
+                    <input id="h_loc_city" maxlength="60" required>
+                </div>
+
+                <div class="field_container">
+                    <label for="h_loc_street">Street Name:</label>
+                    <input type="text" id="h_loc_street" maxlength="150" required>
+                </div>
+
+                <div class="field_container">
+                    <label for="h_loc_pcode">Postal Code:</label>
+                    <input type="text" id="h_loc_pcode" maxlength="10">
+                </div>
+                <input type="button" id="h_loc_save" value="Update">
+            </div>
+        </fieldset>
+
+        <fieldset id="h_members">
+            <legend>Household Members</legend>
+            <div class="explainer">
+                <p>In this section you’ll provide basic medical information about the members of
+                    your household. If members join or leave your household, you will be able to
+                    modify this list in your next report.</p>
+
+                <p>We will convert each member’s information into a designator which should allow
+                    you to more easily identify them in the list. The designator is constructed from
+                    their age, biological sex, and a two-letter alias of your choosing. For example,
+                    the designator for a 35-year-old Male with the alias “JG” would be 35M-JG. The
+                    designator for each member of your household must be unique.</p>
+            </div>
+
+            <fieldset class="h_member_row" id="h_member_row">
+                <legend>AAAS-NN</legend>
+                <div class="fieldset_container">
+                    <div class="field_container">
+                        <label for="h_mem_age">Age:</label>
+                        <input id="h_mem_age" type="number" min="0" step="1" required>
+                    </div>
+
+                    <div class="field_container">
+                        <label for="h_mem_bio_gender">Sex:</label>
+                        <select id="h_mem_bio_gender" required>
+                            <option value="0" selected>--Select--</option>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                        </select>
+                    </div>
+
+                    <div class="field_container">
+                        <label for="h_mem_alias">Alias:</label>
+                        <input id="h_mem_alias" type="text" maxlength="2" required>
+                    </div>
+
+                    <div class="controls">
+                        <input type="button" id="h_mem_save" value="Save">
+                    </div>
+
+                </div>
+            </fieldset>
+
+            <input type="button" id="h_mem_add" value="Add Member">
+        </fieldset>
+    </section>
+    <section id="member">
+        <h2>Report for: <span id="m_cur_memcode">AAAS-NN</span></h2>
+        <div class="explainer">
+            <p>Please answer the following questions <b>for each household member separately</b>.
+                Responses will be incorporated into statistical models used to analyze and research
+                the COVID-19 pandemic and its spread and may save lives. Please answer each question
+                as accurately as you can.</p>
+        </div>
+
+        <fieldset id="m_symptoms">
+            <legend>Symptoms</legend>
+
+            <div class="explainer">
+                <p>Please describe the household member's symptoms. The following symptoms are known
+                    to be associated with COVID-19. If no symptoms are present, please leave fields
+                    at their default settings. Please do not report symptoms predating Dec 1,
+                    2019.</p>
+            </div>
+
+            <div class="fieldset_container">
+                <div class="field_container">
+                    <label for="m_symp_cough">Cough:</label>
+                    <select id="m_symp_cough">
+                        <option value="0" selected>None</option>
+                        <option value="1">Mild (Dry)</option>
+                        <option value="2">Mild (Wet)</option>
+                        <option value="3">Severe (Dry)</option>
+                        <option value="4">Severe (Wet)</option>
+                    </select>
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_fever">Max. Fever (°C):</label>
+                    <input id="m_symp_fever" type="number" min="36" max="43" step="0.1"
+                           value="36.7">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_fatigue">Fatigue:</label>
+                    <input id="m_symp_fatigue" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_nose">Runny Nose or Congestion:</label>
+                    <input id="m_symp_nose" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_breathing">Difficulty Breathing:</label>
+                    <input id="m_symp_breathing" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_throat">Sore Throat:</label>
+                    <input id="m_symp_throat" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_headache">Headache</label>
+                    <input id="m_symp_headache" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_walking">Difficulty Walking:</label>
+                    <input id="m_symp_walking" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_appetite">Loss of Appetite:</label>
+                    <input id="m_symp_appetite" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_diarrhea">Diarrhea:</label>
+                    <input id="m_symp_diarrhea" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_muscle_pain">Muscle Pain:</label>
+                    <input id="m_symp_muscle_pain" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_dizziness">Dizziness/Lightheaded:</label>
+                    <input id="m_symp_dizziness" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_nausea">Nausea:</label>
+                    <input id="m_symp_nausea" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_chills">Chills/Shivers:</label>
+                    <input id="m_symp_chills" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_general_pain">Generalized Pain:</label>
+                    <input id="m_symp_general_pain" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_symp_smell_loss">Loss of Smell:</label>
+                    <input id="m_symp_smell_loss" type="checkbox">
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset id="m_transmission">
+            <legend>Transmission</legend>
+            <div class="explainer">
+                <p>Please provide information about the household member’s level of isolation. This
+                    will assist in developing regional containment and mitigation strategies and
+                    creating models of the virus’s geographic transmission. Please answer these
+                    questions honestly and as accurately as you can.</p>
+            </div>
+
+            <div class="fieldset_container">
+                <div class="field_container">
+                    <label for="m_trans_distance">Travelled Since Last Report:</label>
+                    <select id="m_trans_distance">
+                        <option value="0" selected>< 1km</option>
+                        <option value="1">1-5km</option>
+                        <option value="2">5-10km</option>
+                        <option value="3">10-100km</option>
+                        <option value="4">100km+</option>
+                    </select>
+                </div>
+                <div class="field_container">
+                    <label for="m_trans_surface">Surface Exposure:</label>
+                    <select id="m_trans_surface">
+                        <option value="0" selected>Household Only</option>
+                        <option value="1">0-5 Surfaces</option>
+                        <option value="2">5-20 Surfaces</option>
+                        <option value="3">20+ Surfaces</option>
+                    </select>
+                </div>
+                <div class="field_container">
+                    <label for="m_trans_human">Human Exposure:</label>
+                    <select id="m_trans_human">
+                        <option value="0" selected>Household Only</option>
+                        <option value="1">0-5 People</option>
+                        <option value="2">5-20 People</option>
+                        <option value="3">20+ People</option>
+                    </select>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset id="m_labresults">
+            <legend>Clinical Results</legend>
+
+            <div class="explainer">
+                <p>Please fill out this section <b>only</b> if you have been hospitalized or have
+                    been
+                    clinically tested for COVID-19. Information about clinical findings will greatly
+                    assist researchers in building predictive models of how symptom progression
+                    relates to infection rates and could save lives.</p>
+            </div>
+
+            <div class="fieldset_container">
+                <div class="field_container">
+                    <label for="m_lab_tested">Clinically Tested:</label>
+                    <select id="m_lab_tested">
+                        <option value="-1" selected>Untested</option>
+                        <option value="1">Tested Positive</option>
+                        <option value="0">Tested Negative</option>
+                    </select>
+                </div>
+
+                <div class="field_container">
+                    <label for="m_lab_hospitalized">Hospitalized:</label>
+                    <input id="m_lab_hospitalized" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_lab_hosp_days">Days in Hospital:</label>
+                    <input id="m_lab_hosp_days" type="number" step="1" value="0">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_lab_hosp_icu">Admitted to ICU:</label>
+                    <input id="m_lab_hosp_icu" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_lab_recovered">Has Recovered:</label>
+                    <input id="m_lab_recovered" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_lab_pneumonia">Pneumonia:</label>
+                    <input id="m_lab_pneumonia" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_lab_ventilation">Mechanical Ventilation:</label>
+                    <input id="m_lab_ventilation" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_lab_oxygen">Oxygen Support:</label>
+                    <input id="m_lab_oxygen" type="checkbox">
+                </div>
+
+                <div class="field_container">
+                    <label for="m_lab_antibodies">Antibodies:</label>
+                    <select id="m_lab_antibodies">
+                        <option value="-1" selected>Untested</option>
+                        <option value="1">Tested Positive</option>
+                        <option value="0">Tested Negative</option>
+                    </select>
+                </div>
+
+                <div class="field_container">
+                    <label for="m_lab_symptoms">Other Symptoms:</label>
+                    <input id="m_lab_symptoms" type="text" placeholder="Comma-Separated List"
+                           maxlength="200">
+                </div>
+            </div>
+        </fieldset>
+
+        <div id="m_controls">
+            <input id="btnSubmit" type="button" value="Submit">
+        </div>
+    </section>
+</form>
+
+<!--TODO: Remove in production -->
+<pre id="error_info"></pre>
+</body>
+<!--  SUPPORTING DATA  -->
+<datalist id="country">
+    <option value="AFG">Afghanistan</option>
+    <option value="ALA">Åland Islands</option>
+    <option value="ALB">Albania</option>
+    <option value="DZA">Algeria</option>
+    <option value="ASM">American Samoa</option>
+    <option value="AND">Andorra</option>
+    <option value="AGO">Angola</option>
+    <option value="AIA">Anguilla</option>
+    <option value="ATA">Antarctica</option>
+    <option value="ATG">Antigua and Barbuda</option>
+    <option value="ARG">Argentina</option>
+    <option value="ARM">Armenia</option>
+    <option value="ABW">Aruba</option>
+    <option value="SHN">Ascension and Tristan Da Cunha Saint Helena</option>
+    <option value="AUS">Australia</option>
+    <option value="AUT">Austria</option>
+    <option value="AZE">Azerbaijan</option>
+    <option value="BHS">Bahamas</option>
+    <option value="BHR">Bahrain</option>
+    <option value="BGD">Bangladesh</option>
+    <option value="BRB">Barbados</option>
+    <option value="BLR">Belarus</option>
+    <option value="BEL">Belgium</option>
+    <option value="BLZ">Belize</option>
+    <option value="BEN">Benin</option>
+    <option value="BMU">Bermuda</option>
+    <option value="BTN">Bhutan</option>
+    <option value="VEN">Bolivarian Republic of Venezuela</option>
+    <option value="BIH">Bosnia and Herzegowina</option>
+    <option value="BWA">Botswana</option>
+    <option value="BVT">Bouvet Island</option>
+    <option value="BRA">Brazil</option>
+    <option value="IOT">British Indian Ocean Territory</option>
+    <option value="BRN">Brunei Darussalam</option>
+    <option value="BGR">Bulgaria</option>
+    <option value="BFA">Burkina Faso</option>
+    <option value="BDI">Burundi</option>
+    <option value="KHM">Cambodia</option>
+    <option value="CMR">Cameroon</option>
+    <option value="CAN">Canada</option>
+    <option value="CPV">Cape Verde</option>
+    <option value="CYM">Cayman Islands</option>
+    <option value="CAF">Central African Republic</option>
+    <option value="TCD">Chad</option>
+    <option value="CHL">Chile</option>
+    <option value="CHN">China</option>
+    <option value="CXR">Christmas Island</option>
+    <option value="CCK">Cocos Islands</option>
+    <option value="COL">Colombia</option>
+    <option value="COM">Comoros</option>
+    <option value="COG">Congo</option>
+    <option value="COK">Cook Islands</option>
+    <option value="CRI">Costa Rica</option>
+    <option value="CIV">Côte d'Ivoire</option>
+    <option value="HRV">Croatia</option>
+    <option value="CUB">Cuba</option>
+    <option value="CUW">Curaçao</option>
+    <option value="CYP">Cyprus</option>
+    <option value="CZE">Czech Republic</option>
+    <option value="PRK">Democratic People's Republic of Korea</option>
+    <option value="DNK">Denmark</option>
+    <option value="DJI">Djibouti</option>
+    <option value="DMA">Dominica</option>
+    <option value="DOM">Dominican Republic</option>
+    <option value="ECU">Ecuador</option>
+    <option value="EGY">Egypt</option>
+    <option value="SLV">El Salvador</option>
+    <option value="GNQ">Equatorial Guinea</option>
+    <option value="ERI">Eritrea</option>
+    <option value="EST">Estonia</option>
+    <option value="ETH">Ethiopia</option>
+    <option value="FLK">Falkland Islands</option>
+    <option value="FRO">Faroe Islands</option>
+    <option value="FSM">Federated States of Micronesia</option>
+    <option value="FJI">Fiji</option>
+    <option value="FIN">Finland</option>
+    <option value="FRA">France</option>
+    <option value="GUF">French Guiana</option>
+    <option value="PYF">French Polynesia</option>
+    <option value="ATF">French Southern Territories</option>
+    <option value="GAB">Gabon</option>
+    <option value="GMB">Gambia</option>
+    <option value="GEO">Georgia</option>
+    <option value="DEU">Germany</option>
+    <option value="GHA">Ghana</option>
+    <option value="GIB">Gibraltar</option>
+    <option value="GRC">Greece</option>
+    <option value="GRL">Greenland</option>
+    <option value="GRD">Grenada</option>
+    <option value="GLP">Guadeloupe</option>
+    <option value="GUM">Guam</option>
+    <option value="GTM">Guatemala</option>
+    <option value="GGY">Guernsey</option>
+    <option value="GIN">Guinea</option>
+    <option value="GNB">Guinea-bissau</option>
+    <option value="GUY">Guyana</option>
+    <option value="HTI">Haiti</option>
+    <option value="HMD">Heard and McDonald Islands</option>
+    <option value="VAT">Holy See</option>
+    <option value="HND">Honduras</option>
+    <option value="HKG">Hong Kong</option>
+    <option value="HUN">Hungary</option>
+    <option value="ISL">Iceland</option>
+    <option value="IND">India</option>
+    <option value="IDN">Indonesia</option>
+    <option value="IRN">Iran</option>
+    <option value="IRQ">Iraq</option>
+    <option value="IRL">Ireland</option>
+    <option value="IMN">Isle of Man</option>
+    <option value="ISR">Israel</option>
+    <option value="ITA">Italy</option>
+    <option value="JAM">Jamaica</option>
+    <option value="JPN">Japan</option>
+    <option value="JEY">Jersey</option>
+    <option value="JOR">Jordan</option>
+    <option value="KAZ">Kazakhstan</option>
+    <option value="KEN">Kenya</option>
+    <option value="KIR">Kiribati</option>
+    <option value="KWT">Kuwait</option>
+    <option value="KGZ">Kyrgyzstan</option>
+    <option value="LAO">Lao People's Democratic Republic</option>
+    <option value="LVA">Latvia</option>
+    <option value="LBN">Lebanon</option>
+    <option value="LSO">Lesotho</option>
+    <option value="LBR">Liberia</option>
+    <option value="LBY">Libya</option>
+    <option value="LIE">Liechtenstein</option>
+    <option value="LTU">Lithuania</option>
+    <option value="LUX">Luxembourg</option>
+    <option value="MAC">Macao</option>
+    <option value="MDG">Madagascar</option>
+    <option value="MWI">Malawi</option>
+    <option value="MYS">Malaysia</option>
+    <option value="MDV">Maldives</option>
+    <option value="MLI">Mali</option>
+    <option value="MLT">Malta</option>
+    <option value="MHL">Marshall Islands</option>
+    <option value="MTQ">Martinique</option>
+    <option value="MRT">Mauritania</option>
+    <option value="MUS">Mauritius</option>
+    <option value="MYT">Mayotte</option>
+    <option value="MEX">Mexico</option>
+    <option value="MCO">Monaco</option>
+    <option value="MNG">Mongolia</option>
+    <option value="MNE">Montenegro</option>
+    <option value="MSR">Montserrat</option>
+    <option value="MAR">Morocco</option>
+    <option value="MOZ">Mozambique</option>
+    <option value="MMR">Myanmar</option>
+    <option value="NAM">Namibia</option>
+    <option value="NRU">Nauru</option>
+    <option value="NPL">Nepal</option>
+    <option value="NLD">Netherlands</option>
+    <option value="NCL">New Caledonia</option>
+    <option value="NZL">New Zealand</option>
+    <option value="NIC">Nicaragua</option>
+    <option value="NER">Niger</option>
+    <option value="NGA">Nigeria</option>
+    <option value="NIU">Niue</option>
+    <option value="NFK">Norfolk Island</option>
+    <option value="MNP">Northern Mariana Islands</option>
+    <option value="NOR">Norway</option>
+    <option value="OMN">Oman</option>
+    <option value="PAK">Pakistan</option>
+    <option value="PLW">Palau</option>
+    <option value="PAN">Panama</option>
+    <option value="PNG">Papua New Guinea</option>
+    <option value="PRY">Paraguay</option>
+    <option value="PER">Peru</option>
+    <option value="PHL">Philippines</option>
+    <option value="PCN">Pitcairn</option>
+    <option value="BOL">Plurinational State of Bolivia</option>
+    <option value="POL">Poland</option>
+    <option value="PRT">Portugal</option>
+    <option value="TWN">Province of China Taiwan</option>
+    <option value="PRI">Puerto Rico</option>
+    <option value="QAT">Qatar</option>
+    <option value="KOR">Republic of Korea</option>
+    <option value="MDA">Republic of Moldova</option>
+    <option value="REU">Réunion</option>
+    <option value="ROU">Romania</option>
+    <option value="RUS">Russian Federation</option>
+    <option value="RWA">Rwanda</option>
+    <option value="BLM">Saint Barthélemy</option>
+    <option value="KNA">Saint Kitts and Nevis</option>
+    <option value="LCA">Saint Lucia</option>
+    <option value="SPM">Saint Pierre and Miquelon</option>
+    <option value="VCT">Saint Vincent and The Grenadines</option>
+    <option value="WSM">Samoa</option>
+    <option value="SMR">San Marino</option>
+    <option value="STP">Sao Tome and Principe</option>
+    <option value="SAU">Saudi Arabia</option>
+    <option value="SEN">Senegal</option>
+    <option value="SRB">Serbia</option>
+    <option value="SYC">Seychelles</option>
+    <option value="SLE">Sierra Leone</option>
+    <option value="SGP">Singapore</option>
+    <option value="BES">Sint Eustatius and Saba Bonaire</option>
+    <option value="SXM">Sint Maarten</option>
+    <option value="SVK">Slovakia</option>
+    <option value="SVN">Slovenia</option>
+    <option value="SLB">Solomon Islands</option>
+    <option value="SOM">Somalia</option>
+    <option value="ZAF">South Africa</option>
+    <option value="SGS">South Georgia and The South Sandwich Islands</option>
+    <option value="SSD">South Sudan</option>
+    <option value="ESP">Spain</option>
+    <option value="LKA">Sri Lanka</option>
+    <option value="PSE">State of Palestine</option>
+    <option value="SDN">Sudan</option>
+    <option value="SUR">Suriname</option>
+    <option value="SJM">Svalbard and Jan Mayen Islands</option>
+    <option value="SWZ">Swaziland</option>
+    <option value="SWE">Sweden</option>
+    <option value="CHE">Switzerland</option>
+    <option value="SYR">Syrian Arab Republic</option>
+    <option value="TJK">Tajikistan</option>
+    <option value="THA">Thailand</option>
+    <option value="COD">The Democratic Republic of The Congo</option>
+    <option value="MKD">The Former Yugoslav Republic of Macedonia</option>
+    <option value="TLS">Timor-leste</option>
+    <option value="TGO">Togo</option>
+    <option value="TKL">Tokelau</option>
+    <option value="TON">Tonga</option>
+    <option value="TTO">Trinidad and Tobago</option>
+    <option value="TUN">Tunisia</option>
+    <option value="TUR">Turkey</option>
+    <option value="TKM">Turkmenistan</option>
+    <option value="TCA">Turks and Caicos Islands</option>
+    <option value="TUV">Tuvalu</option>
+    <option value="UGA">Uganda</option>
+    <option value="UKR">Ukraine</option>
+    <option value="ARE">United Arab Emirates</option>
+    <option value="GBR">United Kingdom</option>
+    <option value="TZA">United Republic of Tanzania</option>
+    <option value="USA">United States</option>
+    <option value="UMI">United States Minor Outlying Islands</option>
+    <option value="URY">Uruguay</option>
+    <option value="UZB">Uzbekistan</option>
+    <option value="VUT">Vanuatu</option>
+    <option value="VNM">Vietnam</option>
+    <option value="VGB">Virgin Islands (British)</option>
+    <option value="VIR">Virgin Islands (US)</option>
+    <option value="WLF">Wallis and Futuna Islands</option>
+    <option value="ESH">Western Sahara</option>
+    <option value="YEM">Yemen</option>
+    <option value="ZMB">Zambia</option>
+    <option value="ZWE">Zimbabwe</option>
+</datalist>
+</html>
