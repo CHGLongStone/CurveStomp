@@ -168,6 +168,10 @@ app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, asyn
             var location_update = await(mysqlinsert.location_update(huid,country,city,region,req.body.household.location.postal_code,req.body.household.location.street_name));
 
         }
+        else
+        {
+            var location_household  = await(mysqlinsert.household_location_insert(huid,location_check));
+        }
        
         var member = await (mysqlinsert.member(household_id, age, sex, alias, designator));
         var report = await (mysqlinsert.report(member, symp_cough, symp_breathing, symp_walking, symp_appetite,
@@ -206,18 +210,18 @@ app.post('/api/create_profile/?', ValidationRules.create_profile(), validate, as
     var region = location['region'];
     var postal_code = location['postal_code'];
     var street_name = location['street_name'];
-
+    var locationid;
     // TODO: Ensure that the household identifier didn't already exist. A UNQ constraint in DB?
 
     var locationexist = await (mysqlinsert.location(country, region, city, street_name, postal_code));
     if(locationexist==null)
     {
         console.log("Location does not exist");
-        var locationid  = await (mysqlinsert.location(country, region, city, street_name, postal_code));
+        locationid  = await (mysqlinsert.newlocation(country, region, city, street_name, postal_code));
     }
     else
     {
-        var locationid  = locationexist;
+                locationid  = locationexist;
     }
     var household_insert_id = await (mysqlinsert.household(uid, pass));
     var h_location = await (mysqlinsert.household_location(household_insert_id, locationid));

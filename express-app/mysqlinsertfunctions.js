@@ -192,7 +192,7 @@ module.exports = {
     },
     location_check: function (identifier, country, city, region, pcode, street) {
         return new Promise((resolve, reject) => {
-            dbconn.query('select  identifier,country,city,region,street_name,postal_code,household.ID from household '+
+            dbconn.query('select  identifier,location.ID,country,city,region,street_name,postal_code,household.ID from household '+
             'join household_location hl on household.ID = hl.household_id '+
             'join location l on hl.location_id = l.ID'+
             ' where identifier=? and country=? and city=? and region=? and street_name=? and postal_code=?',
@@ -200,12 +200,11 @@ module.exports = {
                     if (err) throw err;
                     if (!results.length) {
                         resolve(1);
-                       
-
                     }
                     else {
                         console.log("Old Data");
                         console.log(results);
+                        resolve(results[0]['ID']);
 
                     }
                 })
@@ -226,6 +225,20 @@ module.exports = {
                     locationid = results.insertId;
                 })
             dbconn.query('select ID from household where identifier=?', identifier, (err, results) => {
+                if (err) throw err;
+                householdid = results[0]['ID'];
+                dbconn.query('insert into household_location(household_id,location_id)values(?,?)',
+                    [householdid,locationid], (err, results) => {
+                        if (err) throw err;
+                        resolve("Location Updated");
+                    })
+            })
+        })
+    },
+    household_location_insert : function(huid,locationid)
+    {
+        return new Promise((resolve,reject)=>{
+            dbconn.query('select ID from household where identifier=?', huid, (err, results) => {
                 if (err) throw err;
                 householdid = results[0]['ID'];
                 dbconn.query('insert into household_location(household_id,location_id)values(?,?)',
