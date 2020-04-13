@@ -209,10 +209,16 @@ app.post('/api/create_profile/?', ValidationRules.create_profile(), validate, as
 
     // TODO: Ensure that the household identifier didn't already exist. A UNQ constraint in DB?
 
-    // var countryid = await (mysqlinsert.country(country));
-    // var regionid = await (mysqlinsert.region(region));
-    // var cityid = await (mysqlinsert.city(city));
-    var locationid = await (mysqlinsert.location(country, region, city, street_name, postal_code));
+    var locationexist = await (mysqlinsert.location(country, region, city, street_name, postal_code));
+    if(locationexist==null)
+    {
+        console.log("Location does not exist");
+        var locationid  = await (mysqlinsert.location(country, region, city, street_name, postal_code));
+    }
+    else
+    {
+        var locationid  = locationexist;
+    }
     var household_insert_id = await (mysqlinsert.household(uid, pass));
     var h_location = await (mysqlinsert.household_location(household_insert_id, locationid));
     console.log("[" + Date.now() + "]: " + h_location);

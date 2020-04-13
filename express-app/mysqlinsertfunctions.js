@@ -93,6 +93,31 @@ module.exports = {
     },
     location: function (country, region, city, street_name, postal_code) {
         return new Promise((resolve, reject) => {
+            dbconn.query('select ID from location where country=? and region=? and city=? and street_name=? and postal_code=?',
+            [country,region,city,street_name,postal_code],(err,results)=>{
+                if(err) throw err;
+                console.log(results.length);
+                if(!results.length)
+                {
+                    resolve(null);
+                   
+                    
+
+                }
+                else
+                {
+                    console.log("existing address");
+                    resolve(results[0]['ID']);
+                   
+                    
+                }
+            })
+            
+        })
+    },
+    newlocation: function(country,region,city,street_name,postal_code)
+    {
+        return new Promise((resolve,reject)=>{
             dbconn.query(
                 'insert into location(country,region,city,street_name,postal_code)values(?,?,?,?,?)',
                 [country, region, city, street_name, postal_code],
@@ -101,6 +126,7 @@ module.exports = {
                     resolve(results.insertId);
                 });
         })
+
     },
     household: function (uid, passcode) {
         return new Promise((resolve, reject) => {
