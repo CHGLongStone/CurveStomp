@@ -19,10 +19,10 @@ module.exports = {
     country: function addcountrydata(country) {
         return new Promise((resolve, reject) => {
             if (/^([A-Za-z]{3})$/.test(country)) {
-                dbconn.query("select ID from country where iso_code=?", country, (err, results) => {
+                dbconn.query("select id from country where iso_code=?", country, (err, results) => {
                     if (err) throw err;
                     if (results.length > 0) {
-                        resolve(results[0]['ID']);
+                        resolve(results[0]['id']);
 
                     } else {
                         dbconn.query('insert into country(iso_code)values(?)', country, (err, results) => {
@@ -34,10 +34,10 @@ module.exports = {
                 });
 
             } else {
-                dbconn.query("select ID from country where name=?", country, (err, results) => {
+                dbconn.query("select id from country where name=?", country, (err, results) => {
                     if (err) throw err;
                     if (results.length > 0) {
-                        resolve(results[0]['ID']);
+                        resolve(results[0]['id']);
 
                     } else {
                         dbconn.query('insert into country(name)values(?)', country, (err, results) => {
@@ -56,10 +56,10 @@ module.exports = {
     region: function addregion(region) {
         return new Promise((resolve, reject) => {
 
-            dbconn.query("select ID from region where name=?", region, (err, results) => {
+            dbconn.query("select id from region where name=?", region, (err, results) => {
                 if (err) throw err;
                 if (results.length > 0) {
-                    resolve(results[0]['ID']);
+                    resolve(results[0]['id']);
 
                 } else {
                     dbconn.query('insert into region(name)values(?)', region, (err, results) => {
@@ -74,10 +74,10 @@ module.exports = {
     },
     city: function addcity(city) {
         return new Promise((resolve, reject) => {
-            dbconn.query("select ID from city where name=?", city, (err, results) => {
+            dbconn.query("select id from city where name=?", city, (err, results) => {
                 if (err) throw err;
                 if (results.length > 0) {
-                    resolve(results[0]['ID']);
+                    resolve(results[0]['id']);
 
                 } else {
                     dbconn.query('insert into city(name)values(?)', city, (err, results) => {
@@ -93,21 +93,19 @@ module.exports = {
     },
     location: function (country, region, city, street_name, postal_code) {
         return new Promise((resolve, reject) => {
-            dbconn.query('select ID from location where country=? and region=? and city=? and street_name=? and postal_code=?',
-            [country,region,city,street_name,postal_code],(err,results)=>{
-                if(err) throw err;
-                console.log(results.length);
-                if(!results.length)
-                {
-                    resolve(null);
-                   
-                    
+            dbconn.query('select id from location where country=? and region=? and city=? and street_name=? and postal_code=?',
+                [country, region, city, street_name, postal_code], (err, results) => {
+                    if (err) throw err;
+                    console.log(results.length);
+                    if (!results.length) {
+                        resolve(null);
 
-                }
+
+                    }
                 else
                 {
                     console.log("existing address");
-                    resolve(results[0]['ID']);
+                    resolve(results[0]['id']);
                    
                     
                 }
@@ -131,7 +129,7 @@ module.exports = {
     household: function (uid, passcode) {
         return new Promise((resolve, reject) => {
             dbconn.query(
-                'insert into household(identifier,passcode)values(?,?)',
+                'insert into household(uid,sha2_256_pass)values(?,?)',
                 [uid, passcode],
                 (err, results) => {
                     if (err) throw err;
@@ -168,16 +166,16 @@ module.exports = {
         lab_ventilation, lab_oxygen, lab_symptoms, lab_pneumonia, lab_antibodies) {
         return new Promise((resolve, reject) => {
             dbconn.query(
-                'insert into report(member_id,symptom_cough,symptom_breathing,' +
-                'symptom_walking,symptom_appetite,symptom_diarrhea,symptom_muscle_pain,symptom_fatigue,' +
-                'symptom_nose,symptom_throat,symptom_fever,symptom_headache,' +
-                'symptom_dizziness,symptom_nausea,' +
-                'symptom_chills,symptoms_general_pain,symptom_smell_loss,' +
-                'transmission_trans_distance,transmission_trans_surface,' +
-                'transmission_trans_human,results_lab_tested,results_lab_hospitalized,' +
-                'results_lab_hospital_days,results_lab_hospital_icu,results_lab_recovered,' +
-                'results_lab_ventilation,results_lab_oxygen,results_lab_symptoms,' +
-                'results_lab_pneumonia,results_lab_antibodies)' +
+                'insert into report(member_id,symp_cough,symp_breathing,' +
+                'symp_walking,symp_appetite_loss,symp_diarrhea,symp_muscle_pain,symp_fatigue,' +
+                'symp_runny_nose,symp_sore_throat,symp_fever,symp_headache,' +
+                'symp_dizzy,symp_nausea,' +
+                'symp_shivers,symp_general_pain,symp_smell_loss,' +
+                'tran_distance,tran_surface,' +
+                'tran_human,lab_tested,lab_hospitalized,' +
+                'lab_days_in_hospital,lab_icu,lab_recovered,' +
+                'lab_ventilated,lab_oxygen,lab_other_symps,' +
+                'lab_pneumonia,lab_antibodies)' +
                 'values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
                 [member, symp_cough, symp_breathing, symp_walking, symp_appetite,
                     symp_diarrhea, symp_muscle_pain, symp_fatigue, symp_nose, symp_throat, symp_fever,
@@ -185,25 +183,24 @@ module.exports = {
                     symp_smell_loss, trans_distance, trans_surface, trans_human,
                     lab_tested, lab_hospitalized, lab_hosp_days, lab_hosp_icu, lab_recovered,
                     lab_ventilation, lab_oxygen, lab_symptoms, lab_pneumonia, lab_antibodies], (err, results) => {
-                        if (err) throw err;
-                        resolve(results.insertId);
-                    })
+                    if (err) throw err;
+                    resolve(results.insertId);
+                })
         })
     },
     location_check: function (identifier, country, city, region, pcode, street) {
         return new Promise((resolve, reject) => {
-            dbconn.query('select  identifier,country,city,region,street_name,postal_code,household.ID from household '+
-            'join household_location hl on household.ID = hl.household_id '+
-            'join location l on hl.location_id = l.ID'+
-            ' where identifier=? and country=? and city=? and region=? and street_name=? and postal_code=?',
-                [identifier, country, city, region, street, pcode],function(err,results) {
+            dbconn.query('select  uid,country,city,region,street_name,postal_code,household.id from household ' +
+                'join household_location hl on household.id = hl.household_id ' +
+                'join location l on hl.location_id = l.id' +
+                ' where uid=? and country=? and city=? and region=? and street_name=? and postal_code=?',
+                [identifier, country, city, region, street, pcode], function (err, results) {
                     if (err) throw err;
                     if (!results.length) {
                         resolve(1);
-                    }
-                    else {
+                    } else {
                         console.log("Old Data");
-                       resolve(2);
+                        resolve(2);
 
                     }
                 })
@@ -223,11 +220,11 @@ module.exports = {
                     if (err) throw err;
                     locationid = results.insertId;
                 })
-            dbconn.query('select ID from household where identifier=?', identifier, (err, results) => {
+            dbconn.query('select id from household where uid=?', identifier, (err, results) => {
                 if (err) throw err;
-                householdid = results[0]['ID'];
+                householdid = results[0]['id'];
                 dbconn.query('insert into household_location(household_id,location_id)values(?,?)',
-                    [householdid,locationid], (err, results) => {
+                    [householdid, locationid], (err, results) => {
                         if (err) throw err;
                         resolve("Location Updated");
                     })
@@ -237,11 +234,11 @@ module.exports = {
     household_location_insert : function(huid,locationid)
     {
         return new Promise((resolve,reject)=>{
-            dbconn.query('select ID from household where identifier=?', huid, (err, results) => {
+            dbconn.query('select id from household where uid=?', huid, (err, results) => {
                 if (err) throw err;
-                householdid = results[0]['ID'];
+                householdid = results[0]['id'];
                 dbconn.query('insert into household_location(household_id,location_id)values(?,?)',
-                    [householdid,locationid], (err, results) => {
+                    [householdid, locationid], (err, results) => {
                         if (err) throw err;
                         resolve("Location Updated");
                     })
@@ -255,12 +252,12 @@ module.exports = {
         console.log(region);
         console.log(postal_code);
         return new Promise((resolve,reject)=>{
-            dbconn.query('select ID from location where country=? and city=? and region=? and postal_code=? and street_name=?',
-            [country,city,region,postal_code,street_name],(err,results)=>{
-                if(err) throw err;
-                resolve(results[0]['ID']);
+            dbconn.query('select id from location where country=? and city=? and region=? and postal_code=? and street_name=?',
+                [country, city, region, postal_code, street_name], (err, results) => {
+                    if (err) throw err;
+                    resolve(results[0]['id']);
 
-            })
+                })
         })
     }
 };
