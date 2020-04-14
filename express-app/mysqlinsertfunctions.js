@@ -101,21 +101,18 @@ module.exports = {
                         resolve(null);
 
 
+                    } else {
+                        console.log("existing address");
+                        resolve(results[0]['id']);
+
+
                     }
-                else
-                {
-                    console.log("existing address");
-                    resolve(results[0]['id']);
-                   
-                    
-                }
-            })
-            
+                })
+
         })
     },
-    newlocation: function(country,region,city,street_name,postal_code)
-    {
-        return new Promise((resolve,reject)=>{
+    newlocation: function (country, region, city, street_name, postal_code) {
+        return new Promise((resolve, reject) => {
             dbconn.query(
                 'insert into location(country,region,city,street_name,postal_code)values(?,?,?,?,?)',
                 [country, region, city, street_name, postal_code],
@@ -149,9 +146,10 @@ module.exports = {
     },
     member: function (household, age, sex, alias, designator) {
         return new Promise((resolve, reject) => {
+            sex = {'0': -1, 'M': 0, 'F': 1}[sex];
             dbconn.query(
                 'insert into member(household_id,age,sex,alias)values(?,?,?,?)',
-                [household, age, sex, alias, designator], (err, results) => {
+                [household, age, sex === 'M' ? 2 : 1, alias, designator], (err, results) => {
                     if (err) throw err;
                     resolve(results.insertId);
                 })
@@ -159,11 +157,11 @@ module.exports = {
     },
 
     report: function (member, symp_cough, symp_breathing, symp_walking, symp_appetite,
-        symp_diarrhea, symp_muscle_pain, symp_fatigue, symp_nose, symp_throat, symp_fever,
-        symp_headache, symp_dizziness, symp_nausea, symp_chills, symp_general_pain,
-        symp_smell_loss, trans_distance, trans_surface, trans_human,
-        lab_tested, lab_hospitalized, lab_hosp_days, lab_hosp_icu, lab_recovered,
-        lab_ventilation, lab_oxygen, lab_symptoms, lab_pneumonia, lab_antibodies) {
+                      symp_diarrhea, symp_muscle_pain, symp_fatigue, symp_nose, symp_throat, symp_fever,
+                      symp_headache, symp_dizziness, symp_nausea, symp_chills, symp_general_pain,
+                      symp_smell_loss, trans_distance, trans_surface, trans_human,
+                      lab_tested, lab_hospitalized, lab_hosp_days, lab_hosp_icu, lab_recovered,
+                      lab_ventilation, lab_oxygen, lab_symptoms, lab_pneumonia, lab_antibodies) {
         return new Promise((resolve, reject) => {
             dbconn.query(
                 'insert into report(member_id,symp_cough,symp_breathing,' +
@@ -206,11 +204,10 @@ module.exports = {
                 })
         })
 
-        
+
     },
-    location_update: function(identifier,country,city,region,pcode,street)
-    {
-        return new Promise((resolve,reject)=>{
+    location_update: function (identifier, country, city, region, pcode, street) {
+        return new Promise((resolve, reject) => {
             var locationid;
             var householdid;
             console.log(street);
@@ -231,9 +228,8 @@ module.exports = {
             })
         })
     },
-    household_location_insert : function(huid,locationid)
-    {
-        return new Promise((resolve,reject)=>{
+    household_location_insert: function (huid, locationid) {
+        return new Promise((resolve, reject) => {
             dbconn.query('select id from household where uid=?', huid, (err, results) => {
                 if (err) throw err;
                 householdid = results[0]['id'];
@@ -245,13 +241,12 @@ module.exports = {
             })
         })
     },
-    getlocationid: function(country,city,region,postal_code,street_name)
-    {
+    getlocationid: function (country, city, region, postal_code, street_name) {
         console.log(country);
         console.log(city);
         console.log(region);
         console.log(postal_code);
-        return new Promise((resolve,reject)=>{
+        return new Promise((resolve, reject) => {
             dbconn.query('select id from location where country=? and city=? and region=? and postal_code=? and street_name=?',
                 [country, city, region, postal_code, street_name], (err, results) => {
                     if (err) throw err;
