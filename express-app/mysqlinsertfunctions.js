@@ -150,7 +150,7 @@ module.exports = {
     member: function (household, age, sex, alias, designator) {
         return new Promise((resolve, reject) => {
             dbconn.query(
-                'insert into member(household_id,age,sex,alias,designator)values(?,?,?,?,?)',
+                'insert into member(household_id,age,sex,alias)values(?,?,?,?)',
                 [household, age, sex, alias, designator], (err, results) => {
                     if (err) throw err;
                     resolve(results.insertId);
