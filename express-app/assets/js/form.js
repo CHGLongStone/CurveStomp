@@ -381,7 +381,12 @@ $(document).ready(function () {
 
     // Submit a member report
     $('#btnSubmit').click(() => {
-        let memb_id = $('#m_cur_memcode').html();
+        let memb_id = $('#m_cur_memcode').html(); // TODO: find a better way of grabbing this?
+
+        if (!(memb_id in form_data.members)) {
+            // This shouldn't happen, but protecting just in case.
+            form_data.members[memb_id] = {}
+        }
 
         // store data into data store TODO: Validate data
         // TODO: Consider automating this process in a loop...
