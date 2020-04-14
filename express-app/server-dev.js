@@ -248,9 +248,7 @@ app.post('/api/comm_fail/?', (req, res) => {
 // FIRE UP SERVER
 // Catch-all route
 app.all('*', (req, res) => {
-    // TODO: This returns HTML to calls which may be expecting JSON, causing client-side
-    //  failures. Can this be handled?
-    res.render('form')
+    res.redirect('/')
 });
 const PORT = 37248;
 http.listen(PORT, function () {
