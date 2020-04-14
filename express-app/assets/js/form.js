@@ -280,9 +280,9 @@ $(document).ready(function () {
                 let new_m_row = m_row.clone(); // TODO: does this need to be done every iteration?
 
                 // Insert data into existing row
-                m_row.find("#h_mem_age").val(form_data.members[member].age);
-                m_row.find("#h_mem_bio_gender").val(form_data.members[member].sex);
-                m_row.find("#h_mem_alias").val(form_data.members[member].alias);
+                m_row.find("#h_mem_age").val(form_data.members[member].age).prop('disabled', true);
+                m_row.find("#h_mem_bio_gender").val(form_data.members[member].sex).prop('disabled', true);
+                m_row.find("#h_mem_alias").val(form_data.members[member].alias).prop('disabled', true);
                 m_row.find('legend').html(member);
                 m_row.attr('id', member);
 
@@ -294,7 +294,10 @@ $(document).ready(function () {
                 });
                 btn.clone().attr('id', 'h_mem_report').val('Report').insertAfter(btn).click(() => {
                     // Reference the current member in the section title
-                    $('#m_cur_memcode').html(member);
+                    let age = m_row.find('#h_mem_age').val();
+                    let sex = m_row.find('#h_mem_bio_gender').val();
+                    let alias = m_row.find('#h_mem_alias').val();
+                    $('#m_cur_memcode').html(age + sex + '-' + alias); // TODO: what if no sex?
                     displayState("memberReport");
                 });
                 btn.remove();
@@ -382,7 +385,7 @@ $(document).ready(function () {
 
         // store data into data store TODO: Validate data
         // TODO: Consider automating this process in a loop...
-        form_data.members[memb_id].symptoms = {
+        form_data.members[memb_id].symptoms = {                   // TODO:
             'm_symp_cough': $('#m_symp_cough').val(),
             'm_symp_fever': $('#m_symp_fever').val(),
             'm_symp_fatigue': $('#m_symp_fatigue').prop('checked'),
