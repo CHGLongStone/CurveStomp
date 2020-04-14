@@ -75,30 +75,30 @@ form {
     width: 80%;
     max-width: 960px;
     margin: auto;
-    padding: 20pt;
+    padding: 20px;
     border: 1px solid var(--dark_accents);
 }
 
 form > section {
-    padding: 10pt;
-    margin: 0 0 10pt 0;
+    padding: 10px;
+    margin: 0 0 10px 0;
     border: 1px solid var(--dark_accents);
 }
 
 form > section fieldset {
-    margin: 10pt 0;
+    margin: 10px 0;
 }
 
 form > section > fieldset > legend {
     color: var(--light_shades);
     background-color: var(--dark_shades);
-    border-radius: 2pt;
+    border-radius: 2px;
     padding: 0.2em 0.5em;
 }
 
 div.fieldset_container {
     display: grid;
-    column-gap: 15pt;
+    column-gap: 15px;
     row-gap: 1em;
     margin-top: 1em;
 }
@@ -188,9 +188,9 @@ fieldset#h_identity div.fieldset_container {
     display: none;
     background-color: var(--invalid_data);
     position: absolute;
-    padding: 10pt;
+    padding: 10px;
     margin: auto;
-    bottom: 25pt;
+    bottom: 25px;
     width: 90%;
     left: 5%;
     border: 1px solid var(--dark_accents);
