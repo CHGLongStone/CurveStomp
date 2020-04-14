@@ -146,10 +146,9 @@ module.exports = {
     },
     member: function (household, age, sex, alias, designator) {
         return new Promise((resolve, reject) => {
-            sex = {'0': -1, 'M': 0, 'F': 1}[sex];
             dbconn.query(
                 'insert into member(household_id,age,sex,alias)values(?,?,?,?)',
-                [household, age, sex === 'M' ? 2 : 1, alias, designator], (err, results) => {
+                [household, age, sex, alias, designator], (err, results) => {
                     if (err) throw err;
                     resolve(results.insertId);
                 })
