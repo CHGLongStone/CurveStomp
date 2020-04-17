@@ -38,7 +38,11 @@ const router = app => {
         // TODO: Consider persisting max_hhid value for crash recovery?
         max_hhid++;
         console.log("[" + Date.now() + "]: " + max_hhid);
-        res.send(max_hid.toString());
+        if(isNaN(max_hhid))
+        {
+            max_hhid=1;
+        }
+        res.send(max_hhid.toString());
     });
 
     app.post('/api/create_profile/?', ValidationRules.create_profile(), validate, (req, res) => {
@@ -425,6 +429,12 @@ const router = app => {
         logFmt(req.url, req.body);
         res.status(parseInt(req.body.ecode)).json({resp: 'here you go... '})
     });
+
+    // form route set as default /
+
+    app.get('/',(req,res)=>{
+        res.render('form');
+    })
 
     // Catch-all route
     app.all('*', (req, res) => {
