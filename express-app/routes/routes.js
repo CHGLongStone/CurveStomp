@@ -19,7 +19,7 @@ let max_hhid = database.pool.query('select max(uid) hhid from household', (err, 
         }
         throw err;
     }
-    return (rows.length > 0) ? rows[0]['hhid'] : 0;
+    return (rows[0]['hhid']!=null) ? rows[0]['hhid'] : 0 ;
 });
 console.log(`Using MAX HHID = ${max_hhid}`);
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -36,12 +36,12 @@ const router = app => {
 
     app.post('/api/generate_id/?', (req, res) => {
         // TODO: Consider persisting max_hhid value for crash recovery?
-        max_hhid++;
-        console.log("[" + Date.now() + "]: " + max_hhid);
         if(isNaN(max_hhid))
         {
-            max_hhid=1;
+            max_hhid=0;
         }
+        max_hhid++;
+        console.log("[" + Date.now() + "]: " + max_hhid);
         res.send(max_hhid.toString());
     });
 
@@ -429,12 +429,6 @@ const router = app => {
         logFmt(req.url, req.body);
         res.status(parseInt(req.body.ecode)).json({resp: 'here you go... '})
     });
-
-    // form route set as default /
-
-    app.get('/',(req,res)=>{
-        res.render('form');
-    })
 
     // Catch-all route
     app.all('*', (req, res) => {
