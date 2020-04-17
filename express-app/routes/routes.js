@@ -29,6 +29,10 @@ const router = app => {
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
+    // TODO: How to support 'back' button?
+    app.get('/?', (req, res) => {
+        res.render('form');
+    });
 
     app.post('/api/generate_id/?', (req, res) => {
         // TODO: Consider persisting max_hhid value for crash recovery?
@@ -420,7 +424,14 @@ const router = app => {
     app.post('/api/comm_fail/?', (req, res) => {
         logFmt(req.url, req.body);
         res.status(parseInt(req.body.ecode)).json({resp: 'here you go... '})
-    })
+    });
+
+    // Catch-all route
+    app.all('*', (req, res) => {
+        // TODO: This returns HTML to calls which may be expecting JSON, causing client-side
+        //  failures. Can this be handled?
+        res.redirect('/')
+    });
 
 };
 
