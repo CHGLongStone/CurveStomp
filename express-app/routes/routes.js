@@ -195,13 +195,16 @@ const router = app => {
                     req.body.report.symptoms.m_symp_chills,
                     req.body.report.symptoms.m_symp_general_pain,
                     req.body.report.symptoms.m_symp_smell_loss,
+
                     req.body.report.transmission.m_trans_distance,
                     req.body.report.transmission.m_trans_surface,
                     req.body.report.transmission.m_trans_human,
+
                     req.body.report.lab_results.m_lab_tested,
                     req.body.report.lab_results.m_lab_hospitalized,
                     req.body.report.lab_results.m_lab_hosp_days,
                     req.body.report.lab_results.m_lab_hosp_icu,
+                    req.body.report.lab_results.m_lab_recovered,
                     req.body.report.lab_results.m_lab_ventilation,
                     req.body.report.lab_results.m_lab_oxygen,
                     req.body.report.lab_results.m_lab_pneumonia,
