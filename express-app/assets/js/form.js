@@ -60,6 +60,10 @@ function saveMemberRow(memb_row) {
         'alias': m_alias
     };
 
+    memb_row.find('#h_mem_age').prop('disabled', true);
+    memb_row.find('#h_mem_bio_gender').prop('disabled', true);
+    memb_row.find('#h_mem_alias').prop('disabled', true);
+
     // Update UI
     memb_row.find('legend').html(memb_id);
     memb_row.attr('id', memb_id);
