@@ -173,7 +173,7 @@ const router = app => {
                                   and sex = ?
                                   and alias = ?),
                                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                               ?, ?, ?, ?, ?, ?);`;
+                               ?, ?, ?, ?, ?, ?)`;
                 vals = [
                     scratchpad.household_id,
                     req.body.report.age,
