@@ -4,25 +4,16 @@ const {ValidationRules, validate} = require('../validator.js');
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // EXECUTED SYNCHRONOUSLY BEFORE SERVER COMES UP
-let max_hhid = database.pool.query('select max(uid) hhid from household', (err, rows) => {
-    if (err) {
-        // Few error handlers, logging specific error codes in the console.
-        switch (err.code) {
-            case 'PROTOCOL_CONNECTION_LOST':
-                console.error('Database connection was closed.');
-                break;
-            case 'ER_CON_COUNT_ERROR':
-                console.error('Database has too many connections.');
-                break;
-            case 'ECONNREFUSED':
-                console.error('Database connection was refused.');
-        }
-        throw err;
-    }
-    console.log(rows);
-    return (rows[0]['hhid']!=null) ? rows[0]['hhid'] : 0 ;
-});
-console.log(`Using MAX HHID = ${max_hhid}`);
+let max_hhid;
+database.query('select max(uid) hhid from household')
+    .then(results => {
+        max_hhid = (rows.length > 0) ? rows[0].hhid : 0;
+        console.log(`Using MAX HHID = ${max_hhid}`);
+    })
+    .catch(err => {
+        throw err
+    });
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 const router = app => {
@@ -37,9 +28,8 @@ const router = app => {
 
     app.post('/api/generate_id/?', (req, res) => {
         // TODO: Consider persisting max_hhid value for crash recovery?
-        if(isNaN(max_hhid))
-        {
-            max_hhid=0;
+        if (isNaN(max_hhid)) {
+            max_hhid = 0;
         }
         max_hhid++;
         console.log("[" + Date.now() + "]: " + max_hhid);
