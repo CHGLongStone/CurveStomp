@@ -217,7 +217,7 @@ const router = app => {
             // Step 3. Update location table
             .then(results => {
                 // No point in delaying response:
-                res.json({response: 'Created profile' + req.body.identity.unique_identifier});
+                res.json({response: 'received report'});
 
                 // But there's some maintenance to be done
                 sql = `insert into location (country, region, city, street_name, postal_code)
