@@ -315,6 +315,7 @@ const router = app => {
                 if (results.length === 0) throw ("auth fail");
 
                 scratchpad.household_id = results[0].id;
+                console.log(`Successful authentication for ${scratchpad.household_id}`);
 
                 sql = `select l.*
                        from household_location hl,
@@ -322,9 +323,10 @@ const router = app => {
                        where hl.household_id = ?
                          and hl.effective_ts = (select max(effective_ts) ts
                                                 from household_location
-                                                where household_location.household_id = 1)
+                                                where household_location.household_id = ?)
                          and hl.location_id = l.id;`;
                 vals = [
+                    scratchpad.household_id,
                     scratchpad.household_id
                 ];
                 return database.query(sql, vals)
@@ -332,6 +334,7 @@ const router = app => {
 
             // Step 2. Grab latest report for every household member (assume member has report)
             .then(results => {
+                // There shouldn't be any profiles without locations....
                 if (results.length === 0) throw ("DB Fail");
 
                 profile.household.location.country = results[0].country;
