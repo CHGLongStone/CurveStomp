@@ -8,10 +8,10 @@ let max_hhid;
 database.query('select max(uid) hhid from household')
     .then(results => {
         max_hhid = (results.length > 0) ? results[0].hhid : 0;
-        console.log(`Using MAX HHID = ${max_hhid}`);
+        console.log("[" + Date.now() + "]: " + `Using MAX UID = ${max_hhid}`);
     })
     .catch(err => {
-        console.log("Could not get MAX HHID from server.");
+        console.log("[" + Date.now() + "]: " + "Could not get MAX UID from server.");
         throw err
     });
 
@@ -30,7 +30,7 @@ const router = app => {
     app.post('/api/generate_id/?', (req, res) => {
         // TODO: Consider persisting max_hhid value for crash recovery?
         max_hhid++;
-        console.log("[" + Date.now() + "]: " + max_hhid);
+        console.log("[" + Date.now() + "]: " + `Issued UID ${max_hhid}`);
         res.send(max_hhid.toString());
     });
 
@@ -40,12 +40,14 @@ const router = app => {
         let vals;
         let scratchpad = {};
 
+        console.log(`[${Date.now()}]: create_profile: ${req.body.identity.unique_identifier}`);
+
         // See if requested profile already exists
         database.query('select id from household where uid = ?', req.body.identity.unique_identifier)
 
             // Step 1. Insert household if not exists.
             .then(results => {
-                if (results.length > 0) throw ("profile already exists.");
+                if (results.length > 0) throw (`[${Date.now()}]: UID ${req.body.identity.unique_identifier} exists already`);
 
                 sql = `insert into household (uid, sha2_256_pass, locale_id)
                        values (?, sha2(concat(uid, ?), 256), (select id from locale where code = ?))
@@ -53,7 +55,7 @@ const router = app => {
                 vals = [
                     req.body.identity.unique_identifier,
                     req.body.identity.passcode,
-                    "en-ca"
+                    "en-ca" // TODO: grab locale from UI.
                 ];
                 return database.query(sql, vals);
             })
@@ -73,8 +75,10 @@ const router = app => {
 
             // Step 3. Insert location if not exists (we have location information)
             .then(results => {
-                if (results.length === 0) throw ("Profile Creation Failed.");
+                if (results.length === 0) throw (`[${Date.now()}]: UID ${req.body.identity.unique_identifier} auth failed.`);
+
                 scratchpad.household_id = results[0].id; // TODO: check if exists?
+                console.log(`[${Date.now()}]: UID ${req.body.identity.unique_identifier} auth success.`);
 
                 sql = `insert into location (country, region, city, street_name, postal_code)
                        values (?, ?, ?, ?, ?)
@@ -112,12 +116,13 @@ const router = app => {
 
             // Handle success
             .then(results => {
-                console.log('Created Profile for: ' + req.body.identity.unique_identifier);
+                console.log(`[${Date.now()}]: HID ${results[0].id} Created for UID ${req.body.identity.unique_identifier}`);
                 res.json({response: 'Created profile' + req.body.identity.unique_identifier})
             })
 
             // Handle failure
             .catch(err => {
+                console.log(`[${Date.now()}]: Creation failed for UID ${req.body.identity.unique_identifier}`);
                 console.log(err);
                 res.status(400).json({response: "Creation Failed."})
             })
@@ -127,6 +132,7 @@ const router = app => {
         let sql; // container for SQL queries
         let vals; // container for SQL variables
         let scratchpad = {}; // scratchpad for variables
+        scratchpad.desig = req.body.report.age + req.body.report.sex + '-' + req.body.report.alias;
 
         // Step 0. Authenticate user and grab household ID. Abort if NULL.
         sql = `select id
@@ -140,9 +146,14 @@ const router = app => {
         database.query(sql, vals)
             // Step 1. Add the member if not exists.
             .then(results => {
-                if (results.length === 0) throw ("auth fail");
-
+                // Handle AUTH results:
+                if (results.length === 0) throw (`[${Date.now()}]: UID ${req.body.household.identity.unique_identifier} auth fail`);
+                console.log(`[${Date.now()}]: UID ${req.body.household.identity.unique_identifier} auth success`);
                 scratchpad.household_id = results[0].id; // TODO: check if exists?
+
+                console.log(`[${Date.now()}]: Report for ${req.body.household.identity.unique_identifier}:${scratchpad.desig}`);
+
+                // Insert member if they don't exist...
                 sql = `insert into member (household_id, age, sex, alias)
                        values (?, ?, ?, ?)
                        on duplicate key update id = id`;
@@ -157,8 +168,6 @@ const router = app => {
 
             // Step 2. File a report for the member (assume member exsists)
             .then(results => {
-
-                console.log('Report :' + JSON.stringify(req.body.report));
 
                 sql = `insert into report (member_id, symp_cough, symp_breathing, symp_walking,
                                            symp_appetite_loss, symp_diarrhea, symp_muscle_pain,
@@ -220,7 +229,7 @@ const router = app => {
             // Step 3. Update location table
             .then(results => {
                 // No point in delaying response:
-                res.json({response: 'received report'});
+                res.json({response: `received report for ${scratchpad.desig}`});
 
                 // But there's some maintenance to be done
                 sql = `insert into location (country, region, city, street_name, postal_code)
@@ -273,7 +282,7 @@ const router = app => {
 
             // Handle success
             .then(results => {
-                console.log('filed report for: ' + req.body.household.identity.unique_identifier);
+                console.log(`[${Date.now()}]: Report for ${req.body.household.identity.unique_identifier}:${scratchpad.desig} filed.`);
             })
 
             // Handle failure
@@ -315,10 +324,9 @@ const router = app => {
 
             // Step 1. Grab last known location. Abort if NULL. [ERROR]
             .then(results => {
-                if (results.length === 0) throw ("auth fail");
-
-                scratchpad.household_id = results[0].id;
-                console.log(`Successful authentication for ${scratchpad.household_id}`);
+                if (results.length === 0) throw (`[${Date.now()}]: UID ${req.body.unique_identifier} auth fail`);
+                console.log(`[${Date.now()}]: UID ${req.body.unique_identifier} auth success`);
+                scratchpad.household_id = results[0].id; // TODO: check if exists?
 
                 sql = `select l.*
                        from household_location hl,
@@ -338,7 +346,7 @@ const router = app => {
             // Step 2. Grab latest report for every household member (assume member has report)
             .then(results => {
                 // There shouldn't be any profiles without locations....
-                if (results.length === 0) throw ("DB Fail");
+                if (results.length === 0) throw (`[${Date.now()}]: Location not found for HID ${scratchpad.household_id}.`);
 
                 profile.household.location.country = results[0].country;
                 profile.household.location.region = results[0].region;
@@ -411,7 +419,7 @@ const router = app => {
                         }
                     }
                 }
-                console.log('Retrieved Profile for: ' + req.body.unique_identifier);
+                console.log(`[${Date.now()}]: Retrieved Profile for UID ${req.body.unique_identifier}.`);
                 res.json(profile)
             })
 
@@ -430,8 +438,6 @@ const router = app => {
 
     // Catch-all route
     app.all('*', (req, res) => {
-        // TODO: This returns HTML to calls which may be expecting JSON, causing client-side
-        //  failures. Can this be handled?
         res.redirect('/')
     });
 
