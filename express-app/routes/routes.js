@@ -158,7 +158,7 @@ const router = app => {
             // Step 2. File a report for the member (assume member exsists)
             .then(results => {
 
-                console.log(`Report : ${req.body.toString()}`);
+                console.log('Report :' + JSON.stringify(req.body.report));
 
                 sql = `insert into report (member_id, symp_cough, symp_breathing, symp_walking,
                                            symp_appetite_loss, symp_diarrhea, symp_muscle_pain,
