@@ -11,6 +11,7 @@ database.query('select max(uid) hhid from household')
         console.log(`Using MAX HHID = ${max_hhid}`);
     })
     .catch(err => {
+        console.log("Could not get MAX HHID from server.");
         throw err
     });
 
@@ -28,9 +29,6 @@ const router = app => {
 
     app.post('/api/generate_id/?', (req, res) => {
         // TODO: Consider persisting max_hhid value for crash recovery?
-        if (isNaN(max_hhid)) {
-            max_hhid = 0;
-        }
         max_hhid++;
         console.log("[" + Date.now() + "]: " + max_hhid);
         res.send(max_hhid.toString());
@@ -363,7 +361,7 @@ const router = app => {
             // Handle success
             .then(results => {
                 for (let report of results) {
-                    profiles.members[report.desig] = {
+                    profile.members[report.desig] = {
                         age: report.age,
                         sex: report.sex,
                         alias: report.alias,
