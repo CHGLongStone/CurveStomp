@@ -16,7 +16,7 @@ function saveMemberRow(memb_row) {
     let m_age = memb_row.find('#h_mem_age').val();
     let m_sex = memb_row.find('#h_mem_bio_gender').val();
     let m_alias = memb_row.find('#h_mem_alias').val().toUpperCase();
-    let memb_id = m_age + ',' + m_sex + ',' + m_alias;
+    let memb_id = m_age + m_sex + '-' + m_alias;
 
     // Validate user input
     if (m_age === null || m_age === '' || 999 < m_age < 0) {
