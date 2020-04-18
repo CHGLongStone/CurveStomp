@@ -408,7 +408,7 @@ const router = app => {
                         }
                     }
                 }
-                console.log('Retrieved Profile for: ' + req.unique_identifier);
+                console.log('Retrieved Profile for: ' + req.body.unique_identifier);
                 res.json(profile)
             })
 
