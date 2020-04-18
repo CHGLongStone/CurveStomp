@@ -270,13 +270,13 @@ const router = app => {
 
             // Handle success
             .then(results => {
-                console.log('Created Profile for: ' + req.body.identity.unique_identifier);
+                console.log('filed report for: ' + req.body.household.identity.unique_identifier);
             })
 
             // Handle failure
             .catch(err => {
                 console.log(err);
-                res.status(400).json({response: "Creation Failed."})
+                res.status(400).json({response: "Report Failed."})
             })
     });
 
