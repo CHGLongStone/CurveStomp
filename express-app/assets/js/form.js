@@ -93,7 +93,7 @@ function delMember(memb_row) {
     if (prev_memb_id == "AAAS-NN") {
         memb_row.attr("id", 'AAAS-NN');
         memb_row.find('#h_mem_age').val(null);
-        memb_row.find('#h_mem_sex').val(null);
+        memb_row.find('#h_mem_bio_gender').val(null);
         memb_row.find('#h_mem_alias').val(null);
     } else {
         // Wipe data from form_data
@@ -108,7 +108,7 @@ function delMember(memb_row) {
         if (jQuery.isEmptyObject(form_data.members)) {
             memb_row.attr({"id": 'AAAS-NN'});
             memb_row.find('#h_mem_age').val(null);
-            memb_row.find('#h_mem_sex').val(null);
+            memb_row.find('#h_mem_bio_gender').val(null).prop('selectedIndex', 0);
             memb_row.find('#h_mem_alias').val(null);
             memb_row.find('legend').html("AAAS-NN");
             memb_row.find('#h_mem_delete').remove();
@@ -388,7 +388,7 @@ $(document).ready(function () {
         prv.find('#h_mem_delete').remove();
         prv.find('#h_mem_report').remove();
         prv.find('#h_mem_age').val(null).prop('disabled', false).css('background-color', '');
-        prv.find('#h_mem_sex').prop('selectedIndex', 0).prop('disabled', false).css('background-color', '');
+        prv.find('#h_mem_bio_gender').prop('selectedIndex', 0).prop('disabled', false).css('background-color', '');
         prv.find('#h_mem_alias').val(null).prop('disabled', false).css('background-color', '');
         prv.find('legend').html("AAAS-NN");
     });
