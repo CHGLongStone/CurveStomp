@@ -20,11 +20,11 @@ function saveMemberRow(memb_row) {
 
     // Validate user input
     if (m_age === null || m_age === '' || 999 < m_age < 0) {
-        memb_row.find('#h_mem_age').css('border-color', 'var(--invalid_data');
+        memb_row.find('#h_mem_age').css('background-color', 'var(--invalid_data');
         valid = false
     }
     if (m_sex === null || m_sex === '' || !["M", "F"].includes(m_sex)) {
-        memb_row.find('#h_mem_bio_gender').css('border-color', 'var(--invalid_data');
+        memb_row.find('#h_mem_bio_gender').css('background-color', 'var(--invalid_data');
         valid = false
     }
 
@@ -33,8 +33,8 @@ function saveMemberRow(memb_row) {
         return false;
     }
 
-    memb_row.find('#h_mem_age').css('border-color', 'var(--validated_data');
-    memb_row.find('#h_mem_bio_gender').css('border-color', 'var(--validated_data')
+    memb_row.find('#h_mem_age').css('background-color', '');
+    memb_row.find('#h_mem_bio_gender').css('background-color', '');
 
     if (memb_id in form_data.members) {
         console.log("[" + Date.now() + "]: " + "DUPLICATE MEMBER EXISTS: " + memb_id);
