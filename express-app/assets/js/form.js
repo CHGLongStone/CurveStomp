@@ -12,16 +12,29 @@ function saveMemberRow(memb_row) {
     memb_row = $(memb_row);
 
     // Grab input values
+    let valid = true;
     let m_age = memb_row.find('#h_mem_age').val();
     let m_sex = memb_row.find('#h_mem_bio_gender').val();
     let m_alias = memb_row.find('#h_mem_alias').val().toUpperCase();
+    let memb_id = m_age + ',' + m_sex + ',' + m_alias;
 
-    if (([m_age, m_sex].includes(null) || [m_age, m_sex].includes(''))) {
-        console.log("[" + Date.now() + "]: " + "INVALID MEMBER ROW: " + m_age + ',' + m_sex + ',' + m_alias);
+    // Validate user input
+    if (m_age === null || m_age === '' || 999 < m_age < 0) {
+        memb_row.find('#h_mem_age').css('border-color', 'var(--invalid_data');
+        valid = false
+    }
+    if (m_sex === null || m_sex === '' || !["M", "F"].includes(m_sex)) {
+        memb_row.find('#h_mem_bio_gender').css('border-color', 'var(--invalid_data');
+        valid = false
+    }
+
+    if (!valid) {
+        console.log("[" + Date.now() + "]: " + "INVALID MEMBER ROW: " + memb_id);
         return false;
     }
 
-    let memb_id = m_age + m_sex + '-' + m_alias;
+    memb_row.find('#h_mem_age').css('border-color', 'var(--validated_data');
+    memb_row.find('#h_mem_bio_gender').css('border-color', 'var(--validated_data')
 
     if (memb_id in form_data.members) {
         console.log("[" + Date.now() + "]: " + "DUPLICATE MEMBER EXISTS: " + memb_id);

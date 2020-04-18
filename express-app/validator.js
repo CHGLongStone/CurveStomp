@@ -87,7 +87,7 @@ ValidationRules.submit_report = () => {
             .isInt({min: 0, max: 999}),
         body('report.sex').exists()
             .not().isEmpty()
-            .isIn(["0", "M", "F"]),
+            .isIn(["M", "F"]),
         body('report.alias').exists()
             .isLength({max: 2}),
 
