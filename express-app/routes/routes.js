@@ -19,6 +19,7 @@ let max_hhid = database.pool.query('select max(uid) hhid from household', (err, 
         }
         throw err;
     }
+    console.log(rows);
     return (rows[0]['hhid']!=null) ? rows[0]['hhid'] : 0 ;
 });
 console.log(`Using MAX HHID = ${max_hhid}`);
