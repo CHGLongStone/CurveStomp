@@ -116,7 +116,7 @@ const router = app => {
 
             // Handle success
             .then(results => {
-                console.log(`[${Date.now()}]: HID ${results[0].id} Created for UID ${req.body.identity.unique_identifier}`);
+                console.log(`[${Date.now()}]: HID ${scratchpad.household_id} Created for UID ${req.body.identity.unique_identifier}`);
                 res.json({response: 'Created profile' + req.body.identity.unique_identifier})
             })
 
@@ -150,8 +150,6 @@ const router = app => {
                 if (results.length === 0) throw (`[${Date.now()}]: UID ${req.body.household.identity.unique_identifier} auth fail`);
                 console.log(`[${Date.now()}]: UID ${req.body.household.identity.unique_identifier} auth success`);
                 scratchpad.household_id = results[0].id; // TODO: check if exists?
-
-                console.log(`[${Date.now()}]: Report for ${req.body.household.identity.unique_identifier}:${scratchpad.desig}`);
 
                 // Insert member if they don't exist...
                 sql = `insert into member (household_id, age, sex, alias)
