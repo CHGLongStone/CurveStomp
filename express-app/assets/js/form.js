@@ -483,16 +483,18 @@ $(document).ready(function () {
         };
         asyncPostJSON(SERVERURL + '/api/submit_report', report).then(res => {
             console.log("[" + Date.now() + "]: " + res);
+            // mark the member row as complete.
+            $('#' + memb_id).css('background-color', 'var(--validated_data)')
+                .find('#h_mem_report').hide();
+
+            displayState('profile')
         }).catch(err => {
             if (err == "server") return;
+            // TODO: visual cue of failure?
             throw err
         });
 
-        // mark the member row as complete.
-        $('#' + memb_id).css('background-color', 'var(--validated_data)')
-            .find('#h_mem_report').hide();
 
-        displayState('profile')
     });
 
     // Create a new profile
