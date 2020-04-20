@@ -5,23 +5,37 @@ Obfuscate: https://obfuscator.io/
  */
 
 
-const SERVERURL = 'https://symptometer.io'; // Change this to accommodate CORS
+const SERVERURL = ''; // Change this to accommodate CORS
 
 function saveMemberRow(memb_row) {
 
     memb_row = $(memb_row);
 
     // Grab input values
+    let valid = true;
     let m_age = memb_row.find('#h_mem_age').val();
     let m_sex = memb_row.find('#h_mem_bio_gender').val();
     let m_alias = memb_row.find('#h_mem_alias').val().toUpperCase();
+    let memb_id = m_age + m_sex + '-' + m_alias;
 
-    if (([m_age, m_sex].includes(null) || [m_age, m_sex].includes(''))) {
-        console.log("[" + Date.now() + "]: " + "INVALID MEMBER ROW: " + m_age + ',' + m_sex + ',' + m_alias);
-        return false;
+    // Validate user input
+    if (m_age === null || m_age === '' || m_age < 0 || m_age > 200) {
+        memb_row.find('#h_mem_age').css('background-color', 'var(--invalid_data');
+        valid = false
+    } else {
+        memb_row.find('#h_mem_age').css('background-color', '');
+    }
+    if (m_sex === null || m_sex === '' || !["M", "F"].includes(m_sex)) {
+        memb_row.find('#h_mem_bio_gender').css('background-color', 'var(--invalid_data');
+        valid = false
+    } else {
+        memb_row.find('#h_mem_bio_gender').css('background-color', '');
     }
 
-    let memb_id = m_age + m_sex + '-' + m_alias;
+    if (!valid) {
+        console.log("[" + Date.now() + "]: " + "INVALID MEMBER ROW: " + memb_id);
+        return false;
+    }
 
     if (memb_id in form_data.members) {
         console.log("[" + Date.now() + "]: " + "DUPLICATE MEMBER EXISTS: " + memb_id);
@@ -45,6 +59,10 @@ function saveMemberRow(memb_row) {
         'sex': m_sex,
         'alias': m_alias
     };
+
+    memb_row.find('#h_mem_age').prop('disabled', true);
+    memb_row.find('#h_mem_bio_gender').prop('disabled', true);
+    memb_row.find('#h_mem_alias').prop('disabled', true);
 
     // Update UI
     memb_row.find('legend').html(memb_id);
@@ -75,7 +93,7 @@ function delMember(memb_row) {
     if (prev_memb_id == "AAAS-NN") {
         memb_row.attr("id", 'AAAS-NN');
         memb_row.find('#h_mem_age').val(null);
-        memb_row.find('#h_mem_sex').val(null);
+        memb_row.find('#h_mem_bio_gender').val(null);
         memb_row.find('#h_mem_alias').val(null);
     } else {
         // Wipe data from form_data
@@ -90,7 +108,7 @@ function delMember(memb_row) {
         if (jQuery.isEmptyObject(form_data.members)) {
             memb_row.attr({"id": 'AAAS-NN'});
             memb_row.find('#h_mem_age').val(null);
-            memb_row.find('#h_mem_sex').val(null);
+            memb_row.find('#h_mem_bio_gender').val(null).prop('selectedIndex', 0);
             memb_row.find('#h_mem_alias').val(null);
             memb_row.find('legend').html("AAAS-NN");
             memb_row.find('#h_mem_delete').remove();
@@ -280,9 +298,9 @@ $(document).ready(function () {
                 let new_m_row = m_row.clone(); // TODO: does this need to be done every iteration?
 
                 // Insert data into existing row
-                m_row.find("#h_mem_age").val(form_data.members[member].age);
-                m_row.find("#h_mem_bio_gender").val(form_data.members[member].sex);
-                m_row.find("#h_mem_alias").val(form_data.members[member].alias);
+                m_row.find("#h_mem_age").val(form_data.members[member].age).prop('disabled', true);
+                m_row.find("#h_mem_bio_gender").val(form_data.members[member].sex).prop('disabled', true);
+                m_row.find("#h_mem_alias").val(form_data.members[member].alias).prop('disabled', true);
                 m_row.find('legend').html(member);
                 m_row.attr('id', member);
 
@@ -294,7 +312,10 @@ $(document).ready(function () {
                 });
                 btn.clone().attr('id', 'h_mem_report').val('Report').insertAfter(btn).click(() => {
                     // Reference the current member in the section title
-                    $('#m_cur_memcode').html(member);
+                    let age = m_row.find('#h_mem_age').val();
+                    let sex = m_row.find('#h_mem_bio_gender').val();
+                    let alias = m_row.find('#h_mem_alias').val();
+                    $('#m_cur_memcode').html(age + sex + '-' + alias); // TODO: what if no sex?
                     displayState("memberReport");
                 });
                 btn.remove();
@@ -361,13 +382,14 @@ $(document).ready(function () {
             });
             prv = nxt; // swap back to selected.
         }
+
         prv.css('background-color', '');
         prv.attr({"id": 'AAAS-NN'});
         prv.find('#h_mem_delete').remove();
         prv.find('#h_mem_report').remove();
-        prv.find('#h_mem_age').val(null);
-        prv.find('#h_mem_sex').prop('selectedIndex', 0);
-        prv.find('#h_mem_alias').val(null);
+        prv.find('#h_mem_age').val(null).prop('disabled', false).css('background-color', '');
+        prv.find('#h_mem_bio_gender').prop('selectedIndex', 0).prop('disabled', false).css('background-color', '');
+        prv.find('#h_mem_alias').val(null).prop('disabled', false).css('background-color', '');
         prv.find('legend').html("AAAS-NN");
     });
 
@@ -378,11 +400,16 @@ $(document).ready(function () {
 
     // Submit a member report
     $('#btnSubmit').click(() => {
-        let memb_id = $('#m_cur_memcode').html();
+        let memb_id = $('#m_cur_memcode').html(); // TODO: find a better way of grabbing this?
+
+        if (!(memb_id in form_data.members)) {
+            // This shouldn't happen, but protecting just in case.
+            form_data.members[memb_id] = {}
+        }
 
         // store data into data store TODO: Validate data
         // TODO: Consider automating this process in a loop...
-        form_data.members[memb_id].symptoms = {
+        form_data.members[memb_id].symptoms = {                   // TODO:
             'm_symp_cough': $('#m_symp_cough').val(),
             'm_symp_fever': $('#m_symp_fever').val(),
             'm_symp_fatigue': $('#m_symp_fatigue').prop('checked'),
@@ -456,16 +483,18 @@ $(document).ready(function () {
         };
         asyncPostJSON(SERVERURL + '/api/submit_report', report).then(res => {
             console.log("[" + Date.now() + "]: " + res);
+            // mark the member row as complete.
+            $('#' + memb_id).css('background-color', 'var(--validated_data)')
+                .find('#h_mem_report').hide();
+
+            displayState('profile')
         }).catch(err => {
             if (err == "server") return;
+            // TODO: visual cue of failure?
             throw err
         });
 
-        // mark the member row as complete.
-        $('#' + memb_id).css('background-color', 'var(--validated_data)')
-            .find('#h_mem_report').hide();
 
-        displayState('profile')
     });
 
     // Create a new profile

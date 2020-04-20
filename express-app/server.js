@@ -171,8 +171,8 @@ app.post('/api/submit_report/?', ValidationRules.submit_report(), validate, asyn
         }
         else
         {
-        //    var lid  = await(mysqlinsert.getlocationid(req.body.household.location.country,req.body.household.location.city,req.body.household.location.region,req.body.household.location.postal_code,req.body.household.location.street_name));
-        //     var location_household  = await(mysqlinsert.household_location_insert(huid,lid));
+           var lid  = await(mysqlinsert.getlocationid(req.body.household.location.country,req.body.household.location.city,req.body.household.location.region,req.body.household.location.postal_code,req.body.household.location.street_name));
+            var location_household  = await(mysqlinsert.household_location_insert(huid,lid));
         }
        
         var member = await (mysqlinsert.member(household_id, age, sex, alias, designator));
@@ -252,7 +252,7 @@ app.all('*', (req, res) => {
     //  failures. Can this be handled?
     res.render('form')
 });
-const PORT = 5000;
+const PORT = 37248;
 http.listen(PORT, function () {
     console.log("[" + Date.now() + "]: " + 'listening on port: ', PORT);
 });

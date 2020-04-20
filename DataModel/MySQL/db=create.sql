@@ -1,97 +1,121 @@
-create schema if not exists curvestompdev;
-
+create schema if not exists curvestompdev collate utf8mb4_unicode_ci;
 use curvestompdev;
 
-create table if not exists city
+################################################################################################
+
+# DESTROY DATABASE
+drop table if exists curvestompdev.report;
+drop table if exists curvestompdev.member;
+drop table if exists curvestompdev.household_location;
+drop table if exists curvestompdev.household;
+drop table if exists curvestompdev.location;
+drop table if exists curvestompdev.locale;
+
+# CREATE DATABASE
+create table locale
 (
-	ID int auto_increment
-		primary key,
-	name varchar(100) null,
-	iso_code varchar(6) null
+    id           int auto_increment
+        primary key,
+    code         varchar(10)          not null,
+    is_supported tinyint(1) default 0 null,
+    constraint code
+        unique (code)
 );
 
-create table if not exists country
+create table household
 (
-	ID int auto_increment
-		primary key,
-	name varchar(100) null,
-	iso_code varchar(6) null
+    id            bigint auto_increment
+        primary key,
+    uid           bigint       null,
+    sha2_256_pass varchar(128) not null comment 'sha2-256(concat(uid, passcode))',
+    locale_id     int          null,
+    constraint household_uid_uindex
+        unique (uid),
+    constraint household_locale_id_fk
+        foreign key (locale_id) references locale (id)
 );
 
-create table if not exists locale
+create table location
 (
-	ID int auto_increment
-		primary key,
-	code varchar(10) null,
-	supported_bool tinyint(1) null
+    id          bigint auto_increment
+        primary key,
+    country     varchar(60)  not null,
+    region      varchar(60)  null,
+    city        varchar(60)  not null,
+    street_name varchar(100) not null,
+    postal_code varchar(25)  null,
+    constraint location_street_name_postal_code_city_region_country_uindex
+        unique (street_name, postal_code, city, region, country)
 );
 
-create table if not exists household
+create table household_location
 (
-	ID int auto_increment
-		primary key,
-	identifier bigint null,
-	passcode varchar(20) null,
-	locale_id int null,
-	constraint household___fk_locale
-		foreign key (locale_id) references locale (ID)
+    id           bigint auto_increment
+        primary key,
+    household_id bigint                              null,
+    location_id  bigint                              null,
+    effective_ts timestamp default CURRENT_TIMESTAMP null,
+    constraint household_location_household_id_fk
+        foreign key (household_id) references household (id),
+    constraint household_location_location_id_fk
+        foreign key (location_id) references location (id)
 );
 
-create table if not exists member
+create index household_location_household_id_index
+    on household_location (household_id);
+
+create table member
 (
-	ID int auto_increment
-		primary key,
-	household_id int null,
-	age int null,
-	sex varchar(1) null,
-	alias varchar(2) null,
-	designator varchar(10) null,
-	constraint member___fk_household
-		foreign key (household_id) references household (ID)
+    id           bigint auto_increment
+        primary key,
+    household_id bigint                not null,
+    age          int                   not null,
+    sex          varchar(1)            not null,
+    alias        varchar(2) default '' null,
+    constraint member_household_id_age_alias_sex_uindex
+        unique (household_id, age, alias, sex),
+    constraint member_household_id_fk
+        foreign key (household_id) references household (id)
 );
 
-create table if not exists region
+create table report
 (
-	ID int auto_increment
-		primary key,
-	name varchar(100) null,
-	iso_code varchar(6) null
+    id                   bigint auto_increment
+        primary key,
+    member_id            bigint                                  not null,
+    ts                   timestamp     default CURRENT_TIMESTAMP not null,
+    symp_cough           int           default 0                 null,
+    symp_breathing       tinyint(1)    default 0                 null,
+    symp_walking         tinyint(1)    default 0                 null,
+    symp_appetite_loss   tinyint(1)    default 0                 null,
+    symp_diarrhea        tinyint(1)    default 0                 null,
+    symp_muscle_pain     tinyint(1)    default 0                 null,
+    symp_fatigue         tinyint(1)    default 0                 null,
+    symp_runny_nose      tinyint(1)    default 0                 null,
+    symp_sore_throat     tinyint(1)    default 0                 null,
+    symp_fever           decimal(4, 2) default 36.70             null,
+    symp_headache        tinyint(1)    default 0                 null,
+    symp_dizzy           tinyint(1)    default 0                 null,
+    symp_nausea          tinyint(1)    default 0                 null,
+    symp_shivers         tinyint(1)    default 0                 null,
+    symp_general_pain    tinyint(1)    default 0                 null,
+    symp_smell_loss      tinyint(1)    default 0                 null,
+    tran_distance        int           default 0                 null,
+    tran_surface         int           default 0                 null,
+    tran_human           int           default 0                 null,
+    lab_tested           int           default -1                null,
+    lab_hospitalized     tinyint(1)    default 0                 null,
+    lab_days_in_hospital int           default 0                 null,
+    lab_icu              tinyint(1)    default 0                 null,
+    lab_recovered        tinyint(1)    default 0                 null,
+    lab_ventilated       tinyint(1)    default 0                 null,
+    lab_oxygen           tinyint(1)    default 0                 null,
+    lab_pneumonia        tinyint(1)    default 0                 null,
+    lab_antibodies       int           default -1                null,
+    lab_other_symps      varchar(200)                            null,
+    constraint report_member_id_fk
+        foreign key (member_id) references member (id)
 );
 
-create table if not exists location
-(
-	ID int auto_increment
-		primary key,
-	country int null,
-	region int null,
-	city int null,
-	constraint location___fk_city
-		foreign key (city) references city (ID),
-	constraint location___fk_country
-		foreign key (country) references country (ID),
-	constraint location___fk_region
-		foreign key (region) references region (ID)
-);
-
-create table if not exists household_location
-(
-	household_id int not null,
-	location_id int not null
-		primary key,
-	effective_ts timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
-	constraint household_location___fk_household
-		foreign key (household_id) references household (ID),
-	constraint household_location___fk_location
-		foreign key (location_id) references location (ID)
-);
-
-create table if not exists report
-(
-	ID int auto_increment
-		primary key,
-	member_id int null,
-	timestamp_utc timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
-	constraint report___fk_member
-		foreign key (member_id) references member (ID)
-);
-
+create index report_member_id_ts_index
+    on report (member_id, ts);

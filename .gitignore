@@ -1,3 +1,10 @@
 slush/*
 *.bak
 *.mwb
+/express-app/node_modules/
+/express-app/package-lock.json
+/sysadmin_notes/
+/sensitive_details
+/express-app/config.json
+/express-app/sensitive/
+/sandbox/*
