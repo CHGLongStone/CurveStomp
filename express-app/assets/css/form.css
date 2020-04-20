@@ -72,7 +72,6 @@ h1, h2, h3 {
 }
 
 form {
-    width: 80%;
     max-width: 960px;
     margin: auto;
     padding: 20px;
@@ -136,6 +135,10 @@ fieldset#h_identity div.fieldset_container {
 }
 
 @media only screen and (max-width: 900px) {
+    form {
+        width: 100%;
+    }
+
     div.fieldset_container {
         grid-template-columns: repeat(1, minmax(0, 1fr));
     }
@@ -151,6 +154,10 @@ fieldset#h_identity div.fieldset_container {
 }
 
 @media only screen and (min-width: 900px) {
+    form {
+        width: 80%;
+    }
+
     div.fieldset_container {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
