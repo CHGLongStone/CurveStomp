@@ -7,7 +7,7 @@ const {ValidationRules, validate} = require('../validator.js');
 let max_hhid;
 database.query('select max(uid) hhid from household')
     .then(results => {
-        max_hhid = (results.length > 0) ? results[0].hhid : 0;
+        max_hhid = (results.length == 0 || results[0].hhid == null) ? 0 : results[0].hhid;
         console.log("[" + Date.now() + "]: " + `Using MAX UID = ${max_hhid}`);
     })
     .catch(err => {
