@@ -5,7 +5,7 @@ const creds = require('../sensitive/credentials');
 // Set database connection credentials
 const config = {
     host: 'localhost',
-    database: 'curvestompdev',
+    database: 'curvestomp',
     connectionLimit: 10,
     user: creds.db_creds.user,
     password: creds.db_creds.password
